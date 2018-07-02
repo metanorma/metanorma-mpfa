@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/riboseinc/asciidoctor-iso
-  revision: 8878a2c5e31a3c3b33a292989e5c0c7ec346e230
+  revision: 575341655824ef6fd612e710dcee60aa30177b9d
   specs:
-    asciidoctor-iso (0.9.0)
+    asciidoctor-iso (0.9.1)
       asciidoctor (~> 1.5.7)
       iso-bib-item (~> 0.1.6)
       isobib (~> 0.1.6)
@@ -134,11 +134,11 @@ GEM
     htmlentities (4.3.4)
     httpclient (2.8.3)
     image_size (2.0.0)
-    iso-bib-item (0.1.7)
+    iso-bib-item (0.1.8)
       duplicate
       isoics (~> 0.1.6)
       nokogiri
-    isobib (0.1.6)
+    isobib (0.1.7)
       algoliasearch
       iso-bib-item (~> 0.1.2)
     isoics (0.1.6)
