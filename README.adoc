@@ -128,19 +128,23 @@ introduced with `=`, is ignored)
 RSD publications) (mandatory). The permitted types are:
 +
 --
-code:: Code Artifact
-presentation:: Presentation
-proposal:: Proposal; includes IETF DRAFT
-standard:: Recommendation; includes IETF RFC
-report:: report
+* policy-and-procedures
+* best-practices
+* supporting-document
+* report
+* legal
+* directives
+* proposal
+* standard
 --
 
 `:status:``:: The document status. The permitted types are: `proposal`,
 `working-draft`, `committee-draft`, `draft-standard`, `final-draft`,
 `published`, `withdrawn`.
 
-`:technical-committee:`:: The name of the relevant RSD technical committee
-(mandatory)
+`:committee:`:: The name of the relevant RSD committee (mandatory)
+`:committee-type:`:: The type of the relevant RSD committee (mandatory): `technical`
+or `provisional`.
 
 `:language:` :: The language of the document (only `en` for now)  (mandatory)
 

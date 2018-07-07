@@ -34,8 +34,8 @@ module Asciidoctor
 
       def metadata_committee(node, xml)
         xml.editorialgroup do |a|
-          a.technical_committee node.attr("technical-committee"),
-            **attr_code(type: node.attr("technical-committee-type"))
+          a.committee node.attr("committee"),
+            **attr_code(type: node.attr("committee-type"))
         end
       end
 
@@ -86,11 +86,18 @@ module Asciidoctor
 
       def doctype(node)
         d = node.attr("doctype")
-        unless %w{policy best-practices supporting-document report legal directives}.include? d
+        unless %w{policy-and-procedures best-practices supporting-document report legal directives proposal standard}.include? d
           warn "#{d} is not a legal document type: reverting to 'standard'"
           d = "standard"
         end
         d
+      end
+
+      def pdf_convert(filename)
+        url = "#{Dir.pwd}/#{filename}.html"
+        pdfjs = File.join(File.dirname(__FILE__), 'pdf.js')
+        system "export NODE_PATH=$(npm root --quiet -g);
+                node #{pdfjs} file://#{url} #{filename}.pdf"
       end
 
       def document(node)
@@ -103,6 +110,7 @@ module Asciidoctor
           File.open(filename, "w") { |f| f.write(ret) }
           html_converter(node).convert filename unless node.attr("nodoc")
           word_converter(node).convert filename unless node.attr("nodoc")
+          pdf_convert(filename.sub(/\.xml$/, "")) unless node.attr("nodoc")
         end
         @files_to_delete.each { |f| system "rm #{f}" }
         ret

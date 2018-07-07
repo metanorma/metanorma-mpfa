@@ -6,9 +6,10 @@ RSpec.describe Asciidoctor::Rsd do
   end
 
   it "generates output for the Rice document" do
-  system "cd spec/examples; rm -f rfc6350.doc; rm -f rfc6350.html; asciidoctor --trace -b rsd -r 'asciidoctor-rsd' rfc6350.adoc; cd ../.."
+    system "cd spec/examples; rm -f rfc6350.doc; rm -f rfc6350.html; rm -d rfc6350.pdf; asciidoctor --trace -b rsd -r 'asciidoctor-rsd' rfc6350.adoc; cd ../.."
   expect(File.exist?("spec/examples/rfc6350.doc")).to be true
   expect(File.exist?("spec/examples/rfc6350.html")).to be true
+  expect(File.exist?("spec/examples/rfc6350.pdf")).to be true
   end
 
   it "processes a blank document" do
@@ -48,9 +49,9 @@ RSpec.describe Asciidoctor::Rsd do
       :edition: 2
       :revdate: 2000-01-01
       :draft: 3.4
-      :technical-committee: TC
-      :technical-committee-number: 1
-      :technical-committee-type: A
+      :committee: TC
+      :committee-number: 1
+      :committee-type: A
       :subcommittee: SC
       :subcommittee-number: 2
       :subcommittee-type: B
@@ -93,7 +94,7 @@ RSpec.describe Asciidoctor::Rsd do
     </owner>
   </copyright>
   <editorialgroup>
-    <technical-committee type="A">TC</technical-committee>
+    <committee type="A">TC</committee>
   </editorialgroup>
 </bibdata><version>
   <edition>2</edition>
