@@ -11,9 +11,9 @@ GIT
 
 GIT
   remote: https://github.com/riboseinc/html2doc
-  revision: ae15cfc0a4c8ebeb74193a8aa4a7884938a08434
+  revision: e9c0077be0c3d36bb09fa35743a79b00dd5ac560
   specs:
-    html2doc (0.8.0)
+    html2doc (0.8.1)
       asciimath
       htmlentities (~> 4.3.4)
       image_size
@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://github.com/riboseinc/isodoc
-  revision: adf9e4abfe0a9d0270b271bcadb075fc577b7a78
+  revision: 64091c58d99a5e4424289e7b7608bce1218ffc8f
   specs:
     isodoc (0.8.1)
       asciimath
@@ -190,7 +190,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    relaton (0.0.1)
+    relaton (0.0.2)
       asciidoctor (~> 1.5.7)
       gbbib (~> 0.1.0)
       iev (~> 0.1.0)
@@ -213,7 +213,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
-    rubocop (0.57.2)
+    rubocop (0.58.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5)
