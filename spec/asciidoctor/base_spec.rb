@@ -64,6 +64,7 @@ RSpec.describe Asciidoctor::Rsd do
       :iteration: 3
       :language: en
       :title: Main Title
+      :security: Client Confidential
     INPUT
     <?xml version="1.0" encoding="UTF-8"?>
 <rsd-standard xmlns="https://open.ribose.com/standards/rsd">
@@ -96,6 +97,7 @@ RSpec.describe Asciidoctor::Rsd do
   <editorialgroup>
     <committee type="A">TC</committee>
   </editorialgroup>
+  <security>Client Confidential</security>
 </bibdata><version>
   <edition>2</edition>
   <revision-date>2000-01-01</revision-date>

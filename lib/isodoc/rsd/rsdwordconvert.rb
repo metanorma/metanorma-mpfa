@@ -85,6 +85,11 @@ module IsoDoc
         end
         from_xhtml(h1)
       end
+
+      def info(isoxml, out)
+        @meta.security isoxml, out
+        super
+      end
     end
   end
 end

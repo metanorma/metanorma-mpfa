@@ -148,6 +148,7 @@ or `provisional`.
 
 `:language:` :: The language of the document (only `en` for now)  (mandatory)
 
+`:security:` :: Security level classification, e.g., "confidential", "client confidential"
 
 The attribute `:draft:`, if present, includes review notes in the XML output;
 these are otherwise suppressed.

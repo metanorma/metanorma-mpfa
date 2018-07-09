@@ -125,6 +125,11 @@ module IsoDoc
         end
         docxml
       end
+
+      def info(isoxml, out)
+        @meta.security isoxml, out
+        super
+      end
     end
   end
 end

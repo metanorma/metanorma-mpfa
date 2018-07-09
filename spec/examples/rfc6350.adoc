@@ -27,6 +27,7 @@ Simon Perreault <simon.perreault@viagenie.ca>
 :ipr: pre5378Trust200902
 :inline-definition-lists: true
 :comments: yes
+:security: Client Confidential
 
 .Foreword
 TBD

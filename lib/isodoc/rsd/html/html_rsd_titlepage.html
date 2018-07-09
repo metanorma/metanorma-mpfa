@@ -46,7 +46,10 @@
   </div>
 
   <div class="coverpage-stage-block" >
-    <span class="coverpage-maturity" id="{{ status | replace: ' ', '-' | downcase }}">{{ status }}</span>
+    <p><span class="coverpage-maturity" id="{{ status | replace: ' ', '-' | downcase }}">{{ status }}</span></p>
+{% if security %}
+<p><span class="coverpage-maturity">Classification: {{ security }}</span></p>
+{% endif %}
 </div>
 
 {% if doctype == "Policy And Procedures" or doctype == "Proposal" %}
