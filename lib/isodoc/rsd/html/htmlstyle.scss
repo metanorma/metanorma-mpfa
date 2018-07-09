@@ -250,6 +250,10 @@ table {
      box-shadow: none;
 }
 
+#toc li a {
+  text-transform: uppercase;
+}
+
 /*
     Document types + stages
 */
@@ -317,19 +321,28 @@ p.document-stage {
     height:160px;
 }
 
-#standard-band {
+#standard-band p{
+  height: 270px;
+}
+
+#proposal-band p {
+  height: 150px;
+}
+
+
+#standard-band,  #published-band {
     background-color: #9ABD48;
 }
 
-#standard {
+#standard, #published {
     border-bottom: solid 3px #9ABD48;
 }
 
-#governance {
+#governance, #policy-and-procedures {
     border-bottom: solid 3px #750697;
 }
 
-#governance-band {
+#governance-band, #policy-and-procedures-band {
     background-color: #750697;
 }
 
@@ -349,11 +362,11 @@ p.document-stage {
     text-transform: uppercase;
     }
 
-#working-draft {
+#working-draft, #proposal {
     border-bottom: solid 3px #F7803C;
 }
 
-#working-draft-band {
+#working-draft-band, #proposal-band {
     background-color: #F7803C;
 }
 
@@ -571,7 +584,7 @@ p.Biblio, p.NormRef {
 
 .example {
     background-color: #e1eef1;
-    padding: 0 1.2em 0 1.2em;
+    padding: 1.2em;
     margin: 2em 0 1em 0;
 }
 
@@ -660,19 +673,20 @@ a.footnote-number {
 */
 
 .contact-info {
-    background-color: #1661AD;
-    color: white;
     padding: 2em;
     margin-top: 5em;
-    width: auto;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
+    width: 250px;
+
+  text-align: left;
+  border: #1661AD solid 2px;
+  color: #1661AD!important;
+  border-radius: 25px;
+
 }
 
 .contact-info a,
 .contact-info a:hover {
-  color: white;
+  color: #1661AD;
 }
 
 .contact-info p, .contact-info a {
@@ -722,11 +736,16 @@ h2 p {
     4.1 Top Logo
 */
 
+.icon-svg {
+  width: 100%;
+  color: #5ecf86;
+}
+
 .wrapper-top {
-    background-color:#1661AD;
-    /* background-image: url("img/dots@2x.png"); */
-    color: #ffffff;
-    padding: 2em 0;
+  background: linear-gradient(200deg, #0f365e, #1661AD);
+  color: #ffffff;
+  padding: 2em 0;
+  width: 100%; 
 }
 
 .wrapper-top-bottom {
@@ -745,8 +764,8 @@ h2 p {
   .coverpage-title {
       padding-bottom: 0.5em;
       font-family: $headerfont;
-      font-size: 1.5em;
-      line-height: 1.2em;
+      font-size: 1.2em;
+      line-height: 1.5em;
   font-weight: 100;
   padding-left: 1em;
   padding-right: 1em;
@@ -756,6 +775,9 @@ h2 p {
   .WordSection11 {
     padding: 0 2em 0 3em;
   }
+
+ .WordSection12 {
+    padding: 0 2em 0 5em; }
 
   .prefatory-section {
     padding: 0 3em 0 6em;
@@ -799,7 +821,7 @@ h2 p {
 
   .coverpage-stage-block {
     font-family: $bodyfont;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.25em;
     margin: 2em 0em 2em 0em;
     text-transform: uppercase;
@@ -810,8 +832,8 @@ h2 p {
 */
 
   .coverpage-warning {
-      background: #f36f36;
-  color: white!important;
+    border: #f36f36 solid 2px;
+  color: #f36f36!important;
   margin: 1em 2em;
   color: #485094;
   padding: 2em 1em 1em 1em;
@@ -832,7 +854,7 @@ h2 p {
 
   .copyright {
     padding: 1em;
-    font-size: 0.8em;
+    font-size: 0.9em;
     text-align: left;
   }
   
@@ -878,5 +900,83 @@ To top button
   background: none;
   color: #485094;
   box-shadow: none;
+}
+
+@page {
+  margin: 2cm 1cm;
+}
+
+@media print {
+
+
+  .document-info,  nav, .copyright {
+      page-break-before: always;
+  }
+
+  nav {
+    page-break-after: always;
+  }
+
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+  }
+
+  .note, .figure, .Sourcecode, table {
+    page-break-inside: avoid;
+  }
+
+  .coverpage {
+      height: 23cm;
+  }
+
+  .wrapper-top {
+    top: 0;
+    padding-top: 4cm;
+    padding-bottom: 4cm;
+  }
+
+  .wrapper-top-bottom {
+    margin-top: -5px;
+  }
+
+
+  #toggle, .document-stage-band,
+  .document-type-band, button#myBtn {
+      display: none;
+  }
+
+  button#myBtn {
+    background-color: white;
+  }
+
+  .container {
+      padding-left: 0;
+  }
+
+  nav {
+      position: relative;
+      width: auto;
+      font-size: 0.9em;
+      overflow: auto;
+      padding: 0;
+      margin-right: 0;
+      background-color: white;
+  }
+
+    #toc .toc-active a {
+    color: #4D7EA5;
+  }
+
+  #toc .toc-active, #toc li:hover {
+    background: white;
+    box-shadow: none !important; }
+
+    #toc li:hover a {
+    color: black; }
+
+
+    h1.content {
+      margin-top: 2em; }
+
 }
 

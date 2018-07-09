@@ -27,10 +27,10 @@ module IsoDoc
       def default_fonts(options)
         b = options[:bodyfont] ||
           (options[:script] == "Hans" ? '"SimSun",serif' :
-           '"Garamond",serif')
+           '"Arial",sans-serif')
         h = options[:headerfont] ||
           (options[:script] == "Hans" ? '"SimHei",sans-serif' :
-           '"Garamond",serif')
+           '"Arial Narrow",sans-serif')
         m = options[:monospacefont] || '"Courier New",monospace'
         "$bodyfont: #{b};\n$headerfont: #{h};\n$monospacefont: #{m};\n"
       end
