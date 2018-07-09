@@ -126,12 +126,12 @@ followed by a white space character (namely, HTAB (U+0009) or SPACE
 (U+0020)) as equivalent to no characters at all (i.e., the CRLF and
 single white space character are removed).
 
-Note: It is possible for very simple implementations to generate
+NOTE: It is possible for very simple implementations to generate
 improperly folded lines in the middle of a UTF-8 multi-octet
 sequence.  For this reason, implementations [keyword]#SHOULD# unfold lines in
 such a way as to properly restore the original sequence.
 
-Note: Unfolding is done differently than in <<RFC5322>>.  Unfolding
+NOTE: Unfolding is done differently than in <<RFC5322>>.  Unfolding
 in <<RFC5322>> only removes the CRLF, not the space following it.
 
 Folding is done after any content encoding of a type value.
