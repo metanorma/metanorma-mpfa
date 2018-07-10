@@ -776,7 +776,7 @@ h2 p {
     padding: 0 2em 0 3em;
   }
 
- .WordSection12 {
+ .info-section {
     padding: 0 2em 0 5em; }
 
   .prefatory-section {
@@ -919,10 +919,15 @@ To top button
 
   h1, h2, h3, h4 {
     page-break-after: avoid;
+    margin-top: 1.2em;
   }
 
   .note, .figure, .Sourcecode, table {
     page-break-inside: avoid;
+  }
+
+  .info-section {
+    display: none;
   }
 
   .coverpage {
@@ -976,7 +981,38 @@ To top button
 
 
     h1.content {
-      margin-top: 2em; }
+      margin-top: 2em; 
+      line-height: 2.5em;
+    }
+
+    h1 {
+      font-size: 1.5em;
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: 1.2em
+    }
+
+    h3 {
+      font-size: 1em;
+    }
+
+    .Note {
+        padding: 5px;
+        margin: 2em 0 1em 0; }
+
+    .Note p {
+      padding: 0 5px 0 5px;
+    }
+
+    nav {
+      line-height: 1;
+    }
+
+    .wrapper-top-bottom {
+      display: none;
+    }
 
 }
 

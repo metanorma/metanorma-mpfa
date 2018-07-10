@@ -30,7 +30,7 @@ module IsoDoc
            '"Arial",sans-serif')
         h = options[:headerfont] ||
           (options[:script] == "Hans" ? '"SimHei",sans-serif' :
-           '"Arial Narrow",sans-serif')
+           '"Arial",sans-serif')
         m = options[:monospacefont] || '"Courier New",monospace'
         "$bodyfont: #{b};\n$headerfont: #{h};\n$monospacefont: #{m};\n"
       end
