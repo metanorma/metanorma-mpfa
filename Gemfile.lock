@@ -119,13 +119,11 @@ GEM
     isobib (0.1.9)
       algoliasearch
       iso-bib-item (~> 0.1.10)
-    isodoc (0.8.1)
+    isodoc (0.8.2)
       asciimath
       html2doc (~> 0.8.1)
       htmlentities (~> 4.3.4)
-      image_size
       liquid
-      mime-types
       nokogiri
       roman-numerals
       ruby-xslt
@@ -163,7 +161,7 @@ GEM
       shellany (~> 0.0)
     optout (0.0.2)
     parallel (1.12.1)
-    parser (2.5.1.0)
+    parser (2.5.1.2)
       ast (~> 2.4.0)
     powerpack (0.1.2)
     pry (0.11.3)
