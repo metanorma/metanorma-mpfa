@@ -6,7 +6,9 @@ rvm:
   - 2.4
   - ruby-head
 before_install:
-  - gem install bundler -v 1.14.6
+  - gem install bundler -v 1.16.1
+  - npm install -g puppeteer
+  - npm install
   - unset _JAVA_OPTIONS
 matrix:
   allow_failures:
