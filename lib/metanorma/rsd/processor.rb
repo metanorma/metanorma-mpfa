@@ -33,12 +33,15 @@ module Metanorma
         when :doc
           IsoDoc::Rsd::WordConvert.new(options).convert(outname, isodoc_node)
         when :pdf
+          IsoDoc::Rsd::PdfConvert.new(options).convert(outname, isodoc_node)
+=begin
           require 'tempfile'
           outname_html = outname + ".html"
           IsoDoc::Rsd::HtmlConvert.new(options).convert(outname_html, isodoc_node)
           puts outname_html
           system "cat #{outname_html}"
           Metanorma::Output::Pdf.new.convert(outname_html, outname)
+=end
         else
           super
         end
