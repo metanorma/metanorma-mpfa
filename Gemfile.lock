@@ -3,11 +3,11 @@ PATH
   specs:
     asciidoctor-rsd (0.3.2)
       asciidoctor (~> 1.5.7)
-      asciidoctor-iso (>= 0.8.0)
+      asciidoctor-iso (>= 0.9.0)
       asciimath
       htmlentities (~> 4.3.4)
       image_size
-      isodoc (>= 0.7.0)
+      isodoc (>= 0.8.4)
       mime-types
       nokogiri
       ruby-jing
@@ -77,7 +77,7 @@ GEM
     isobib (0.1.10)
       algoliasearch
       iso-bib-item (~> 0.1.10)
-    isodoc (0.8.3)
+    isodoc (0.8.4)
       asciimath
       html2doc (~> 0.8.1)
       htmlentities (~> 4.3.4)
@@ -123,11 +123,9 @@ GEM
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     relaton (0.0.2)
-      asciidoctor (~> 1.5.7)
       gbbib (~> 0.1.0)
       iev (~> 0.1.0)
-      iso-bib-item (~> 0.1.6)
-      isobib (~> 0.1.8)
+      isobib (~> 0.1.9)
       rfcbib (~> 0.1.0)
     rfcbib (0.1.1)
       iso-bib-item (~> 0.1.10)

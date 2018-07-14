@@ -36,8 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thread_safe"
   spec.add_dependency "uuidtools"
 
-  spec.add_dependency "asciidoctor-iso", ">= 0.8.0"
-  spec.add_dependency "isodoc", ">= 0.7.0"
+  spec.add_dependency "asciidoctor-iso", ">= 0.9.0"
+  spec.add_dependency "isodoc", ">= 0.8.4"
 
   spec.add_development_dependency "bundler", "~> 1.15"
   spec.add_development_dependency "byebug", "~> 9.1"
