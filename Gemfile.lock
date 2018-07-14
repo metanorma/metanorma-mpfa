@@ -22,7 +22,7 @@ GEM
       httpclient (~> 2.8, >= 2.8.3)
       json (>= 1.5.1)
     asciidoctor (1.5.7.1)
-    asciidoctor-iso (0.9.5)
+    asciidoctor-iso (0.9.6)
       asciidoctor (~> 1.5.7)
       iev (~> 0.1.0)
       isodoc (>= 0.8)
