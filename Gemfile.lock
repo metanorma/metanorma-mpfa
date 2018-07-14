@@ -3,7 +3,7 @@ PATH
   specs:
     asciidoctor-rsd (0.3.2)
       asciidoctor (~> 1.5.7)
-      asciidoctor-iso (>= 0.9.0)
+      asciidoctor-iso (~> 0.9.6)
       asciimath
       htmlentities (~> 4.3.4)
       image_size
