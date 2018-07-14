@@ -4,16 +4,9 @@ PATH
     asciidoctor-rsd (0.3.2)
       asciidoctor (~> 1.5.7)
       asciidoctor-iso (~> 0.9.6)
-      asciimath
       htmlentities (~> 4.3.4)
-      image_size
       isodoc (>= 0.8.4)
-      mime-types
       nokogiri
-      ruby-jing
-      ruby-xslt
-      thread_safe
-      uuidtools
 
 GEM
   remote: https://rubygems.org/

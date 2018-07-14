@@ -26,15 +26,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "asciidoctor", "~> 1.5.7"
-  spec.add_dependency "asciimath"
   spec.add_dependency "htmlentities", "~> 4.3.4"
-  spec.add_dependency "image_size"
-  spec.add_dependency "mime-types"
   spec.add_dependency "nokogiri"
-  spec.add_dependency "ruby-jing"
-  spec.add_dependency "ruby-xslt"
-  spec.add_dependency "thread_safe"
-  spec.add_dependency "uuidtools"
   spec.add_dependency "asciidoctor-iso", "~> 0.9.6"
   spec.add_dependency "isodoc", ">= 0.8.4"
 
