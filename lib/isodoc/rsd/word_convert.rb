@@ -7,20 +7,21 @@ module IsoDoc
     # schema encapsulation of the document for validation
 
     class WordConvert < IsoDoc::WordConvert
-      def html_doc_path(file)
+      def rsd_html_path(file)
         File.join(File.dirname(__FILE__), File.join("html", file))
       end
 
       def initialize(options)
         super
-        @wordstylesheet = generate_css(html_doc_path("wordstyle.scss"), false, default_fonts(options))
-        @standardstylesheet = generate_css(html_doc_path("rsd.scss"), false, default_fonts(options))
-        @header = html_doc_path("header.html")
-        @wordcoverpage = html_doc_path("word_rsd_titlepage.html")
-        @wordintropage = html_doc_path("word_rsd_intro.html")
+        @wordstylesheet = generate_css(rsd_html_path("wordstyle.scss"), false, default_fonts(options))
+        @standardstylesheet = generate_css(rsd_html_path("rsd.scss"), false, default_fonts(options))
+        @header = rsd_html_path("header.html")
+        @wordcoverpage = rsd_html_path("word_rsd_titlepage.html")
+        @wordintropage = rsd_html_path("word_rsd_intro.html")
         @ulstyle = "l3"
         @olstyle = "l2"
-        system "cp #{html_doc_path('logo.jpg')}  logo.jpg"
+        system "cp #{html_doc_path('logo.svg')} logo.svg"
+        @files_to_delete << "logo.svg"
       end
 
       def default_fonts(options)

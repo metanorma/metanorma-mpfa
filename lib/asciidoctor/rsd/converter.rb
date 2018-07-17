@@ -132,7 +132,7 @@ module Asciidoctor
                         File.join(File.dirname(__FILE__), "rsd.rng"))
       end
 
-      def html_doc_path(file)
+      def rsd_html_path(file)
         File.join(File.dirname(__FILE__), File.join("html", file))
       end
 
