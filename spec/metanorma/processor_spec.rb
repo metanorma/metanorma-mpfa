@@ -1,12 +1,14 @@
 require "spec_helper"
 require "metanorma"
 
-#RSpec.describe Asciidoctor::Gb do
 RSpec.describe Metanorma::Rsd::Processor do
 
   registry = Metanorma::Registry.instance
   registry.register(Metanorma::Rsd::Processor)
-  processor = registry.find_processor(:rsd)
+
+  let(:processor) {
+    registry.find_processor(:rsd)
+  }
 
   it "registers against metanorma" do
     expect(processor).not_to be nil
@@ -23,38 +25,53 @@ RSpec.describe Metanorma::Rsd::Processor do
   end
 
   it "generates IsoDoc XML from a blank document" do
-    expect(processor.input_to_isodoc(<<~"INPUT")).to be_equivalent_to <<~"OUTPUT"
+    input = <<~"INPUT"
     #{ASCIIDOC_BLANK_HDR}
     INPUT
+
+    output = <<~"OUTPUT"
     #{BLANK_HDR}
 <sections/>
 </rsd-standard>
     OUTPUT
+
+    expect(processor.input_to_isodoc(input)).to be_equivalent_to output
   end
 
   it "generates HTML from IsoDoc XML" do
     system "rm -f test.xml"
-    processor.output(<<~"INPUT", "test.html", :html)
-               <rsd-standard xmlns="http://riboseinc.com/isoxml">
-       <sections>
-       <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-         <term id="J">
-         <preferred>Term2</preferred>
-       </term>
+    input = <<~"INPUT"
+    <rsd-standard xmlns="http://riboseinc.com/isoxml">
+      <sections>
+        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
+          <term id="J">
+            <preferred>Term2</preferred>
+          </term>
         </terms>
-        </sections>
-        </rsd-standard>
+      </sections>
+    </rsd-standard>
     INPUT
-    expect(File.read("test.html", encoding: "utf-8").gsub(%r{^.*<main}m, "<main").gsub(%r{</main>.*}m, "</main>")).to be_equivalent_to <<~"OUTPUT"
-           <main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-             <p class="zzSTDTitle1"></p>
-             <div id="H"><h1>1.&#xA0; Terms and definitions</h1><p>For the purposes of this document,
-           the following terms and definitions apply.</p>
-       <h2 class="TermNum" id="J">1.1&#xA0;<p class="Terms" style="text-align:left;">Term2</p></h2>
 
-       </div>
-           </main>
+    output = <<~"OUTPUT"
+    <main class="main-section">
+      <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+      <p class="zzSTDTitle1"></p>
+      <div id="H">
+        <h1>1.&#xA0; Terms and definitions</h1>
+        <p>For the purposes of this document, the following terms and definitions apply.</p>
+        <h2 class="TermNum" id="J">1.1&#xA0;<p class="Terms" style="text-align:left;">Term2</p></h2>
+      </div>
+    </main>
     OUTPUT
+
+    processor.output(input, "test.html", :html)
+
+    expect(
+      File.read("test.html", encoding: "utf-8").
+      gsub(%r{^.*<main}m, "<main").
+      gsub(%r{</main>.*}m, "</main>")
+    ).to be_equivalent_to output
+
   end
 
 end

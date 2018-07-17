@@ -1,15 +1,15 @@
 require "asciidoctor"
-require "asciidoctor/rsd/version"
-require "isodoc/rsd/rsdhtmlconvert"
-require "isodoc/rsd/rsdwordconvert"
+require "asciidoctor/rsd"
 require "asciidoctor/iso/converter"
+require "isodoc/rsd/html_convert"
+require "isodoc/rsd/word_convert"
 
 module Asciidoctor
   module Rsd
-    RSD_NAMESPACE = "https://open.ribose.com/standards/rsd"
 
     # A {Converter} implementation that generates RSD output, and a document
     # schema encapsulation of the document for validation
+    #
     class Converter < ISO::Converter
 
       register_for "rsd"

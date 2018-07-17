@@ -7,38 +7,46 @@ RSpec.describe Asciidoctor::Rsd do
 
   it "generates output for the Rice document" do
     system "cd spec/examples; rm -f rfc6350.doc; rm -f rfc6350.html; rm -d rfc6350.pdf; asciidoctor --trace -b rsd -r 'asciidoctor-rsd' rfc6350.adoc; cd ../.."
-  expect(File.exist?("spec/examples/rfc6350.doc")).to be true
-  expect(File.exist?("spec/examples/rfc6350.html")).to be true
-  expect(File.exist?("spec/examples/rfc6350.pdf")).to be true
+    expect(File.exist?("spec/examples/rfc6350.doc")).to be true
+    expect(File.exist?("spec/examples/rfc6350.html")).to be true
+    expect(File.exist?("spec/examples/rfc6350.pdf")).to be true
   end
 
   it "processes a blank document" do
-    expect(Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
+    input = <<~"INPUT"
     #{ASCIIDOC_BLANK_HDR}
     INPUT
+
+    output = <<~"OUTPUT"
     #{BLANK_HDR}
 <sections/>
 </rsd-standard>
     OUTPUT
+
+    expect(Asciidoctor.convert(input, backend: :rsd, header_footer: true)).to be_equivalent_to output
   end
 
   it "converts a blank document" do
-    system "rm -f test.html"
-    expect(Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true)).to be_equivalent_to <<~"OUTPUT"
+    input = <<~"INPUT"
       = Document title
       Author
       :docfile: test.adoc
       :novalid:
     INPUT
+
+    output = <<~"OUTPUT"
     #{BLANK_HDR}
 <sections/>
 </rsd-standard>
     OUTPUT
+
+    system "rm -f test.html"
+    expect(Asciidoctor.convert(input, backend: :rsd, header_footer: true)).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
   end
 
   it "processes default metadata" do
-    expect(Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true)).to be_equivalent_to <<~'OUTPUT'
+    input = <<~"INPUT"
       = Document title
       Author
       :docfile: test.adoc
@@ -66,6 +74,8 @@ RSpec.describe Asciidoctor::Rsd do
       :title: Main Title
       :security: Client Confidential
     INPUT
+
+    output = <<~"OUTPUT"
     <?xml version="1.0" encoding="UTF-8"?>
 <rsd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
@@ -106,10 +116,12 @@ RSpec.describe Asciidoctor::Rsd do
 <sections/>
 </rsd-standard>
     OUTPUT
+
+    expect(Asciidoctor.convert(input, backend: :rsd, header_footer: true)).to be_equivalent_to output
   end
 
   it "processes figures" do
-    expect(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true))).to be_equivalent_to <<~"OUTPUT"
+    input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
 
       [[id]]
@@ -119,7 +131,9 @@ RSpec.describe Asciidoctor::Rsd do
 
       Amen
       ....
-      INPUT
+    INPUT
+
+    output = <<~"OUTPUT"
     #{BLANK_HDR}
        <sections>
                 <figure id="id">
@@ -131,15 +145,19 @@ RSpec.describe Asciidoctor::Rsd do
        </sections>
        </rsd-standard>
     OUTPUT
+
+    expect(strip_guid(Asciidoctor.convert(input, backend: :rsd, header_footer: true))).to be_equivalent_to output
   end
 
   it "strips inline header" do
-    expect(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true))).to be_equivalent_to <<~"OUTPUT"
+    input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
       This is a preamble
 
       == Section 1
-      INPUT
+    INPUT
+
+    output = <<~"OUTPUT"
     #{BLANK_HDR}
              <preface><foreword obligation="informative">
          <title>Foreword</title>
@@ -150,16 +168,21 @@ RSpec.describe Asciidoctor::Rsd do
        </clause></sections>
        </rsd-standard>
     OUTPUT
+
+    expect(strip_guid(Asciidoctor.convert(input, backend: :rsd, header_footer: true))).to be_equivalent_to output
   end
 
   it "uses default fonts" do
-    system "rm -f test.html"
-    Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true)
+    input = <<~"INPUT"
       = Document title
       Author
       :docfile: test.adoc
       :novalid:
     INPUT
+
+    system "rm -f test.html"
+    Asciidoctor.convert(input, backend: :rsd, header_footer: true)
+
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\.Sourcecode[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
     expect(html).to match(%r[ div[^{]+\{[^}]+font-family: "Overpass", sans-serif;]m)
@@ -167,14 +190,17 @@ RSpec.describe Asciidoctor::Rsd do
   end
 
   it "uses Chinese fonts" do
-    system "rm -f test.html"
-    Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true)
+    input = <<~"INPUT"
       = Document title
       Author
       :docfile: test.adoc
       :novalid:
       :script: Hans
     INPUT
+
+    system "rm -f test.html"
+    Asciidoctor.convert(input, backend: :rsd, header_footer: true)
+
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\.Sourcecode[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
     expect(html).to match(%r[ div[^{]+\{[^}]+font-family: "SimSun", serif;]m)
@@ -182,8 +208,7 @@ RSpec.describe Asciidoctor::Rsd do
   end
 
   it "uses specified fonts" do
-    system "rm -f test.html"
-    Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true)
+    input = <<~"INPUT"
       = Document title
       Author
       :docfile: test.adoc
@@ -193,6 +218,10 @@ RSpec.describe Asciidoctor::Rsd do
       :header-font: Comic Sans
       :monospace-font: Andale Mono
     INPUT
+
+    system "rm -f test.html"
+    Asciidoctor.convert(input, backend: :rsd, header_footer: true)
+
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\.Sourcecode[^{]+\{[^{]+font-family: Andale Mono;]m)
     expect(html).to match(%r[ div[^{]+\{[^}]+font-family: Zapf Chancery;]m)
@@ -200,7 +229,7 @@ RSpec.describe Asciidoctor::Rsd do
   end
 
   it "processes inline_quoted formatting" do
-    expect(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :rsd, header_footer: true))).to be_equivalent_to <<~"OUTPUT"
+    input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
       _emphasis_
       *strong*
@@ -215,6 +244,8 @@ RSpec.describe Asciidoctor::Rsd do
       [strike]#strike#
       [smallcap]#smallcap#
     INPUT
+
+    output = <<~"OUTPUT"
             #{BLANK_HDR}
        <sections>
         <p id="_"><em>emphasis</em>
@@ -232,6 +263,8 @@ RSpec.describe Asciidoctor::Rsd do
        </sections>
        </rsd-standard>
     OUTPUT
+
+    expect(strip_guid(Asciidoctor.convert(input, backend: :rsd, header_footer: true))).to be_equivalent_to output
   end
 
 

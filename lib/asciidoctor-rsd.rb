@@ -1,8 +1,8 @@
 require "asciidoctor" unless defined? Asciidoctor::Converter
 require_relative "asciidoctor/rsd/converter"
-require_relative "isodoc/rsd/rsdhtmlconvert"
-require_relative "isodoc/rsd/rsdwordconvert"
-require_relative "isodoc/rsd/rsdpdfconvert"
+require_relative "isodoc/rsd/html_convert"
+require_relative "isodoc/rsd/word_convert"
+require_relative "isodoc/rsd/pdf_convert"
 require_relative "asciidoctor/rsd/version"
 
 if defined? Metanorma

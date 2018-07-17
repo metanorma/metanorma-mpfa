@@ -2,6 +2,8 @@ require "asciidoctor/rsd/version"
 
 module Asciidoctor
   module Rsd
-    # Your code goes here...
+
+    RSD_NAMESPACE = "https://open.ribose.com/standards/rsd"
+
   end
 end
