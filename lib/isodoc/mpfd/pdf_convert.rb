@@ -16,8 +16,10 @@ module IsoDoc
         @htmlcoverpage = rsd_html_path("html_rsd_titlepage.html")
         @htmlintropage = rsd_html_path("html_rsd_intro.html")
         @scripts = rsd_html_path("scripts.html")
-        system "cp #{html_doc_path('logo.svg')} logo.svg"
-        @files_to_delete << "logo.svg"
+        system "cp #{html_doc_path('logo.jpg')} logo.jpg"
+        system "cp #{html_doc_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
+        @files_to_delete << "logo.jpg"
+        @files_to_delete << "mpfa-logo-no-text@4x.png"
       end
 
       def default_fonts(options)

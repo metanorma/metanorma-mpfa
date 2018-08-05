@@ -20,8 +20,10 @@ module IsoDoc
         @wordintropage = rsd_html_path("word_rsd_intro.html")
         @ulstyle = "l3"
         @olstyle = "l2"
-        system "cp #{html_doc_path('logo.svg')} logo.svg"
-        @files_to_delete << "logo.svg"
+        system "cp #{html_doc_path('logo.jpg')} logo.jpg"
+        system "cp #{html_doc_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
+        @files_to_delete << "logo.jpg"
+        @files_to_delete << "mpfa-logo-no-text@4x.png"
       end
 
       def default_fonts(options)
