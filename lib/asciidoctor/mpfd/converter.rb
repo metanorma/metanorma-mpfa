@@ -3,6 +3,7 @@ require "asciidoctor/mpfd"
 require "asciidoctor/iso/converter"
 require "isodoc/mpfd/html_convert"
 require "isodoc/mpfd/word_convert"
+require_relative "section"
 
 module Asciidoctor
   module Mpfd
@@ -197,6 +198,7 @@ module Asciidoctor
           end
         end.join
       end
+
     end
   end
 end

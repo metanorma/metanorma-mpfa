@@ -1,4 +1,5 @@
 require "isodoc"
+require "twitter_cldr"
 
 module IsoDoc
   module Mpfd
@@ -53,6 +54,10 @@ module IsoDoc
         super
         revdate = get[:revdate]
         set(:revdate_monthyear, monthyr(revdate))
+        edition = isoxml.at(ns("//bibdata/edition")) and
+          set(:edition, edition.text.to_i.localize.
+              to_rbnf_s("SpelloutRules", "spellout-ordinal")).
+        split(/(\W)/).map(&:capitalize).join
       end
 
       MONTHS = {

@@ -45,6 +45,7 @@ module IsoDoc
     <!--Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i|Space+Mono:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Overpass:300,300i,600,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,400i,700,700i" rel="stylesheet">
     <!--Font awesome import for the link icon-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous">
@@ -202,47 +203,6 @@ module IsoDoc
             end
         @labels = @labels.merge(y)
         @clause_lbl = y["clause"]
-      end
-
-            def section(node)
-        a = { id: Utils::anchor_or_uuid(node) }
-        noko do |xml|
-          case sectiontype(node)
-          when "introduction" then
-            if node.level == 1 then introduction_parse(a, xml, node)
-            else
-              clause_parse(a, xml, node)
-            end
-          when "patent notice" then patent_notice_parse(xml, node)
-          when "scope" then scope_parse(a, xml, node)
-          when "normative references" then norm_ref_parse(a, xml, node)
-          when "terms and definitions",
-            "terms, definitions, symbols and abbreviated terms",
-            "terms, definitions, symbols and abbreviations",
-            "terms, definitions and symbols",
-            "terms, definitions and abbreviations",
-            "terms, definitions and abbreviated terms",
-            "glossary"
-            @term_def = true
-            term_def_parse(a, xml, node, true)
-            @term_def = false
-          when "symbols and abbreviated terms"
-            symbols_parse(a, xml, node)
-          when "bibliography" then bibliography_parse(a, xml, node)
-          else
-            if @term_def then term_def_subclause_parse(a, xml, node)
-            elsif @biblio then bibliography_parse(a, xml, node)
-            elsif node.attr("style") == "bibliography" && node.level == 1
-              bibliography_parse(a, xml, node)
-            elsif node.attr("style") == "appendix" && node.level == 1
-              annex_parse(a, xml, node)
-            elsif node.option? "appendix"
-              appendix_parse(a, xml, node)
-            else
-              clause_parse(a, xml, node)
-            end
-          end
-        end.join("\n")
       end
 
     end
