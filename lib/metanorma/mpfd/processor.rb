@@ -5,9 +5,9 @@ module Metanorma
     class Processor < Metanorma::Processor
 
       def initialize
-        @short = :rsd
+        @short = :mpfd
         @input_format = :asciidoc
-        @asciidoctor_backend = :rsd
+        @asciidoctor_backend = :mpfd
       end
 
       def output_formats

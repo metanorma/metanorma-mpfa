@@ -36,6 +36,14 @@ module IsoDoc
         set(:docnumber, dn)
       end
 
+      def doctype(isoxml, _out)
+        b = isoxml.at(ns("//bibdata")) || return
+        return unless b["type"]
+        t = b["type"].split(/[- ]/).
+          map{ |w| w.capitalize unless w == "MPF" }.join(" ")
+        set(:doctype, t)
+      end
+
       def status_print(status)
         status.split(/-/).map{ |w| w.capitalize }.join(" ")
       end

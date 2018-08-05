@@ -20,8 +20,8 @@ module IsoDoc
         @wordintropage = rsd_html_path("word_rsd_intro.html")
         @ulstyle = "l3"
         @olstyle = "l2"
-        system "cp #{html_doc_path('logo.jpg')} logo.jpg"
-        system "cp #{html_doc_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
+        system "cp #{rsd_html_path('logo.jpg')} logo.jpg"
+        system "cp #{rsd_html_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
         @files_to_delete << "logo.jpg"
         @files_to_delete << "mpfa-logo-no-text@4x.png"
       end
