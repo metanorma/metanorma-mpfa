@@ -2,7 +2,7 @@ require "isodoc"
 require_relative "metadata"
 
 module IsoDoc
-  module Rsd
+  module Mpfd
     # A {Converter} implementation that generates Word output, and a document
     # schema encapsulation of the document for validation
 

@@ -1,21 +1,21 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "asciidoctor/rsd/version"
+require "asciidoctor/mpfd/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "asciidoctor-rsd"
-  spec.version       = Asciidoctor::Rsd::VERSION
+  spec.name          = "metanorma-mpdf"
+  spec.version       = Asciidoctor::Mpfd::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
-  spec.summary       = "asciidoctor-rsd lets you write RSD in AsciiDoc."
+  spec.summary       = "metanorma-mpfd lets you write MPF documents in AsciiDoc."
   spec.description   = <<~DESCRIPTION
-    asciidoctor-rsd lets you write RSD in AsciiDoc syntax.
+    metanorma-mpfd lets you write MPF documents in AsciiDoc syntax.
 
     This gem is in active development.
   DESCRIPTION
 
-  spec.homepage      = "https://github.com/riboseinc/asciidoctor-rsd"
+  spec.homepage      = "https://github.com/riboseinc/metanorma-mpfd"
   spec.license       = "BSD-2-Clause"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

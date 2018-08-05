@@ -1,24 +1,25 @@
 require "asciidoctor"
-require "asciidoctor/rsd"
+require "asciidoctor/mpfd"
 require "asciidoctor/iso/converter"
-require "isodoc/rsd/html_convert"
-require "isodoc/rsd/word_convert"
+require "isodoc/mpfd/html_convert"
+require "isodoc/mpfd/word_convert"
 
 module Asciidoctor
-  module Rsd
+  module Mpfd
 
     # A {Converter} implementation that generates RSD output, and a document
     # schema encapsulation of the document for validation
     #
     class Converter < ISO::Converter
 
-      register_for "rsd"
+      register_for "mpfd"
 
       def metadata_author(node, xml)
         xml.contributor do |c|
           c.role **{ type: "author" }
           c.organization do |a|
-            a.name "Ribose"
+            a.name "Mandatory Provident Fund Schemes Authority"
+            a.abbreviation "MPFA"
           end
         end
       end
@@ -27,7 +28,8 @@ module Asciidoctor
         xml.contributor do |c|
           c.role **{ type: "publisher" }
           c.organization do |a|
-            a.name "Ribose"
+            a.name "Mandatory Provident Fund Schemes Authority"
+            a.abbreviation "MPFA"
           end
         end
       end
@@ -61,20 +63,11 @@ module Asciidoctor
           c.from from
           c.owner do |owner|
             owner.organization do |o|
-              o.name "Ribose"
+              o.name "Mandatory Provident Fund Schemes Authority"
+              o.abbreviation "MPFA"
             end
           end
         end
-      end
-
-      def metadata_security(node, xml)
-        security = node.attr("security") || return
-        xml.security security
-      end
-
-      def metadata(node, xml)
-        super
-        metadata_security(node, xml)
       end
 
       def title_validate(root)
@@ -82,11 +75,11 @@ module Asciidoctor
       end
 
       def makexml(node)
-        result = ["<?xml version='1.0' encoding='UTF-8'?>\n<rsd-standard>"]
+        result = ["<?xml version='1.0' encoding='UTF-8'?>\n<mpfd-standard>"]
         @draft = node.attributes.has_key?("draft")
         result << noko { |ixml| front node, ixml }
         result << noko { |ixml| middle node, ixml }
-        result << "</rsd-standard>"
+        result << "</mpfd-standard>"
         result = textcleanup(result.flatten * "\n")
         ret1 = cleanup(Nokogiri::XML(result))
         validate(ret1)
@@ -96,10 +89,12 @@ module Asciidoctor
 
       def doctype(node)
         d = node.attr("doctype")
+=begin
         unless %w{policy-and-procedures best-practices supporting-document report legal directives proposal standard}.include? d
           warn "#{d} is not a legal document type: reverting to 'standard'"
           d = "standard"
         end
+=end
         d
       end
 
@@ -157,7 +152,7 @@ module Asciidoctor
       end
 
       def html_converter(node)
-        IsoDoc::Rsd::HtmlConvert.new(
+        IsoDoc::Mpfd::HtmlConvert.new(
           script: node.attr("script"),
           bodyfont: node.attr("body-font"),
           headerfont: node.attr("header-font"),
@@ -169,7 +164,7 @@ module Asciidoctor
       end
 
       def word_converter(node)
-        IsoDoc::Rsd::WordConvert.new(
+        IsoDoc::Mpfd::WordConvert.new(
           script: node.attr("script"),
           bodyfont: node.attr("body-font"),
           headerfont: node.attr("header-font"),

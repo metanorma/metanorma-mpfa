@@ -1,7 +1,7 @@
 require "metanorma/processor"
 
 module Metanorma
-  module Rsd
+  module Mpfd
     class Processor < Metanorma::Processor
 
       def initialize
@@ -19,7 +19,7 @@ module Metanorma
       end
 
       def version
-        "Asciidoctor::Rsd #{Asciidoctor::Rsd::VERSION}"
+        "Asciidoctor::Mpfd #{Asciidoctor::Mpfd::VERSION}"
       end
 
       def input_to_isodoc(file)
@@ -29,19 +29,11 @@ module Metanorma
       def output(isodoc_node, outname, format, options={})
         case format
         when :html
-          IsoDoc::Rsd::HtmlConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::Mpfd::HtmlConvert.new(options).convert(outname, isodoc_node)
         when :doc
-          IsoDoc::Rsd::WordConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::Mpfd::WordConvert.new(options).convert(outname, isodoc_node)
         when :pdf
-          IsoDoc::Rsd::PdfConvert.new(options).convert(outname, isodoc_node)
-=begin
-          require 'tempfile'
-          outname_html = outname + ".html"
-          IsoDoc::Rsd::HtmlConvert.new(options).convert(outname_html, isodoc_node)
-          puts outname_html
-          system "cat #{outname_html}"
-          Metanorma::Output::Pdf.new.convert(outname_html, outname)
-=end
+          IsoDoc::Mpfd::PdfConvert.new(options).convert(outname, isodoc_node)
         else
           super
         end
