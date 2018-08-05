@@ -190,6 +190,61 @@ module IsoDoc
         docxml
       end
 
+      def i18n_init(lang, script)
+        super
+        y = if lang == "en"
+              YAML.load_file(File.join(File.dirname(__FILE__), "i18n-en.yaml"))
+            elsif lang == "zh" && script == "Hans"
+              YAML.load_file(File.join(File.dirname(__FILE__),
+                                       "i18n-zh-Hans.yaml"))
+            else
+              YAML.load_file(File.join(File.dirname(__FILE__), "i18n-zh-Hans.yaml"))
+            end
+        @labels = @labels.merge(y)
+        @clause_lbl = y["clause"]
+      end
+
+            def section(node)
+        a = { id: Utils::anchor_or_uuid(node) }
+        noko do |xml|
+          case sectiontype(node)
+          when "introduction" then
+            if node.level == 1 then introduction_parse(a, xml, node)
+            else
+              clause_parse(a, xml, node)
+            end
+          when "patent notice" then patent_notice_parse(xml, node)
+          when "scope" then scope_parse(a, xml, node)
+          when "normative references" then norm_ref_parse(a, xml, node)
+          when "terms and definitions",
+            "terms, definitions, symbols and abbreviated terms",
+            "terms, definitions, symbols and abbreviations",
+            "terms, definitions and symbols",
+            "terms, definitions and abbreviations",
+            "terms, definitions and abbreviated terms",
+            "glossary"
+            @term_def = true
+            term_def_parse(a, xml, node, true)
+            @term_def = false
+          when "symbols and abbreviated terms"
+            symbols_parse(a, xml, node)
+          when "bibliography" then bibliography_parse(a, xml, node)
+          else
+            if @term_def then term_def_subclause_parse(a, xml, node)
+            elsif @biblio then bibliography_parse(a, xml, node)
+            elsif node.attr("style") == "bibliography" && node.level == 1
+              bibliography_parse(a, xml, node)
+            elsif node.attr("style") == "appendix" && node.level == 1
+              annex_parse(a, xml, node)
+            elsif node.option? "appendix"
+              appendix_parse(a, xml, node)
+            else
+              clause_parse(a, xml, node)
+            end
+          end
+        end.join("\n")
+      end
+
     end
   end
 end
