@@ -54,10 +54,10 @@ module IsoDoc
         super
         revdate = get[:revdate]
         set(:revdate_monthyear, monthyr(revdate))
-        edition = isoxml.at(ns("//bibdata/edition")) and
+        edition = isoxml.at(ns("//version/edition")) and
           set(:edition, edition.text.to_i.localize.
-              to_rbnf_s("SpelloutRules", "spellout-ordinal")).
-        split(/(\W)/).map(&:capitalize).join
+              to_rbnf_s("SpelloutRules", "spellout-ordinal").
+              split(/(\W)/).map(&:capitalize).join)
       end
 
       MONTHS = {

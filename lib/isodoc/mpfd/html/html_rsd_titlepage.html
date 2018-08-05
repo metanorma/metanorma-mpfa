@@ -1,59 +1,58 @@
 <!--
-<div class="document-stage-band" id='{{ status | downcase | replace: " ", "-" }}-band'>
-    <p class="document-stage">{{ status }}</p>
-</div>
+  <div class="document-stage-band" id='{{ status | downcase | replace: " ", "-" }}-band'>
+  <p class="document-stage">{{ status }}</p>
+  </div>
 
-<div class="document-type-band" id='{{ doctype | downcase | replace: " ", "-" }}-band'>
-    <p class="document-type">Ribose {{ doctype }}</p>
-</div>
+  <div class="document-type-band" id='{{ doctype | downcase | replace: " ", "-" }}-band'>
+  <p class="document-type">Ribose {{ doctype }}</p>
+  </div>
 --> 
-    
 
-  <div id='toggle'> <span>&#x2022;</span> </div>
 
-  <header>
+<div id='toggle'> <span>&#x2022;</span> </div>
+
+<header>
 
   <div class="coverpage">
     <div class="wrapper-top">
 
-  <div class="coverpage-doc-identity">
+      <div class="coverpage-doc-identity">
         <img src="mpfa-logo-no-text@4x.png" width="50px"> 
+      </div>
 
-{% if docnumber %}
-    <div class="doc-number">
-      <span class="docnumber">{{ docnumber }}</span>
-      <span class="docyear">{{ docyear }} {{ draftinfo }}</span>
+      {% if docnumber %}
+      <div class="doc-number">
+        <span class="docnumber">{{ docnumber }}</span>
+        <span class="docyear">{{ docyear }} {{ draftinfo }}</span>
+      </div>
+      {% endif %}
+
+      <div class="coverpage-title">
+        <span class="title-1">{{ doctype }}</span>
+        <span class="title-3">{{ doctitle }}</span>
+        <!--<span class="title-second">{{ docsubtitle }}</span>-->
+      </div>
+
+      <div class="coverpage-footer">
+        <div class="coverpage-logo">
+          <span class="doc-edition">{{ edition }} Edition</span>
+          <span>{{ revdate_monthyear }} {{ draftinfo }}</span>
+
+        </div>
+
+        <div class="coverpage-location">
+          <span>Hong Kong</span>
+        </div>
+      </div>
+
+
+
+      <div class="info-section">
+        <div class="copyright">
+        </div>
+
+      </div>
     </div>
-{% endif %}
-
-    <div class="coverpage-title">
-      <span class="title-1">{{ doctype }}</span>
-      <span class="title-2">{{ doctitle }}</span>
-      <!--<span class="title-second">{{ docsubtitle }}</span>-->
-    </div>
   </div>
-
-  <div class="coverpage-logo">
-    <span class="doc-edition">{{ edition }} Edition</span>
-    <span>{{ revdate_monthyear }} {{ draftinfo }}</span>
-
-  </div>
-
-   <div class="coverpage-location">
-    <span>Hong Kong</span>
-  </div>
-  </div>
-
-    <div class="wrapper-top-bottom"></div>
-
-
-<div class="info-section">
-<div class="copyright">
-</div>
-
-<div class="rule"></div>
-</div>
-  </div>
-
 
 </header>
