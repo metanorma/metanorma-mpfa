@@ -203,6 +203,7 @@ module IsoDoc
               YAML.load_file(File.join(File.dirname(__FILE__), "i18n-zh-Hans.yaml"))
             end
         @labels = @labels.merge(y)
+        @clause_lbl = y["clause"]
       end
     end
   end
