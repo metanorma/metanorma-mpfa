@@ -1,4 +1,4 @@
-require_relative "./rsd/processor"
+require_relative "./mpfd/processor"
 
 module Metanorma
   module Mpfd
