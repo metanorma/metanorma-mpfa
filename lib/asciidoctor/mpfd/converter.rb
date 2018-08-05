@@ -7,7 +7,7 @@ require "isodoc/mpfd/word_convert"
 module Asciidoctor
   module Mpfd
 
-    # A {Converter} implementation that generates RSD output, and a document
+    # A {Converter} implementation that generates MPFD output, and a document
     # schema encapsulation of the document for validation
     #
     class Converter < ISO::Converter
@@ -83,7 +83,7 @@ module Asciidoctor
         result = textcleanup(result.flatten * "\n")
         ret1 = cleanup(Nokogiri::XML(result))
         validate(ret1)
-        ret1.root.add_namespace(nil, RSD_NAMESPACE)
+        ret1.root.add_namespace(nil, MPFD_NAMESPACE)
         ret1
       end
 
