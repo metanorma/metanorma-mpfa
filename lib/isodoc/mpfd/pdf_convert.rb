@@ -114,20 +114,6 @@ module IsoDoc
         File.join(File.dirname(__FILE__), loc)
       end
 
-      def cleanup(docxml)
-        super
-        term_cleanup(docxml)
-      end
-
-      def term_cleanup(docxml)
-        docxml.xpath("//p[@class = 'Terms']").each do |d|
-          h2 = d.at("./preceding-sibling::*[@class = 'TermNum'][1]")
-          h2.add_child("&nbsp;")
-          h2.add_child(d.remove)
-        end
-        docxml
-      end
-
       def info(isoxml, out)
         @meta.security isoxml, out
         super
@@ -179,20 +165,6 @@ module IsoDoc
         File.join(File.dirname(__FILE__), loc)
       end
 
-      def cleanup(docxml)
-        super
-        term_cleanup(docxml)
-      end
-
-      def term_cleanup(docxml)
-        docxml.xpath("//p[@class = 'Terms']").each do |d|
-          h2 = d.at("./preceding-sibling::*[@class = 'TermNum'][1]")
-          h2.add_child("&nbsp;")
-          h2.add_child(d.remove)
-        end
-        docxml
-      end
-
       def i18n_init(lang, script)
         super
         y = if lang == "en"
@@ -206,6 +178,44 @@ module IsoDoc
         @labels = @labels.merge(y)
         @clause_lbl = y["clause"]
       end
+
+      def terms_defs_title(f)
+        return f.at(ns("./title"))&.content
+      end 
+
+           def terms_defs(isoxml, out, num)
+      f = isoxml.at(ns(TERM_CLAUSE)) or return num
+      out.div **attr_code(id: f["id"]) do |div|
+        clause_name(nil, terms_defs_title(f), div, nil)
+        f.elements.each do |e|
+          parse(e, div) unless %w{title source}.include? e.name
+        end
+      end
+      num
+    end
+
+                def make_body3(body, docxml)
+       body.div **{ class: "main-section" } do |div3|
+         foreword docxml, div3
+         introduction docxml, div3
+         terms_defs docxml, div3, 0
+         middle docxml, div3
+         footnotes div3
+         comments div3
+       end
+     end
+
+     def middle(isoxml, out)
+       middle_title(out)
+       clause isoxml, out
+       annex isoxml, out
+       bibliography isoxml, out
+     end
+
+         def termdef_parse(node, out)
+      set_termdomain("")
+      node.children.each { |n| parse(n, out) }
+    end
 
     end
   end
