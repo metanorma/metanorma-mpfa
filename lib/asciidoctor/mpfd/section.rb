@@ -28,9 +28,6 @@ module Asciidoctor
             else
               clause_parse(a, xml, node)
             end
-          when "patent notice" then patent_notice_parse(xml, node)
-          when "scope" then scope_parse(a, xml, node)
-          when "normative references" then norm_ref_parse(a, xml, node)
           when "terms and definitions",
             "terms, definitions, symbols and abbreviated terms",
             "terms, definitions, symbols and abbreviations",
@@ -62,7 +59,28 @@ module Asciidoctor
 
       def term_def_title(_toplevel, node)
         return node.title
-    end
+      end
+
+      def make_preface(x, s)
+        if x.at("//foreword | //introduction | //terms")
+          preface = s.add_previous_sibling("<preface/>").first
+          foreword = x.at("//foreword")
+          preface.add_child foreword.remove if foreword
+          introduction = x.at("//introduction")
+          preface.add_child introduction.remove if introduction
+          terms = x.at("//terms")
+          preface.add_child terms.remove if terms
+        end
+        x.xpath("//clause[@preface]").each do |c|
+          c.delete("preface")
+          preface.add_child c.remove
+        end
+      end
+
+      def clause_parse(attrs, xml, node)
+        attrs[:preface] = true if node.attr("style") == "preface"
+        super
+      end
 
     end
   end

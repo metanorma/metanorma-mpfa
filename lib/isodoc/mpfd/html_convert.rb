@@ -185,6 +185,10 @@ module IsoDoc
         return f&.at(ns("./title"))&.content
       end
 
+          TERM_CLAUSE = "//preface/terms | "\
+      "//preface/clause[descendant::terms]".freeze
+
+
      def terms_defs(isoxml, out, num)
       f = isoxml.at(ns(TERM_CLAUSE)) or return num
       out.div **attr_code(id: f["id"]) do |div|
@@ -196,11 +200,27 @@ module IsoDoc
       num
      end
 
+     FRONT_CLAUSE = "//*[parent::preface]".freeze
+     #FRONT_CLAUSE = "//clause[parent::preface] | //terms[parent::preface]".freeze
+
+     def preface(isoxml, out)
+       isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
+         if c.name == "terms" then  terms_defs isoxml, out, 0
+         else
+           out.div **attr_code(id: c["id"]) do |s|
+             clause_name(get_anchors[c['id']][:label],
+                         c&.at(ns("./title"))&.content, s, nil)
+             c.elements.reject { |c1| c1.name == "title" }.each do |c1|
+               parse(c1, s)
+             end
+           end
+         end
+       end
+     end
+
      def make_body3(body, docxml)
        body.div **{ class: "main-section" } do |div3|
-         foreword docxml, div3
-         introduction docxml, div3
-         terms_defs docxml, div3, 0
+         preface docxml, div3
          middle docxml, div3
          footnotes div3
          comments div3
@@ -214,10 +234,25 @@ module IsoDoc
        bibliography isoxml, out
      end
 
-         def termdef_parse(node, out)
-      set_termdomain("")
-      node.children.each { |n| parse(n, out) }
-    end
+     def termdef_parse(node, out)
+       set_termdomain("")
+       node.children.each { |n| parse(n, out) }
+     end
+
+     def initial_anchor_names(d)
+       #preface_names(d.at(ns("//foreword")))
+       #preface_names(d.at(ns("//introduction")))
+       #preface_names(d.at(ns("//preface/terms | "\
+                             #"//preface/clause[descendant::terms]")))
+       d.xpath(ns(FRONT_CLAUSE)).each do |c|
+         preface_names(c) 
+         sequential_asset_names(c)
+       end
+       middle_section_asset_names(d)
+       clause_names(d, 0)
+       termnote_anchor_names(d)
+       termexample_anchor_names(d)
+     end
 
     end
   end

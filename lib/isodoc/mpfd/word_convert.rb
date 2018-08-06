@@ -198,6 +198,16 @@ module IsoDoc
       node.children.each { |n| parse(n, out) }
     end
 
+     def initial_anchor_names(d)
+       preface_names(d.at(ns("//foreword")))
+       preface_names(d.at(ns("//introduction")))
+       preface_names(d.at(ns("//sections/terms | "\
+                             "//sections/clause[descendant::terms]")))
+       middle_section_asset_names(d)
+       clause_names(d, 0)
+       termnote_anchor_names(d)
+       termexample_anchor_names(d)
+     end
 
     end
   end
