@@ -17,6 +17,10 @@ module Asciidoctor
         x.xpath("//*[@inline-header]").each do |h|
           h.delete("inline-header")
         end
+        x.xpath("//[@guidance]").each do |h|
+          c = h.previous_element || next
+          c.add_child h.remove
+        end
       end
 
       def section(node)
@@ -79,6 +83,7 @@ module Asciidoctor
 
       def clause_parse(attrs, xml, node)
         attrs[:preface] = true if node.attr("style") == "preface"
+        attrs[:guidance] = true if node.option? "guidance"
         super
       end
 
