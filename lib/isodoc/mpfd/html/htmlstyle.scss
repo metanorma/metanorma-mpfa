@@ -590,8 +590,11 @@ p.Biblio, p.NormRef {
 
 .example {
   background-color: #e1eef1;
-  padding: 1.2em;
   margin: 2em 0 1em 0;
+}
+
+table.example {
+  padding: 1.2em;
 }
 
 .example .example-title {
