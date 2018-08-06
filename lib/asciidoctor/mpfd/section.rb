@@ -18,6 +18,7 @@ module Asciidoctor
           h.delete("inline-header")
         end
         x.xpath("//[@guidance]").each do |h|
+          require "byebug"; byebug
           c = h.previous_element || next
           c.add_child h.remove
         end
@@ -83,7 +84,7 @@ module Asciidoctor
 
       def clause_parse(attrs, xml, node)
         attrs[:preface] = true if node.attr("style") == "preface"
-        attrs[:guidance] = true if node.option? "guidance"
+        attrs[:guidance] = true if node.role == "guidance"
         super
       end
 

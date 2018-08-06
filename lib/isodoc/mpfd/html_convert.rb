@@ -185,78 +185,132 @@ module IsoDoc
         return f&.at(ns("./title"))&.content
       end
 
-          TERM_CLAUSE = "//preface/terms | "\
-      "//preface/clause[descendant::terms]".freeze
+      TERM_CLAUSE = "//preface/terms | "\
+        "//preface/clause[descendant::terms]".freeze
 
+      def terms_defs(isoxml, out, num)
+        f = isoxml.at(ns(TERM_CLAUSE)) or return num
+        out.div **attr_code(id: f["id"]) do |div|
+          clause_name(nil, terms_defs_title(f), div, nil)
+          f.elements.each do |e|
+            parse(e, div) unless %w{title source}.include? e.name
+          end
+        end
+        num
+      end
 
-     def terms_defs(isoxml, out, num)
-      f = isoxml.at(ns(TERM_CLAUSE)) or return num
-      out.div **attr_code(id: f["id"]) do |div|
-        clause_name(nil, terms_defs_title(f), div, nil)
-        f.elements.each do |e|
-          parse(e, div) unless %w{title source}.include? e.name
+      FRONT_CLAUSE = "//*[parent::preface]".freeze
+
+      def preface(isoxml, out)
+        isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
+          if c.name == "terms" then  terms_defs isoxml, out, 0
+          else
+            out.div **attr_code(id: c["id"]) do |s|
+              clause_name(get_anchors[c['id']][:label],
+                          c&.at(ns("./title"))&.content, s, nil)
+              c.elements.reject { |c1| c1.name == "title" }.each do |c1|
+                parse(c1, s)
+              end
+            end
+          end
         end
       end
-      num
-     end
 
-     FRONT_CLAUSE = "//*[parent::preface]".freeze
-     #FRONT_CLAUSE = "//clause[parent::preface] | //terms[parent::preface]".freeze
+      def make_body3(body, docxml)
+        body.div **{ class: "main-section" } do |div3|
+          preface docxml, div3
+          middle docxml, div3
+          footnotes div3
+          comments div3
+        end
+      end
 
-     def preface(isoxml, out)
-       isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
-         if c.name == "terms" then  terms_defs isoxml, out, 0
-         else
-           out.div **attr_code(id: c["id"]) do |s|
-             clause_name(get_anchors[c['id']][:label],
-                         c&.at(ns("./title"))&.content, s, nil)
-             c.elements.reject { |c1| c1.name == "title" }.each do |c1|
-               parse(c1, s)
-             end
-           end
-         end
-       end
-     end
+      def middle(isoxml, out)
+        middle_title(out)
+        clause isoxml, out
+        annex isoxml, out
+        bibliography isoxml, out
+      end
 
-     def make_body3(body, docxml)
-       body.div **{ class: "main-section" } do |div3|
-         preface docxml, div3
-         middle docxml, div3
-         footnotes div3
-         comments div3
-       end
-     end
+      def termdef_parse(node, out)
+        set_termdomain("")
+        node.children.each { |n| parse(n, out) }
+      end
 
-     def middle(isoxml, out)
-       middle_title(out)
-       clause isoxml, out
-       annex isoxml, out
-       bibliography isoxml, out
-     end
+      def initial_anchor_names(d)
+        d.xpath(ns(FRONT_CLAUSE)).each do |c|
+          preface_names(c) 
+          sequential_asset_names(c)
+        end
+        middle_section_asset_names(d)
+        clause_names(d, 0)
+        termnote_anchor_names(d)
+        termexample_anchor_names(d)
+      end
 
-     def termdef_parse(node, out)
-       set_termdomain("")
-       node.children.each { |n| parse(n, out) }
-     end
+      def annex_name_lbl(clause, num)
+        l10n("<b>#{@annex_lbl} #{num}</b>")
+      end
 
-     def initial_anchor_names(d)
-       #preface_names(d.at(ns("//foreword")))
-       #preface_names(d.at(ns("//introduction")))
-       #preface_names(d.at(ns("//preface/terms | "\
-                             #"//preface/clause[descendant::terms]")))
-       d.xpath(ns(FRONT_CLAUSE)).each do |c|
-         preface_names(c) 
-         sequential_asset_names(c)
-       end
-       middle_section_asset_names(d)
-       clause_names(d, 0)
-       termnote_anchor_names(d)
-       termexample_anchor_names(d)
-     end
+      def section_naming(c, num, lvl, i)
+        if c["guidance"] then section_names1(c, "#{num}E", lvl + 1)
+        else
+          i+= 1
+          section_names1(c, "#{num}.#{i}", lvl + 1)
+        end
+        i
+      end
 
-     def annex_name_lbl(clause, num)
-       l10n("<b>#{@annex_lbl} #{num}</b>")
-     end
+      def section_names(clause, num, lvl)
+        return num if clause.nil?
+        num = num + 1
+        @anchors[clause["id"]] =
+          { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
+        i = 0
+        clause.xpath(ns("./clause | ./term  | ./terms | "\
+                        "./definitions")).each do |c|
+          i = section_naming(c, num, lvl, i)
+        end
+        num
+      end
+
+      def section_names1(clause, num, lvl)
+        @anchors[clause["id"]] = { label: num, level: lvl, 
+                                   xref: l10n("#{@clause_lbl} #{num}") }
+        i = 0
+        clause.xpath(ns("./clause | ./terms | ./term | ./definitions")).
+          each do |c|
+          i = section_naming(c, num, lvl, i)
+        end
+      end
+
+      def annex_naming(c, num, lvl, i)
+        if c["guidance"] then annex_names1(c, "#{num}E", lvl + 1)
+        else
+          i+= 1
+          annex_names1(c, "#{num}.#{i}", lvl + 1)
+        end
+        i
+      end
+
+      def annex_names(clause, num)
+        @anchors[clause["id"]] = { label: annex_name_lbl(clause, num),
+                                   xref: "#{@annex_lbl} #{num}", level: 1 }
+        i = 0
+        clause.xpath(ns("./clause")).each do |c|
+          i = annex_naming(c, num, 1, i)
+        end
+        hierarchical_asset_names(clause, num)
+      end
+
+      def annex_names1(clause, num, level)
+        @anchors[clause["id"]] = { label: num, xref: "#{@annex_lbl} #{num}",
+                                   level: level }
+        i = 0
+        clause.xpath(ns("./clause")).each do |c|
+          i = annex_naming(c, num, level, i)
+        end
+      end
 
     end
   end
