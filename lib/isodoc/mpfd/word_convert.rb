@@ -237,6 +237,9 @@ module IsoDoc
         node.children.each { |n| parse(n, out) }
       end
 
+     def annex_name_lbl(clause, num)
+       l10n("<b>#{@annex_lbl} #{num}</b>")
+     end
     end
   end
 end

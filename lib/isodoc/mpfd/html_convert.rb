@@ -254,6 +254,10 @@ module IsoDoc
        termexample_anchor_names(d)
      end
 
+     def annex_name_lbl(clause, num)
+       l10n("<b>#{@annex_lbl} #{num}</b>")
+     end
+
     end
   end
 end
