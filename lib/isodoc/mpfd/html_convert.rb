@@ -279,7 +279,7 @@ module IsoDoc
         @topnum = num unless clause["container"]
         @anchors[clause["id"]] = clause["container"] ?
           { label: nil, xref: clause.at(ns("./title"))&.text, level: 1 } :
-        { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
+          { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
         i = 0
         i = @topnum if clause.parent["container"] && !clause["container"]
         if clause.parent["container"] && !clause["container"]
@@ -337,34 +337,34 @@ module IsoDoc
         end
       end
 
-    def clause(isoxml, out)
-      isoxml.xpath(ns(MIDDLE_CLAUSE)).each do |c|
-        out.div **attr_code(id: c["id"]) do |s|
-          clause_name(get_anchors[c['id']][:label],
-                      c&.at(ns("./title"))&.content, s, class: c["container"] ? "containerhdr" : nil )
-          c.elements.reject { |c1| c1.name == "title" }.each do |c1|
-            parse(c1, s)
+      def clause(isoxml, out)
+        isoxml.xpath(ns(MIDDLE_CLAUSE)).each do |c|
+          out.div **attr_code(id: c["id"]) do |s|
+            clause_name(get_anchors[c['id']][:label],
+                        c&.at(ns("./title"))&.content, s, class: c["container"] ? "containerhdr" : nil )
+            c.elements.reject { |c1| c1.name == "title" }.each do |c1|
+              parse(c1, s)
+            end
           end
         end
       end
-    end
 
-        def clause_parse_title(node, div, c1, out)
-      if node["inline-header"] == "true"
-        inline_header_title(out, node, c1)
-      else
-        attrs = { class: node["container"] ? "containerhdr" : nil }
-        div.send "h#{get_anchors[node['id']][:level]}", **attr_code(attrs) do |h|
-          lbl = get_anchors[node['id']][:label]
-          h << "#{lbl}. " if lbl
-          c1&.children&.each { |c2| parse(c2, h) }
+      def clause_parse_title(node, div, c1, out)
+        if node["inline-header"] == "true"
+          inline_header_title(out, node, c1)
+        else
+          attrs = { class: node["container"] ? "containerhdr" : nil }
+          div.send "h#{get_anchors[node['id']][:level]}", **attr_code(attrs) do |h|
+            lbl = get_anchors[node['id']][:label]
+            h << "#{lbl}. " if lbl
+            c1&.children&.each { |c2| parse(c2, h) }
+          end
         end
       end
-    end
 
-            def ol_depth(node)
-              ol_style(node["type"])
-end
+      def ol_depth(node)
+        ol_style(node["type"])
+      end
     end
   end
 end

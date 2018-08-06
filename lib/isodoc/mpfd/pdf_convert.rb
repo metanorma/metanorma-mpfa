@@ -256,8 +256,11 @@ module IsoDoc
        l10n("<b>#{@annex_lbl} #{num}</b>")
      end
 
-           def section_naming(c, num, lvl, i)
+      def section_naming(c, num, lvl, i)
         if c["guidance"] then section_names1(c, "#{num}E", lvl + 1)
+        elsif c.parent["container"] then
+          i+= 1
+          section_names1(c, i, lvl)
         else
           i+= 1
           section_names1(c, "#{num}.#{i}", lvl + 1)
@@ -268,9 +271,14 @@ module IsoDoc
       def section_names(clause, num, lvl)
         return num if clause.nil?
         num = num + 1
-        @anchors[clause["id"]] =
+        @topnum = num unless clause["container"]
+        @anchors[clause["id"]] = clause["container"] ?
+          { label: nil, xref: clause.at(ns("./title"))&.text, level: 1 } :
           { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
         i = 0
+        i = @topnum if clause.parent["container"] && !clause["container"]
+        if clause.parent["container"] && !clause["container"]
+        end
         clause.xpath(ns("./clause | ./term  | ./terms | "\
                         "./definitions")).each do |c|
           i = section_naming(c, num, lvl, i)
@@ -279,13 +287,21 @@ module IsoDoc
       end
 
       def section_names1(clause, num, lvl)
-        @anchors[clause["id"]] = { label: num, level: lvl,
-                                   xref: l10n("#{@clause_lbl} #{num}") }
+        if clause.parent["container"] && !clause["container"]
+          newsect = true
+          if @topnum > 1
+            num = @topnum + 1
+          end
+        end
+        @anchors[clause["id"]] = clause["container"] ?
+          { label: nil, xref: clause.at(ns("./title")), level: clause.ancestors("clause[@container]").length + 1 } :
+          { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
         i = 0
         clause.xpath(ns("./clause | ./terms | ./term | ./definitions")).
           each do |c|
           i = section_naming(c, num, lvl, i)
         end
+        @topnum = num if newsect
       end
 
       def annex_naming(c, num, lvl, i)
@@ -314,6 +330,35 @@ module IsoDoc
         clause.xpath(ns("./clause")).each do |c|
           i = annex_naming(c, num, level, i)
         end
+      end
+
+      def clause(isoxml, out)
+        isoxml.xpath(ns(MIDDLE_CLAUSE)).each do |c|
+          out.div **attr_code(id: c["id"]) do |s|
+            clause_name(get_anchors[c['id']][:label],
+                        c&.at(ns("./title"))&.content, s, class: c["container"] ? "containerhdr" : nil )
+            c.elements.reject { |c1| c1.name == "title" }.each do |c1|
+              parse(c1, s)
+            end
+          end
+        end
+      end
+
+      def clause_parse_title(node, div, c1, out)
+        if node["inline-header"] == "true"
+          inline_header_title(out, node, c1)
+        else
+          attrs = { class: node["container"] ? "containerhdr" : nil }
+          div.send "h#{get_anchors[node['id']][:level]}", **attr_code(attrs) do |h|
+            lbl = get_anchors[node['id']][:label]
+            h << "#{lbl}. " if lbl
+            c1&.children&.each { |c2| parse(c2, h) }
+          end
+        end
+      end
+
+      def ol_depth(node)
+        ol_style(node["type"])
       end
 
     end
