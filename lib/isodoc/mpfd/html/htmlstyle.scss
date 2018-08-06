@@ -423,7 +423,7 @@ p.document-stage {
   h1 {
     color: #301907;
     font-size: 1.6em;
-    margin-top: 5em;
+    /* margin-top: 5em; */
     margin-bottom: 30px;
     margin-left: -75px;
     padding: 45px 15px 15px 50px;
@@ -434,6 +434,22 @@ p.document-stage {
   h1#content {
     margin-top: 0em;
     margin-left: -2em;
+  }
+
+  h1.containerhdr {
+    font-size: 2em;
+    font-weight: 400;
+    margin-top: 2em;
+    margin-bottom: 30px;
+    border-bottom: none;
+  }
+
+  h2.containerhdr {
+    font-size: 1.8em;
+    font-weight: 400;
+    margin-left: -75px;
+    font-style: italic;
+    padding: 45px 15px 15px 50px;
   }
 
   h2 {
@@ -776,8 +792,9 @@ h2 p {
 }
 
 .doc-number {
-  font-size: 0.5em;
+  font-size: 1.0em;
   font-family: $bodyfont;
+  margin-left: 7em;
 }
 
 .coverpage-title {

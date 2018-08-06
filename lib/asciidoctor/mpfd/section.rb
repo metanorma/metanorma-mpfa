@@ -85,6 +85,7 @@ module Asciidoctor
       def clause_parse(attrs, xml, node)
         attrs[:preface] = true if node.attr("style") == "preface"
         attrs[:guidance] = true if node.role == "guidance"
+        attrs[:container] = true if node.role == "container"
         super
       end
 
