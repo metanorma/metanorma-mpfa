@@ -256,6 +256,66 @@ module IsoDoc
        l10n("<b>#{@annex_lbl} #{num}</b>")
      end
 
+           def section_naming(c, num, lvl, i)
+        if c["guidance"] then section_names1(c, "#{num}E", lvl + 1)
+        else
+          i+= 1
+          section_names1(c, "#{num}.#{i}", lvl + 1)
+        end
+        i
+      end
+
+      def section_names(clause, num, lvl)
+        return num if clause.nil?
+        num = num + 1
+        @anchors[clause["id"]] =
+          { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
+        i = 0
+        clause.xpath(ns("./clause | ./term  | ./terms | "\
+                        "./definitions")).each do |c|
+          i = section_naming(c, num, lvl, i)
+        end
+        num
+      end
+
+      def section_names1(clause, num, lvl)
+        @anchors[clause["id"]] = { label: num, level: lvl,
+                                   xref: l10n("#{@clause_lbl} #{num}") }
+        i = 0
+        clause.xpath(ns("./clause | ./terms | ./term | ./definitions")).
+          each do |c|
+          i = section_naming(c, num, lvl, i)
+        end
+      end
+
+      def annex_naming(c, num, lvl, i)
+        if c["guidance"] then annex_names1(c, "#{num}E", lvl + 1)
+        else
+          i+= 1
+          annex_names1(c, "#{num}.#{i}", lvl + 1)
+        end
+        i
+      end
+
+      def annex_names(clause, num)
+        @anchors[clause["id"]] = { label: annex_name_lbl(clause, num),
+                                   xref: "#{@annex_lbl} #{num}", level: 1 }
+        i = 0
+        clause.xpath(ns("./clause")).each do |c|
+          i = annex_naming(c, num, 1, i)
+        end
+        hierarchical_asset_names(clause, num)
+      end
+
+      def annex_names1(clause, num, level)
+        @anchors[clause["id"]] = { label: num, xref: "#{@annex_lbl} #{num}",
+                                   level: level }
+        i = 0
+        clause.xpath(ns("./clause")).each do |c|
+          i = annex_naming(c, num, level, i)
+        end
+      end
+
     end
   end
 end
