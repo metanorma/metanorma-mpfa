@@ -155,59 +155,87 @@ module IsoDoc
 
       def terms_defs_title(f)
         return f&.at(ns("./title"))&.content
-      end 
+      end
 
-           def terms_defs(isoxml, out, num)
-      f = isoxml.at(ns(TERM_CLAUSE)) or return num
-      out.div **attr_code(id: f["id"]) do |div|
-        clause_name(nil, terms_defs_title(f), div, nil)
-        f.elements.each do |e|
-          parse(e, div) unless %w{title source}.include? e.name
+      TERM_CLAUSE = "//preface/terms | "\
+        "//preface/clause[descendant::terms]".freeze
+
+
+      def terms_defs(isoxml, out, num)
+        f = isoxml.at(ns(TERM_CLAUSE)) or return num
+        out.div **attr_code(id: f["id"]) do |div|
+          clause_name(nil, terms_defs_title(f), div, nil)
+          f.elements.each do |e|
+            parse(e, div) unless %w{title source}.include? e.name
+          end
+        end
+        num
+      end
+
+      FRONT_CLAUSE = "//*[parent::preface]".freeze
+      #FRONT_CLAUSE = "//clause[parent::preface] | //terms[parent::preface]".freeze
+
+      def preface(isoxml, out)
+        isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
+          if c.name == "terms" then  terms_defs isoxml, out, 0
+          else
+            out.div **attr_code(id: c["id"]) do |s|
+              clause_name(get_anchors[c['id']][:label],
+                          c&.at(ns("./title"))&.content, s, nil)
+              c.elements.reject { |c1| c1.name == "title" }.each do |c1|
+                parse(c1, s)
+              end
+            end
+          end
         end
       end
-      num
-    end
-         def middle(isoxml, out)
-      middle_title(out)
-      clause isoxml, out
-      annex isoxml, out
-      bibliography isoxml, out
-    end
 
-                  def make_body2(body, docxml)
-      body.div **{ class: "WordSection2" } do |div2|
-        info docxml, div2
-        foreword docxml, div2
-        introduction docxml, div2
-         terms_defs docxml, div2, 0
-        div2.p { |p| p << "&nbsp;" } # placeholder
+      def initial_anchor_names(d)
+        #preface_names(d.at(ns("//foreword")))
+        #preface_names(d.at(ns("//introduction")))
+        #preface_names(d.at(ns("//preface/terms | "\
+        #"//preface/clause[descendant::terms]")))
+        d.xpath(ns(FRONT_CLAUSE)).each do |c|
+          preface_names(c)
+          sequential_asset_names(c)
+        end
+        middle_section_asset_names(d)
+        clause_names(d, 0)
+        termnote_anchor_names(d)
+        termexample_anchor_names(d)
       end
-      section_break(body)
-    end
 
 
-     def middle(isoxml, out)
-       middle_title(out)
-       clause isoxml, out
-       annex isoxml, out
-       bibliography isoxml, out
-     end
+      def middle(isoxml, out)
+        middle_title(out)
+        clause isoxml, out
+        annex isoxml, out
+        bibliography isoxml, out
+      end
 
-         def termdef_parse(node, out)
-      set_termdomain("")
-      node.children.each { |n| parse(n, out) }
-    end
+      def make_body2(body, docxml)
+        body.div **{ class: "WordSection2" } do |div2|
+          info docxml, div2
+          foreword docxml, div2
+          introduction docxml, div2
+          terms_defs docxml, div2, 0
+          div2.p { |p| p << "&nbsp;" } # placeholder
+        end
+        section_break(body)
+      end
 
-     def initial_anchor_names(d)
-       preface_names(d.at(ns("//foreword")))
-       preface_names(d.at(ns("//introduction")))
-       preface_names(d.at(ns("//sections/terms | "\
-                             "//sections/clause[descendant::terms]")))
-       middle_section_asset_names(d)
-       clause_names(d, 0)
-       termnote_anchor_names(d)
-       termexample_anchor_names(d)
-     end
+
+      def middle(isoxml, out)
+        middle_title(out)
+        clause isoxml, out
+        annex isoxml, out
+        bibliography isoxml, out
+      end
+
+      def termdef_parse(node, out)
+        set_termdomain("")
+        node.children.each { |n| parse(n, out) }
+      end
 
     end
   end
