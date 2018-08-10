@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "asciidoctor/mpfd/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "metanorma-mpdf"
+  spec.name          = "metanorma-mpfd"
   spec.version       = Asciidoctor::Mpfd::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
