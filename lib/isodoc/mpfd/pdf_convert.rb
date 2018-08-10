@@ -256,52 +256,52 @@ module IsoDoc
        l10n("<b>#{@annex_lbl} #{num}</b>")
      end
 
-      def section_naming(c, num, lvl, i)
-        if c["guidance"] then section_names1(c, "#{num}E", lvl + 1)
-        elsif c.parent["container"] then
-          i+= 1
-          section_names1(c, i, lvl)
-        else
-          i+= 1
-          section_names1(c, "#{num}.#{i}", lvl + 1)
+           def clause_names(docxml, sect_num)
+        q = "//clause[parent::sections]"
+        @topnum = nil
+        lvl = 0
+        docxml.xpath(ns(q)).each do |c|
+          container_names(c, 0)
+          sect_num, lvl = sect_names(c, nil, sect_num, 0, lvl)
         end
-        i
       end
 
-      def section_names(clause, num, lvl)
-        return num if clause.nil?
-        num = num + 1
-        @topnum = num unless clause["container"]
-        @anchors[clause["id"]] = clause["container"] ?
-          { label: nil, xref: clause.at(ns("./title"))&.text, level: 1 } :
-          { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
-        i = 0
-        i = @topnum if clause.parent["container"] && !clause["container"]
-        if clause.parent["container"] && !clause["container"]
+      def container_names(clause, lvl)
+        if clause["container"]
+          @anchors[clause["id"]] =
+            { label: nil, xref: clause.at(ns("./title"))&.text, level: lvl+1 }
         end
         clause.xpath(ns("./clause | ./term  | ./terms | "\
                         "./definitions")).each do |c|
-          i = section_naming(c, num, lvl, i)
+          container_names(c, clause["container"] ? lvl+1 : lvl)
         end
-        num
       end
 
-      def section_names1(clause, num, lvl)
-        if clause.parent["container"] && !clause["container"]
-          newsect = true
-          if @topnum > 1
-            num = @topnum + 1
+      def sect_names(clause, num, i, lvl, prev_lvl)
+        return i if clause.nil?
+        curr = i
+        if clause["container"]
+          retlvl = lvl+1
+        else
+          retlvl = lvl
+          i+=1
+          curr = i
+          name = num.nil? ? i.to_s : "#{num}.#{i}"
+          @anchors[clause["id"]] = { label: name, xref: l10n("#{@clause_lbl} #{name}"), level: lvl+1 }
+        end
+        prev = lvl
+        j = 0
+        clause.xpath(ns("./clause | ./term  | ./terms | "\
+                        "./definitions")).each do |c|
+          if clause["container"]
+            i, lvl = sect_names(c, num, i, lvl, lvl)
+          else
+            j, prev = sect_names(c, name, j, lvl+1, prev)
           end
         end
-        @anchors[clause["id"]] = clause["container"] ?
-          { label: nil, xref: clause.at(ns("./title")), level: clause.ancestors("clause[@container]").length + 1 } :
-          { label: num.to_s, xref: l10n("#{@clause_lbl} #{num}"), level: lvl }
-        i = 0
-        clause.xpath(ns("./clause | ./terms | ./term | ./definitions")).
-          each do |c|
-          i = section_naming(c, num, lvl, i)
-        end
-        @topnum = num if newsect
+        i = j if j >0
+        i = curr if lvl < prev
+        [i, prev]
       end
 
       def annex_naming(c, num, lvl, i)
