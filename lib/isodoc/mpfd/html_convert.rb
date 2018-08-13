@@ -1,5 +1,6 @@
 require "isodoc"
 require_relative "metadata"
+require  "fileutils"
 
 module IsoDoc
   module Mpfd
@@ -11,8 +12,8 @@ module IsoDoc
       def initialize(options)
         @libdir = File.dirname(__FILE__)
         super
-        system "cp #{html_doc_path('logo.jpg')} logo.jpg"
-        system "cp #{html_doc_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
+        FileUtils.cp html_doc_path("logo.jpg"), "logo.jpg"
+        FileUtils.cp html_doc_path('mpfa-logo-no-text@4x.png'), "mpfa-logo-no-text@4x.png"
         @files_to_delete << "logo.jpg"
         @files_to_delete << "mpfa-logo-no-text@4x.png"
       end
