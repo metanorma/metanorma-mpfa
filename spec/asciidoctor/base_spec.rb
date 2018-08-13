@@ -1,8 +1,8 @@
 require "spec_helper"
 
-RSpec.describe Asciidoctor::Rsd do
+RSpec.describe Asciidoctor::Mpfd do
   it "has a version number" do
-    expect(Asciidoctor::Rsd::VERSION).not_to be nil
+    expect(Asciidoctor::Mpfd::VERSION).not_to be nil
   end
 
   it "generates output for the Rice document" do
@@ -23,7 +23,7 @@ RSpec.describe Asciidoctor::Rsd do
 </rsd-standard>
     OUTPUT
 
-    expect(Asciidoctor.convert(input, backend: :rsd, header_footer: true)).to be_equivalent_to output
+    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
   end
 
   it "converts a blank document" do
@@ -41,7 +41,7 @@ RSpec.describe Asciidoctor::Rsd do
     OUTPUT
 
     system "rm -f test.html"
-    expect(Asciidoctor.convert(input, backend: :rsd, header_footer: true)).to be_equivalent_to output
+    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
   end
 
@@ -117,7 +117,7 @@ RSpec.describe Asciidoctor::Rsd do
 </rsd-standard>
     OUTPUT
 
-    expect(Asciidoctor.convert(input, backend: :rsd, header_footer: true)).to be_equivalent_to output
+    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
   end
 
   it "processes figures" do
@@ -146,7 +146,7 @@ RSpec.describe Asciidoctor::Rsd do
        </rsd-standard>
     OUTPUT
 
-    expect(strip_guid(Asciidoctor.convert(input, backend: :rsd, header_footer: true))).to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
   end
 
   it "strips inline header" do
@@ -169,7 +169,7 @@ RSpec.describe Asciidoctor::Rsd do
        </rsd-standard>
     OUTPUT
 
-    expect(strip_guid(Asciidoctor.convert(input, backend: :rsd, header_footer: true))).to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
   end
 
   it "uses default fonts" do
@@ -181,7 +181,7 @@ RSpec.describe Asciidoctor::Rsd do
     INPUT
 
     system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :rsd, header_footer: true)
+    Asciidoctor.convert(input, backend: :mpfd, header_footer: true)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\.Sourcecode[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
@@ -199,7 +199,7 @@ RSpec.describe Asciidoctor::Rsd do
     INPUT
 
     system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :rsd, header_footer: true)
+    Asciidoctor.convert(input, backend: :mpfd, header_footer: true)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\.Sourcecode[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
@@ -220,7 +220,7 @@ RSpec.describe Asciidoctor::Rsd do
     INPUT
 
     system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :rsd, header_footer: true)
+    Asciidoctor.convert(input, backend: :mpfd, header_footer: true)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\.Sourcecode[^{]+\{[^{]+font-family: Andale Mono;]m)
@@ -264,7 +264,7 @@ RSpec.describe Asciidoctor::Rsd do
        </rsd-standard>
     OUTPUT
 
-    expect(strip_guid(Asciidoctor.convert(input, backend: :rsd, header_footer: true))).to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
   end
 
 

@@ -5,16 +5,16 @@ end
 
 require "bundler/setup"
 require "asciidoctor"
-require "asciidoctor-rsd"
-require "asciidoctor/rsd"
-require "isodoc/rsd/html_convert"
-require "isodoc/rsd/word_convert"
+require "metanorma-mpfd"
+require "asciidoctor/mpfd"
+require "isodoc/mpfd/html_convert"
+require "isodoc/mpfd/word_convert"
 require "asciidoctor/iso/converter"
 require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
 require "metanorma"
-require "metanorma/rsd"
+require "metanorma/mpfd"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

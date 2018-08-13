@@ -1,9 +1,9 @@
 require "spec_helper"
 
-RSpec.describe IsoDoc::Rsd do
+RSpec.describe IsoDoc::Mpfd do
 
   it "processes default metadata" do
-    csdc = IsoDoc::Rsd::HtmlConvert.new({})
+    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
     input = <<~"INPUT"
 <rsd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
@@ -71,7 +71,7 @@ RSpec.describe IsoDoc::Rsd do
       {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>"(cd)", :doctitle=>nil, :doctype=>"Standard", :docyear=>nil, :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :editorialgroup=>[], :ics=>"XXX", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :status=>"Committee Draft", :tc=>"XXXX", :updateddate=>"XXX", :wg=>"XXXX"}
     OUTPUT
 
-    csdc = IsoDoc::Rsd::HtmlConvert.new({})
+    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
     expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
   end
@@ -94,7 +94,7 @@ RSpec.describe IsoDoc::Rsd do
       {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>"(d)", :doctitle=>nil, :doctype=>"Standard", :docyear=>nil, :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :editorialgroup=>[], :ics=>"XXX", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :status=>"Draft Standard", :tc=>"XXXX", :updateddate=>"XXX", :wg=>"XXXX"}
     OUTPUT
 
-    csdc = IsoDoc::Rsd::HtmlConvert.new({})
+    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
     expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
   end
@@ -117,7 +117,7 @@ RSpec.describe IsoDoc::Rsd do
       {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>nil, :doctitle=>nil, :doctype=>"Standard", :docyear=>nil, :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :editorialgroup=>[], :ics=>"XXX", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :status=>"Standard", :tc=>"XXXX", :updateddate=>"XXX", :wg=>"XXXX"}
     OUTPUT
 
-    csdc = IsoDoc::Rsd::HtmlConvert.new({})
+    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
     expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
   end
@@ -144,7 +144,7 @@ RSpec.describe IsoDoc::Rsd do
     OUTPUT
 
     expect(
-      IsoDoc::Rsd::HtmlConvert.new({}).
+      IsoDoc::Mpfd::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -173,7 +173,7 @@ RSpec.describe IsoDoc::Rsd do
     OUTPUT
 
     expect(
-      IsoDoc::Rsd::HtmlConvert.new({}).
+      IsoDoc::Mpfd::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -206,7 +206,7 @@ RSpec.describe IsoDoc::Rsd do
     OUTPUT
 
     expect(
-      IsoDoc::Rsd::HtmlConvert.new({}).
+      IsoDoc::Mpfd::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -258,7 +258,7 @@ RSpec.describe IsoDoc::Rsd do
     OUTPUT
 
     expect(
-      IsoDoc::Rsd::HtmlConvert.new({}).
+      IsoDoc::Mpfd::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -285,7 +285,7 @@ RSpec.describe IsoDoc::Rsd do
     OUTPUT
 
     expect(
-      IsoDoc::Rsd::HtmlConvert.new({}).
+      IsoDoc::Mpfd::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -438,7 +438,7 @@ RSpec.describe IsoDoc::Rsd do
     OUTPUT
 
     expect(
-      IsoDoc::Rsd::HtmlConvert.new({}).convert("test", input, true).
+      IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
     ).to be_equivalent_to output
@@ -459,7 +459,7 @@ RSpec.describe IsoDoc::Rsd do
 </rsd-standard>
     OUTPUT
 
-    expect(Asciidoctor.convert(input, backend: :rsd, header_footer: true)).to be_equivalent_to output
+    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r{jquery\.min\.js})
     expect(html).to match(%r{Overpass})

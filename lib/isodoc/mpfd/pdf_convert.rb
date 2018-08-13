@@ -6,31 +6,30 @@ module IsoDoc
     # A {Converter} implementation that generates PDF HTML output, and a
     # document schema encapsulation of the document for validation
     class PdfConvert < IsoDoc::PdfConvert
-      def rsd_html_path(file)
-        File.join(File.dirname(__FILE__), File.join("html", file))
-      end
-
       def initialize(options)
+        @libdir = File.dirname(__FILE__)
         super
-        @htmlstylesheet = generate_css(rsd_html_path("htmlstyle.scss"), true, default_fonts(options))
-        @htmlcoverpage = rsd_html_path("html_rsd_titlepage.html")
-        @htmlintropage = rsd_html_path("html_rsd_intro.html")
-        @scripts = rsd_html_path("scripts.html")
-        system "cp #{rsd_html_path('logo.jpg')} logo.jpg"
-        system "cp #{rsd_html_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
+        system "cp #{html_doc_path('logo.jpg')} logo.jpg"
+        system "cp #{html_doc_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
         @files_to_delete << "logo.jpg"
         @files_to_delete << "mpfa-logo-no-text@4x.png"
       end
 
       def default_fonts(options)
-        b = options[:bodyfont] ||
-          (options[:script] == "Hans" ? '"SimSun",serif' :
-           '"Overpass",sans-serif')
-        h = options[:headerfont] ||
-          (options[:script] == "Hans" ? '"SimHei",sans-serif' :
-           '"Overpass",sans-serif')
-        m = options[:monospacefont] || '"Space Mono",monospace'
-        "$bodyfont: #{b};\n$headerfont: #{h};\n$monospacefont: #{m};\n"
+        {
+          bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Titillium Web",sans-serif'),
+          headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Titillium Web",sans-serif'),
+          monospacefont: '"Space Mono",monospace'
+        }
+      end
+
+      def default_file_locations(_options)
+        {
+          htmlstylesheet: html_doc_path("htmlstyle.scss"),
+          htmlcoverpage: html_doc_path("html_rsd_titlepage.html"),
+          htmlintropage: html_doc_path("html_rsd_intro.html"),
+          scripts: html_doc_path("scripts.html"),
+        }
       end
 
       def metadata_init(lang, script, labels)
@@ -179,84 +178,84 @@ module IsoDoc
         @clause_lbl = y["clause"]
       end
 
-            def terms_defs_title(f)
+      def terms_defs_title(f)
         return f&.at(ns("./title"))&.content
       end
 
-          TERM_CLAUSE = "//preface/terms | "\
-      "//preface/clause[descendant::terms]".freeze
+      TERM_CLAUSE = "//preface/terms | "\
+        "//preface/clause[descendant::terms]".freeze
 
 
-     def terms_defs(isoxml, out, num)
-      f = isoxml.at(ns(TERM_CLAUSE)) or return num
-      out.div **attr_code(id: f["id"]) do |div|
-        clause_name(nil, terms_defs_title(f), div, nil)
-        f.elements.each do |e|
-          parse(e, div) unless %w{title source}.include? e.name
+      def terms_defs(isoxml, out, num)
+        f = isoxml.at(ns(TERM_CLAUSE)) or return num
+        out.div **attr_code(id: f["id"]) do |div|
+          clause_name(nil, terms_defs_title(f), div, nil)
+          f.elements.each do |e|
+            parse(e, div) unless %w{title source}.include? e.name
+          end
+        end
+        num
+      end
+
+      FRONT_CLAUSE = "//*[parent::preface]".freeze
+      #FRONT_CLAUSE = "//clause[parent::preface] | //terms[parent::preface]".freeze
+
+      def preface(isoxml, out)
+        isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
+          if c.name == "terms" then  terms_defs isoxml, out, 0
+          else
+            out.div **attr_code(id: c["id"]) do |s|
+              clause_name(get_anchors[c['id']][:label],
+                          c&.at(ns("./title"))&.content, s, nil)
+              c.elements.reject { |c1| c1.name == "title" }.each do |c1|
+                parse(c1, s)
+              end
+            end
+          end
         end
       end
-      num
-     end
 
-     FRONT_CLAUSE = "//*[parent::preface]".freeze
-     #FRONT_CLAUSE = "//clause[parent::preface] | //terms[parent::preface]".freeze
+      def make_body3(body, docxml)
+        body.div **{ class: "main-section" } do |div3|
+          preface docxml, div3
+          middle docxml, div3
+          footnotes div3
+          comments div3
+        end
+      end
 
-     def preface(isoxml, out)
-       isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
-         if c.name == "terms" then  terms_defs isoxml, out, 0
-         else
-           out.div **attr_code(id: c["id"]) do |s|
-             clause_name(get_anchors[c['id']][:label],
-                         c&.at(ns("./title"))&.content, s, nil)
-             c.elements.reject { |c1| c1.name == "title" }.each do |c1|
-               parse(c1, s)
-             end
-           end
-         end
-       end
-     end
+      def middle(isoxml, out)
+        middle_title(out)
+        clause isoxml, out
+        annex isoxml, out
+        bibliography isoxml, out
+      end
 
-     def make_body3(body, docxml)
-       body.div **{ class: "main-section" } do |div3|
-         preface docxml, div3
-         middle docxml, div3
-         footnotes div3
-         comments div3
-       end
-     end
+      def termdef_parse(node, out)
+        set_termdomain("")
+        node.children.each { |n| parse(n, out) }
+      end
 
-     def middle(isoxml, out)
-       middle_title(out)
-       clause isoxml, out
-       annex isoxml, out
-       bibliography isoxml, out
-     end
+      def initial_anchor_names(d)
+        #preface_names(d.at(ns("//foreword")))
+        #preface_names(d.at(ns("//introduction")))
+        #preface_names(d.at(ns("//preface/terms | "\
+        #"//preface/clause[descendant::terms]")))
+        d.xpath(ns(FRONT_CLAUSE)).each do |c|
+          preface_names(c)
+          sequential_asset_names(c)
+        end
+        middle_section_asset_names(d)
+        clause_names(d, 0)
+        termnote_anchor_names(d)
+        termexample_anchor_names(d)
+      end
 
-     def termdef_parse(node, out)
-       set_termdomain("")
-       node.children.each { |n| parse(n, out) }
-     end
+      def annex_name_lbl(clause, num)
+        l10n("<b>#{@annex_lbl} #{num}</b>")
+      end
 
-     def initial_anchor_names(d)
-       #preface_names(d.at(ns("//foreword")))
-       #preface_names(d.at(ns("//introduction")))
-       #preface_names(d.at(ns("//preface/terms | "\
-                             #"//preface/clause[descendant::terms]")))
-       d.xpath(ns(FRONT_CLAUSE)).each do |c|
-         preface_names(c)
-         sequential_asset_names(c)
-       end
-       middle_section_asset_names(d)
-       clause_names(d, 0)
-       termnote_anchor_names(d)
-       termexample_anchor_names(d)
-     end
-
-     def annex_name_lbl(clause, num)
-       l10n("<b>#{@annex_lbl} #{num}</b>")
-     end
-
-           def clause_names(docxml, sect_num)
+      def clause_names(docxml, sect_num)
         q = "//clause[parent::sections]"
         @topnum = nil
         lvl = 0

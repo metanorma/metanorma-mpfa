@@ -1,10 +1,10 @@
 require "spec_helper"
 require "metanorma"
 
-RSpec.describe Metanorma::Rsd::Processor do
+RSpec.describe Metanorma::Mpfd::Processor do
 
   registry = Metanorma::Registry.instance
-  registry.register(Metanorma::Rsd::Processor)
+  registry.register(Metanorma::Mpfd::Processor)
 
   let(:processor) {
     registry.find_processor(:rsd)
@@ -21,7 +21,7 @@ RSpec.describe Metanorma::Rsd::Processor do
   end
 
   it "registers version against metanorma" do
-    expect(processor.version.to_s).to match(%r{^Asciidoctor::Rsd })
+    expect(processor.version.to_s).to match(%r{^Asciidoctor::Mpfd })
   end
 
   it "generates IsoDoc XML from a blank document" do

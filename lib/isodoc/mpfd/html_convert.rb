@@ -8,31 +8,30 @@ module IsoDoc
     # schema encapsulation of the document for validation
     #
     class HtmlConvert < IsoDoc::HtmlConvert
-      def rsd_html_path(file)
-        File.join(File.dirname(__FILE__), File.join("html", file))
-      end
-
       def initialize(options)
+        @libdir = File.dirname(__FILE__)
         super
-        @htmlstylesheet = generate_css(rsd_html_path("htmlstyle.scss"), true, default_fonts(options))
-        @htmlcoverpage = rsd_html_path("html_rsd_titlepage.html")
-        @htmlintropage = rsd_html_path("html_rsd_intro.html")
-        @scripts = rsd_html_path("scripts.html")
-        system "cp #{rsd_html_path('logo.jpg')} logo.jpg"
-        system "cp #{rsd_html_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
+        system "cp #{html_doc_path('logo.jpg')} logo.jpg"
+        system "cp #{html_doc_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
         @files_to_delete << "logo.jpg"
         @files_to_delete << "mpfa-logo-no-text@4x.png"
       end
 
       def default_fonts(options)
-        b = options[:bodyfont] ||
-          (options[:script] == "Hans" ? '"SimSun",serif' :
-           '"Titillium Web",sans-serif')
-        h = options[:headerfont] ||
-          (options[:script] == "Hans" ? '"SimHei",sans-serif' :
-           '"Titillium Web",sans-serif')
-        m = options[:monospacefont] || '"Space Mono",monospace'
-        "$bodyfont: #{b};\n$headerfont: #{h};\n$monospacefont: #{m};\n"
+        {
+          bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Titillium Web",sans-serif'),
+          headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Titillium Web",sans-serif'),
+          monospacefont: '"Space Mono",monospace'
+        }
+      end
+
+      def default_file_locations(_options)
+        {
+          htmlstylesheet: html_doc_path("htmlstyle.scss"),
+          htmlcoverpage: html_doc_path("html_rsd_titlepage.html"),
+          htmlintropage: html_doc_path("html_rsd_intro.html"),
+          scripts: html_doc_path("scripts.html"),
+        }
       end
 
       def metadata_init(lang, script, labels)

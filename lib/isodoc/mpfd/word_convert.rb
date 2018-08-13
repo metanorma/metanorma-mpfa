@@ -5,21 +5,14 @@ module IsoDoc
   module Mpfd
     # A {Converter} implementation that generates Word output, and a document
     # schema encapsulation of the document for validation
-
     class WordConvert < IsoDoc::WordConvert
       def rsd_html_path(file)
         File.join(File.dirname(__FILE__), File.join("html", file))
       end
 
       def initialize(options)
+        @libdir = File.dirname(__FILE__)
         super
-        @wordstylesheet = generate_css(rsd_html_path("wordstyle.scss"), false, default_fonts(options))
-        @standardstylesheet = generate_css(rsd_html_path("rsd.scss"), false, default_fonts(options))
-        @header = rsd_html_path("header.html")
-        @wordcoverpage = rsd_html_path("word_rsd_titlepage.html")
-        @wordintropage = rsd_html_path("word_rsd_intro.html")
-        @ulstyle = "l3"
-        @olstyle = "l2"
         system "cp #{rsd_html_path('logo.jpg')} logo.jpg"
         system "cp #{rsd_html_path('mpfa-logo-no-text@4x.png')} mpfa-logo-no-text@4x.png"
         @files_to_delete << "logo.jpg"
@@ -27,14 +20,27 @@ module IsoDoc
       end
 
       def default_fonts(options)
-        b = options[:bodyfont] ||
-          (options[:script] == "Hans" ? '"SimSun",serif' :
-           '"Arial",sans-serif')
-        h = options[:headerfont] ||
-          (options[:script] == "Hans" ? '"SimHei",sans-serif' :
-           '"Arial",sans-serif')
-        m = options[:monospacefont] || '"Courier New",monospace'
-        "$bodyfont: #{b};\n$headerfont: #{h};\n$monospacefont: #{m};\n"
+        {
+          bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Arial",sans-serif'),
+          headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Arial",sans-serif'),
+          monospacefont: '"Courier New",monospace'
+        }
+      end
+
+      def default_file_locations(options)
+        {
+          htmlstylesheet: html_doc_path("htmlstyle.scss"),
+          htmlcoverpage: html_doc_path("html_rsd_titlepage.html"),
+          htmlintropage: html_doc_path("html_rsd_intro.html"),
+          scripts: html_doc_path("scripts.html"),
+          wordstylesheet: html_doc_path("wordstyle.scss"),
+          standardstylesheet: html_doc_path("rsd.scss"),
+          header: html_doc_path("header.html"),
+          wordcoverpage: html_doc_path("word_rsd_titlepage.html"),
+          wordintropage: html_doc_path("word_rsd_intro.html"),
+          ulstyle: "l3",
+          olstyle: "l2",
+        }
       end
 
       def metadata_init(lang, script, labels)
@@ -233,11 +239,11 @@ module IsoDoc
         node.children.each { |n| parse(n, out) }
       end
 
-     def annex_name_lbl(clause, num)
-       l10n("<b>#{@annex_lbl} #{num}</b>")
-     end
+      def annex_name_lbl(clause, num)
+        l10n("<b>#{@annex_lbl} #{num}</b>")
+      end
 
-           def clause_names(docxml, sect_num)
+      def clause_names(docxml, sect_num)
         q = "//clause[parent::sections]"
         @topnum = nil
         lvl = 0
