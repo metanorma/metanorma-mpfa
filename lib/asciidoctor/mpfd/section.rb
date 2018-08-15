@@ -1,6 +1,6 @@
 require "asciidoctor"
 require "asciidoctor/mpfd"
-require "asciidoctor/iso/converter"
+require "asciidoctor/standoc/converter"
 require "isodoc/mpfd/html_convert"
 require "isodoc/mpfd/word_convert"
 
@@ -10,7 +10,7 @@ module Asciidoctor
     # A {Converter} implementation that generates MPFD output, and a document
     # schema encapsulation of the document for validation
     #
-    class Converter < ISO::Converter
+    class Converter < Standoc::Converter
 
       def sections_cleanup(x)
         super
@@ -25,7 +25,7 @@ module Asciidoctor
       end
 
       def section(node)
-        a = { id: Asciidoctor::ISO::Utils::anchor_or_uuid(node) }
+        a = { id: Asciidoctor::Standoc::Utils::anchor_or_uuid(node) }
         noko do |xml|
           case sectiontype(node)
           when "introduction" then

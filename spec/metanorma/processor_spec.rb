@@ -7,7 +7,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
   registry.register(Metanorma::Mpfd::Processor)
 
   let(:processor) {
-    registry.find_processor(:rsd)
+    registry.find_processor(:mpfd)
   }
 
   it "registers against metanorma" do
