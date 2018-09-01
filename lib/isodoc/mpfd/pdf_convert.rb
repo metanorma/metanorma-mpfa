@@ -29,7 +29,7 @@ module IsoDoc
           htmlstylesheet: html_doc_path("htmlstyle.scss"),
           htmlcoverpage: html_doc_path("html_rsd_titlepage.html"),
           htmlintropage: html_doc_path("html_rsd_intro.html"),
-          scripts: html_doc_path("scripts.pdf.html"),
+          scripts_pdf: html_doc_path("scripts.pdf.html"),
         }
       end
 
