@@ -43,7 +43,8 @@ module Asciidoctor
             @term_def = true
             term_def_parse(a, xml, node, true)
             @term_def = false
-          when "symbols and abbreviated terms"
+          when "symbols and abbreviated terms",
+            "symbols", "abbreviated terms", "abbrevations"
             symbols_parse(a, xml, node)
           when "bibliography" then bibliography_parse(a, xml, node)
           else
