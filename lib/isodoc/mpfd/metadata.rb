@@ -11,7 +11,7 @@ module IsoDoc
       end
 
       def title(isoxml, _out)
-        main = isoxml&.at(ns("//title[@language='en']"))&.text
+        main = isoxml&.at(ns("//bibdata/title[@language='en']"))&.text
         set(:doctitle, main)
       end
 
@@ -20,7 +20,7 @@ module IsoDoc
       end
 
       def author(isoxml, _out)
-        tc = isoxml.at(ns("//editorialgroup/committee"))
+        tc = isoxml.at(ns("//bibdata/editorialgroup/committee"))
         set(:tc, tc.text) if tc
       end
 
