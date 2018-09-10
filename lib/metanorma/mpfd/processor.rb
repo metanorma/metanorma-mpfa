@@ -19,7 +19,7 @@ module Metanorma
       end
 
       def version
-        "Asciidoctor::Mpfd #{Asciidoctor::Mpfd::VERSION}"
+        "Metanorma::Mpfd #{Metanorma::Mpfd::VERSION}"
       end
 
       def input_to_isodoc(file)

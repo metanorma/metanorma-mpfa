@@ -1,5 +1,3 @@
-require "asciidoctor/mpfd/version"
-
 module Asciidoctor
   module Mpfd
 
