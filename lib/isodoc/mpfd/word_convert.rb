@@ -339,7 +339,7 @@ module IsoDoc
           attrs = { class: node["container"] ? "containerhdr" : nil }
           div.send "h#{get_anchors[node['id']][:level]}", **attr_code(attrs) do |h|
             lbl = get_anchors[node['id']][:label]
-            h << "#{lbl}. " if lbl
+            h << "#{lbl}. " if lbl && !@suppressheadingnumbers
             c1&.children&.each { |c2| parse(c2, h) }
           end
         end
