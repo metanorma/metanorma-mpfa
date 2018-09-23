@@ -4,6 +4,7 @@ require "asciidoctor/standoc/converter"
 require "isodoc/mpfd/html_convert"
 require "isodoc/mpfd/word_convert"
 require_relative "section"
+require "fileutils"
 
 module Asciidoctor
   module Mpfd
@@ -124,7 +125,7 @@ module Asciidoctor
           word_converter(node).convert filename unless node.attr("nodoc")
           pdf_convert(filename.sub(/\.xml$/, "")) unless node.attr("nodoc")
         end
-        @files_to_delete.each { |f| system "rm #{f}" }
+        @files_to_delete.each { |f| FileUtils.rm f }
         ret
       end
 
