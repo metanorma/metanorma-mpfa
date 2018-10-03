@@ -296,20 +296,20 @@ strong {
 }
 
 p.document-type, p.document-stage {
-    color: white;
-    text-transform: uppercase;
-    font-size: 0.9em;
-    font-weight: 400;
-    letter-spacing: 0.05em;
-    margin:0;
-    margin-left: 6px;
-    writing-mode:tb-rl;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin:0;
+  margin-left: 6px;
+  writing-mode:tb-rl;
 	-webkit-transform:rotate(180deg);
 	-moz-transform:rotate(180deg);
 	-o-transform: rotate(180deg);
 	white-space:nowrap;
 	display:block;
-    bottom:0;
+  bottom:0;
 }
 
 p.document-type {
@@ -336,7 +336,7 @@ p.document-stage {
 }
 
 
-#standard-band,  #published-band {
+#standard-band, #published-band {
     background-color: #9ABD48;
 }
 
@@ -344,11 +344,11 @@ p.document-stage {
     border-bottom: solid 3px #9ABD48;
 }
 
-#governance, #policy-and-procedures {
+#governance, #policy-and-procedures, #circular {
     border-bottom: solid 3px #750697;
 }
 
-#governance-band, #policy-and-procedures-band {
+#governance-band, #policy-and-procedures-band, #circular-band {
     background-color: #750697;
 }
 
@@ -802,14 +802,13 @@ h2 p {
 
 .coverpage-title {
   font-family: $headerfont;
-  font-size: 2.2em;
   line-height: 1.5em;
   font-weight: 100;
-  padding: 0 0.5em;
+  padding: 1em;
   /*text-transform: uppercase;*/
-  margin-left: 1.5em;
+  margin-left: 3.5em;
   margin-bottom: 3em;
-  border-left: 13px solid white;
+  border-left: 0.5em solid white;
 }
 
 .WordSection11 {
@@ -841,7 +840,11 @@ padding: 0 2em 0 5em; }
 
 .coverpage-footer {
   text-align: left;
-  margin-left: 7em;
+  margin-left: 5em;
+}
+
+.coverpage-logo span {
+  display: block;
 }
 
 .coverpage-logo span.doc-edition {
@@ -897,6 +900,8 @@ padding: 0 2em 0 5em; }
 
 .coverpage-title span.title-1 {
   font-weight: 900;
+  font-size: 1.8em;
+  line-height: 2em;
 }
 
 .coverpage-title span.title-2 {
@@ -905,8 +910,9 @@ padding: 0 2em 0 5em; }
 }
 
 .coverpage-title span.title-3 {
-  font-size: 1.3em;
-  padding-top: 8px;
+  padding-top: 1em;
+  font-size: 2.2em;
+  line-height: 1.2em;
 }
 
 .coverpage-stage-block {
@@ -1007,12 +1013,17 @@ a.anchorjs-link:hover {
     filter: invert(100%);
   }
 
+  .coverpage-title {
+    border-left: 0.5em solid #888;
+  }
+
   nav {
     page-break-after: always;
   }
 
   body {
-        background-color: white;
+    background-color: white;
+    color: #000;
   }
 
   h1, h2, h3, h4 {
@@ -1033,6 +1044,7 @@ a.anchorjs-link:hover {
   }
 
   .wrapper-top {
+    color: #000;
     top: 0;
     padding-top: 4cm;
     padding-bottom: 4cm;
@@ -1072,7 +1084,8 @@ a.anchorjs-link:hover {
 
   #toc .toc-active, #toc li:hover {
     background: white;
-  box-shadow: none !important; }
+    box-shadow: none !important;
+  }
 
   #toc li:hover a {
   color: black; }
@@ -1100,7 +1113,8 @@ a.anchorjs-link:hover {
     background-color: #fff495;
     color: #47430c;
     padding: 5px;
-  margin: 2em 0 1em 0; }
+    margin: 2em 0 1em 0;
+  }
 
   .Note p {
     padding: 0 5px 0 5px;
