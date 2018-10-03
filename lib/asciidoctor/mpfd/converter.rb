@@ -41,7 +41,7 @@ module Asciidoctor
           a.committee node.attr("committee"),
             **attr_code(type: node.attr("committee-type"))
           i = 2
-          while node.attr("committee_#{i}") do 
+          while node.attr("committee_#{i}") do
             a.committee node.attr("committee_#{i}"),
               **attr_code(type: node.attr("committee-type_#{i}"))
             i += 1
@@ -98,7 +98,7 @@ module Asciidoctor
       def doctype(node)
         d = node.attr("doctype")
 =begin
-        unless %w{policy-and-procedures best-practices supporting-document report legal directives proposal standard}.include? d
+        unless %w{policy-and-procedures best-practices circular supporting-document report legal directives proposal standard}.include? d
           warn "#{d} is not a legal document type: reverting to 'standard'"
           d = "standard"
         end

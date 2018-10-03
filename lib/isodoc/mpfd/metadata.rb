@@ -1,5 +1,6 @@
 require "isodoc"
 require "twitter_cldr"
+require 'date'
 
 module IsoDoc
   module Mpfd
@@ -7,7 +8,7 @@ module IsoDoc
     class Metadata < IsoDoc::Metadata
       def initialize(lang, script, labels)
         super
-        set(:status, "XXX")
+        # set(:status, "")
       end
 
       def title(isoxml, _out)
@@ -20,8 +21,8 @@ module IsoDoc
       end
 
       def author(isoxml, _out)
-        tc = isoxml.at(ns("//bibdata/editorialgroup/committee"))
-        set(:tc, tc.text) if tc
+        publisher = isoxml.at(ns("//bibdata/contributor/organization/name"))
+        set(:publisher, publisher.text) if publisher
       end
 
       def docid(isoxml, _out)
@@ -60,33 +61,33 @@ module IsoDoc
 
       def version(isoxml, _out)
         super
+
         revdate = get[:revdate]
         set(:revdate_monthyear, monthyr(revdate))
-        edition = isoxml.at(ns("//version/edition")) and
-          set(:edition, edition.text.to_i.localize.
+
+        edition = isoxml.at(ns("//version/edition"))
+        if edition
+          set(
+            :edition,
+            edition.text.to_i.localize.
               to_rbnf_s("SpelloutRules", "spellout-ordinal").
-              split(/(\W)/).map(&:capitalize).join)
+              split(/(\W)/).map(&:capitalize).join
+          )
+        end
+
+        puts "get get[:docstage] #{get[:docstage]}"
+        puts get[:docstage]
+        if get[:docstage] == "95" and get[:docsubstage] == "99"
+          set(:draftinfo, "(Repealed)")
+        end
       end
 
-      MONTHS = {
-        "01": "January",
-        "02": "February",
-        "03": "March",
-        "04": "April",
-        "05": "May",
-        "06": "June",
-        "07": "July",
-        "08": "August",
-        "09": "September",
-        "10": "October",
-        "11": "November",
-        "12": "December",
-      }.freeze
-
       def monthyr(isodate)
-        m = /(?<yr>\d\d\d\d)-(?<mo>\d\d)/.match isodate
-        return isodate unless m && m[:yr] && m[:mo]
-        return "#{MONTHS[m[:mo].to_sym]} #{m[:yr]}"
+        date = DateTime.parse(isodate)
+        date.strftime('%-d %B %Y')    #=> "Sun 04 Feb 2001"
+      rescue
+        # invalid dates get thrown
+        isodate
       end
 
       def security(isoxml, _out)

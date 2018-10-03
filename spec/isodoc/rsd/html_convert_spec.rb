@@ -5,7 +5,7 @@ RSpec.describe IsoDoc::Mpfd do
   it "processes default metadata" do
     csdc = IsoDoc::Mpfd::HtmlConvert.new({})
     input = <<~"INPUT"
-<rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
   <title language="en" format="plain">Main Title</title>
   <docidentifier>1000</docidentifier>
@@ -42,7 +42,7 @@ RSpec.describe IsoDoc::Mpfd do
   <draft>3.4</draft>
 </version>
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -55,7 +55,7 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "abbreviates committee-draft" do
     input = <<~"INPUT"
-<rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
   <status format="plain">committee-draft</status>
 </bibdata><version>
@@ -64,7 +64,7 @@ RSpec.describe IsoDoc::Mpfd do
   <draft>3.4</draft>
 </version>
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -78,7 +78,7 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "abbreviates draft-standard" do
     input = <<~"INPUT"
-<rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
   <status format="plain">draft-standard</status>
 </bibdata><version>
@@ -87,7 +87,7 @@ RSpec.describe IsoDoc::Mpfd do
   <draft>3.4</draft>
 </version>
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -101,7 +101,7 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "ignores unrecognised status" do
     input = <<~"INPUT"
-<rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
   <status format="plain">standard</status>
 </bibdata><version>
@@ -110,7 +110,7 @@ RSpec.describe IsoDoc::Mpfd do
   <draft>3.4</draft>
 </version>
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -124,11 +124,11 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "processes pre" do
     input = <<~"INPUT"
-<rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <preface><foreword>
 <pre>ABC</pre>
 </foreword></preface>
-</rsd-standard>
+</mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -153,11 +153,11 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "processes keyword" do
     input = <<~"INPUT"
-<rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <preface><foreword>
 <keyword>ABC</keyword>
 </foreword></preface>
-</rsd-standard>
+</mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -182,7 +182,7 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "processes simple terms & definitions" do
     input = <<~"INPUT"
-     <rsd-standard xmlns="http://riboseinc.com/isoxml">
+     <mpfd-standard xmlns="http://riboseinc.com/isoxml">
        <sections>
        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
          <term id="J">
@@ -190,7 +190,7 @@ RSpec.describe IsoDoc::Mpfd do
        </term>
         </terms>
         </sections>
-        </rsd-standard>
+        </mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -215,7 +215,7 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "processes terms & definitions with external source" do
     input = <<~"INPUT"
-    <rsd-standard xmlns="http://riboseinc.com/isoxml">
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
          <termdocsource type="inline" bibitemid="ISO712"/>
        <sections>
        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
@@ -237,7 +237,7 @@ RSpec.describe IsoDoc::Mpfd do
   </contributor>
 </bibitem></references>
 </bibliography>
-        </rsd-standard>
+        </mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -267,12 +267,12 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "processes empty terms & definitions" do
     input = <<~"INPUT"
-    <rsd-standard xmlns="http://riboseinc.com/isoxml">
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <sections>
         <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
         </terms>
       </sections>
-    </rsd-standard>
+    </mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -294,7 +294,7 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "processes section names" do
     input = <<~"INPUT"
-    <rsd-standard xmlns="http://riboseinc.com/isoxml">
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
       <foreword obligation="informative">
          <title>Foreword</title>
@@ -358,7 +358,7 @@ RSpec.describe IsoDoc::Mpfd do
        </references>
        </clause>
        </bibliography>
-       </rsd-standard>
+       </mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -456,7 +456,7 @@ RSpec.describe IsoDoc::Mpfd do
     output = <<~"OUTPUT"
     #{BLANK_HDR}
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     OUTPUT
 
     expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output

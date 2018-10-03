@@ -7,7 +7,7 @@
   -->
   <include href="isostandard.rng">
     <start>
-      <ref name="rsd-standard"/>
+      <ref name="mpfd-standard"/>
     </start>
     <define name="language">
       <element name="language">
@@ -96,6 +96,7 @@
       <choice>
         <value>policy-and-procedures</value>
         <value>best-practices</value>
+        <value>circular</value>
         <value>supporting-document</value>
         <value>report</value>
         <value>legal</value>
@@ -190,8 +191,8 @@
       <text/>
     </element>
   </define>
-  <define name="rsd-standard">
-    <element name="rsd-standard">
+  <define name="mpfd-standard">
+    <element name="mpfd-standard">
       <ref name="bibdata"/>
       <optional>
         <ref name="version"/>

@@ -57,7 +57,7 @@ HDR
 
 BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
-       <rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
        <bibdata type="standard">
 
 

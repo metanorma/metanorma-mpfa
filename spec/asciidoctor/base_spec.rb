@@ -20,7 +20,7 @@ RSpec.describe Asciidoctor::Mpfd do
     output = <<~"OUTPUT"
     #{BLANK_HDR}
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     OUTPUT
 
     expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
@@ -37,7 +37,7 @@ RSpec.describe Asciidoctor::Mpfd do
     output = <<~"OUTPUT"
     #{BLANK_HDR}
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     OUTPUT
 
     system "rm -f test.html"
@@ -77,7 +77,7 @@ RSpec.describe Asciidoctor::Mpfd do
 
     output = <<~"OUTPUT"
     <?xml version="1.0" encoding="UTF-8"?>
-<rsd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
   <title language="en" format="plain">Main Title</title>
   <docidentifier>1000</docidentifier>
@@ -114,7 +114,7 @@ RSpec.describe Asciidoctor::Mpfd do
   <draft>3.4</draft>
 </version>
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     OUTPUT
 
     expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
@@ -143,7 +143,7 @@ RSpec.describe Asciidoctor::Mpfd do
        Amen</pre>
        </figure>
        </sections>
-       </rsd-standard>
+       </mpfd-standard>
     OUTPUT
 
     expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
@@ -166,7 +166,7 @@ RSpec.describe Asciidoctor::Mpfd do
        <clause id="_" obligation="normative">
          <title>Section 1</title>
        </clause></sections>
-       </rsd-standard>
+       </mpfd-standard>
     OUTPUT
 
     expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
@@ -261,7 +261,7 @@ RSpec.describe Asciidoctor::Mpfd do
        <strike>strike</strike>
        <smallcap>smallcap</smallcap></p>
        </sections>
-       </rsd-standard>
+       </mpfd-standard>
     OUTPUT
 
     expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
