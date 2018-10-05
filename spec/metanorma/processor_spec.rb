@@ -32,7 +32,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
     output = <<~"OUTPUT"
     #{BLANK_HDR}
 <sections/>
-</rsd-standard>
+</mpfd-standard>
     OUTPUT
 
     expect(processor.input_to_isodoc(input)).to be_equivalent_to output
@@ -41,7 +41,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
   it "generates HTML from IsoDoc XML" do
     system "rm -f test.xml"
     input = <<~"INPUT"
-    <rsd-standard xmlns="http://riboseinc.com/isoxml">
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <sections>
         <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
           <term id="J">
@@ -49,7 +49,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
           </term>
         </terms>
       </sections>
-    </rsd-standard>
+    </mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
