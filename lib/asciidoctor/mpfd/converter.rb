@@ -132,7 +132,7 @@ module Asciidoctor
       def validate(doc)
         content_validate(doc)
         schema_validate(formattedstr_strip(doc.dup),
-                        File.join(File.dirname(__FILE__), "rsd.rng"))
+                        File.join(File.dirname(__FILE__), "mpfd.rng"))
       end
 
       def rsd_html_path(file)
