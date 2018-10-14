@@ -103,14 +103,10 @@ module IsoDoc
       def annex_name(annex, name, div)
         div.h1 **{ class: "Annex" } do |t|
           t << "#{get_anchors[annex['id']][:label]} "
-          t << "<b>#{name.text}</b>"
+          t.b do |b|
+          name&.children&.each { |c2| parse(c2, b) }
         end
-      end
-
-      def annex_name_lbl(clause, num)
-        obl = l10n("(#{@inform_annex_lbl})")
-        obl = l10n("(#{@norm_annex_lbl})") if clause["obligation"] == "normative"
-        l10n("<b>#{@annex_lbl} #{num}</b> #{obl}")
+        end
       end
 
       def pre_parse(node, out)
