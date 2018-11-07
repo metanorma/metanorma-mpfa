@@ -17,8 +17,7 @@ module Asciidoctor
         x.xpath("//*[@inline-header]").each do |h|
           h.delete("inline-header")
         end
-        x.xpath("//[@guidance]").each do |h|
-          require "byebug"; byebug
+        x.xpath("//*[@guidance]").each do |h|
           c = h.previous_element || next
           c.add_child h.remove
         end
@@ -28,11 +27,7 @@ module Asciidoctor
         a = { id: Asciidoctor::Standoc::Utils::anchor_or_uuid(node) }
         noko do |xml|
           case sectiontype(node)
-          when "introduction" then
-            if node.level == 1 then introduction_parse(a, xml, node)
-            else
-              clause_parse(a, xml, node)
-            end
+          when "introduction" then introduction_parse(a, xml, node)
           when "terms and definitions",
             "terms, definitions, symbols and abbreviated terms",
             "terms, definitions, symbols and abbreviations",
@@ -54,8 +49,6 @@ module Asciidoctor
               bibliography_parse(a, xml, node)
             elsif node.attr("style") == "appendix" && node.level == 1
               annex_parse(a, xml, node)
-            elsif node.option? "appendix"
-              appendix_parse(a, xml, node)
             else
               clause_parse(a, xml, node)
             end
@@ -67,19 +60,23 @@ module Asciidoctor
         return node.title
       end
 
-      def make_preface(x, s)
-        if x.at("//foreword | //introduction | //terms")
-          preface = s.add_previous_sibling("<preface/>").first
-          foreword = x.at("//foreword")
-          preface.add_child foreword.remove if foreword
-          introduction = x.at("//introduction")
-          preface.add_child introduction.remove if introduction
-          terms = x.at("//terms")
-          preface.add_child terms.remove if terms
-        end
+      def move_sections_into_preface(x, preface)
+        foreword = x.at("//foreword")
+        preface.add_child foreword.remove if foreword
+        introduction = x.at("//introduction")
+        preface.add_child introduction.remove if introduction
+        terms = x.at("//sections/clause[descendant::terms]") || x.at("//terms")
+        preface.add_child terms.remove if terms
         x.xpath("//clause[@preface]").each do |c|
           c.delete("preface")
           preface.add_child c.remove
+        end
+      end
+
+      def make_preface(x, s)
+        if x.at("//foreword | //introduction | //terms | //clause[@preface]")
+          preface = s.add_previous_sibling("<preface/>").first
+          move_sections_into_preface(x, preface)
         end
       end
 

@@ -61,10 +61,8 @@ module IsoDoc
 
       def version(isoxml, _out)
         super
-
         revdate = get[:revdate]
         set(:revdate_monthyear, monthyr(revdate))
-
         edition = isoxml.at(ns("//version/edition"))
         if edition
           set(
@@ -74,12 +72,6 @@ module IsoDoc
               split(/(\W)/).map(&:capitalize).join
           )
         end
-
-        puts "get get[:docstage] #{get[:docstage]}"
-        puts get[:docstage]
-        if get[:docstage] == "95" and get[:docsubstage] == "99"
-          set(:draftinfo, "(Repealed)")
-        end
       end
 
       def monthyr(isodate)
@@ -88,11 +80,6 @@ module IsoDoc
       rescue
         # invalid dates get thrown
         isodate
-      end
-
-      def security(isoxml, _out)
-        security = isoxml.at(ns("//bibdata/security")) || return
-        set(:security, security.text)
       end
     end
   end

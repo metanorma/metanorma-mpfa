@@ -16,6 +16,9 @@
     </define>
     <define name="docidentifier">
       <element name="docidentifier">
+        <optional>
+          <attribute name="type"/>
+        </optional>
         <text/>
       </element>
     </define>
@@ -30,29 +33,37 @@
           <data type="ID"/>
         </attribute>
         <optional>
-          <ref name="source"/>
+          <ref name="tname"/>
         </optional>
+        <choice>
+          <ref name="image"/>
+          <ref name="pre"/>
+          <oneOrMore>
+            <ref name="subfigure"/>
+          </oneOrMore>
+        </choice>
+        <zeroOrMore>
+          <ref name="fn"/>
+        </zeroOrMore>
+        <optional>
+          <ref name="dl"/>
+        </optional>
+        <zeroOrMore>
+          <ref name="note"/>
+        </zeroOrMore>
+      </element>
+    </define>
+    <define name="subfigure">
+      <element name="figure">
+        <attribute name="id">
+          <data type="ID"/>
+        </attribute>
         <optional>
           <ref name="tname"/>
         </optional>
         <choice>
-          <oneOrMore>
-            <ref name="figure"/>
-          </oneOrMore>
-          <group>
-            <choice>
-              <zeroOrMore>
-                <ref name="TextElement"/>
-              </zeroOrMore>
-              <ref name="pre"/>
-            </choice>
-            <zeroOrMore>
-              <ref name="note"/>
-            </zeroOrMore>
-            <optional>
-              <ref name="dl"/>
-            </optional>
-          </group>
+          <ref name="image"/>
+          <ref name="pre"/>
         </choice>
       </element>
     </define>
@@ -96,7 +107,6 @@
       <choice>
         <value>policy-and-procedures</value>
         <value>best-practices</value>
-        <value>circular</value>
         <value>supporting-document</value>
         <value>report</value>
         <value>legal</value>
@@ -107,7 +117,9 @@
     </define>
     <define name="editorialgroup">
       <element name="editorialgroup">
-        <ref name="committee"/>
+        <oneOrMore>
+          <ref name="committee"/>
+        </oneOrMore>
       </element>
     </define>
     <define name="BibData">

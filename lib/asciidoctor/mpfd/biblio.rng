@@ -259,6 +259,9 @@
   </define>
   <define name="uri">
     <element name="uri">
+      <optional>
+        <attribute name="type"/>
+      </optional>
       <data type="anyURI"/>
     </element>
   </define>
@@ -384,7 +387,7 @@
   </define>
   <define name="LocalityType">
     <data type="string">
-      <param name="pattern">section|clause|part|paragraph|chapter|page|whole|table|annex|figure|note|example|volume|issue|locality:[a-zA-Z0-9_]+</param>
+      <param name="pattern">section|clause|part|paragraph|chapter|page|whole|table|annex|figure|note|list|example|volume|issue|locality:[a-zA-Z0-9_]+</param>
     </data>
   </define>
   <define name="referenceFrom">
@@ -409,6 +412,20 @@
   <define name="bibitem_no_id">
     <element name="bibitem">
       <ref name="BibliographicItem"/>
+    </element>
+  </define>
+  <define name="relaton_collection">
+    <element name="relaton-collection">
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <ref name="btitle"/>
+      <zeroOrMore>
+        <ref name="contributor"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="docrelation"/>
+      </zeroOrMore>
     </element>
   </define>
   <define name="BibItemType" combine="choice">
@@ -443,6 +460,9 @@
       <attribute name="type">
         <ref name="BibItemType"/>
       </attribute>
+    </optional>
+    <optional>
+      <ref name="fetched"/>
     </optional>
     <choice>
       <oneOrMore>
@@ -523,6 +543,14 @@
       <ref name="FormattedString"/>
     </element>
   </define>
+  <define name="fetched">
+    <element name="fetched">
+      <choice>
+        <data type="dateTime"/>
+        <data type="date"/>
+      </choice>
+    </element>
+  </define>
   <define name="validity">
     <element name="validity">
       <optional>
@@ -538,17 +566,26 @@
   </define>
   <define name="validityBegins">
     <element name="validityBegins">
-      <data type="dateTime"/>
+      <choice>
+        <data type="dateTime"/>
+        <data type="date"/>
+      </choice>
     </element>
   </define>
   <define name="validityEnds">
     <element name="validityEnds">
-      <data type="dateTime"/>
+      <choice>
+        <data type="dateTime"/>
+        <data type="date"/>
+      </choice>
     </element>
   </define>
   <define name="validityRevision">
     <element name="revision">
-      <data type="dateTime"/>
+      <choice>
+        <data type="dateTime"/>
+        <data type="date"/>
+      </choice>
     </element>
   </define>
   <define name="TypedTitleString">
@@ -599,6 +636,9 @@
           <value>issued</value>
           <value>transmitted</value>
           <value>copied</value>
+          <value>unchanged</value>
+          <value>circulated</value>
+          <text/>
         </choice>
       </attribute>
       <choice>
@@ -700,8 +740,12 @@
         <ref name="btitle"/>
         <ref name="formattedref"/>
       </choice>
-      <ref name="bplace"/>
-      <ref name="seriesorganization"/>
+      <optional>
+        <ref name="bplace"/>
+      </optional>
+      <optional>
+        <ref name="seriesorganization"/>
+      </optional>
       <optional>
         <ref name="abbreviation"/>
       </optional>
@@ -728,6 +772,7 @@
     <element name="from">
       <choice>
         <data type="dateTime"/>
+        <data type="date"/>
         <data type="gYear"/>
       </choice>
     </element>
@@ -736,6 +781,7 @@
     <element name="to">
       <choice>
         <data type="dateTime"/>
+        <data type="date"/>
         <data type="gYear"/>
       </choice>
     </element>

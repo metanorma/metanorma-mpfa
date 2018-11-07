@@ -106,3 +106,22 @@ HTML_HDR = <<~"HDR"
            <div class="main-section">
 HDR
 
+WORD_HDR = <<~"HDR"
+<body lang="EN-US" link="blue" vlink="#954F72">
+    <div class="WordSection1">
+      <p>&#160;</p>
+    </div>
+    <br clear="all" class="section"/>
+    <div class="WordSection2">
+      <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+HDR
+
+WORD_FTR = <<~"FTR"
+   <p>&#160;</p>
+ </div>
+   <br clear="all" class="section"/>
+   <div class="WordSection3">
+     <p class="zzSTDTitle1"/>
+   </div>
+ </body>
+FTR

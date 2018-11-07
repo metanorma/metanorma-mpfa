@@ -135,23 +135,12 @@ module Asciidoctor
                         File.join(File.dirname(__FILE__), "mpfd.rng"))
       end
 
-      def rsd_html_path(file)
-        File.join(File.dirname(__FILE__), File.join("html", file))
-      end
-
       def literal(node)
         noko do |xml|
           xml.figure **id_attr(node) do |f|
             figure_title(node, f)
             f.pre node.lines.join("\n")
           end
-        end
-      end
-
-      def sections_cleanup(x)
-        super
-        x.xpath("//*[@inline-header]").each do |h|
-          h.delete("inline-header")
         end
       end
 

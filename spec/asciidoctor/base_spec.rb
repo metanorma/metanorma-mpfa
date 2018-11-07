@@ -64,13 +64,15 @@ RSpec.describe Asciidoctor::Mpfd do
       :committee: TC
       :committee-number: 1
       :committee-type: A
+      :committee_2: TC2
+      :committee-number_2: 2
+      :committee-type_2: B
+      :committee_3: TC3
+      :committee-number_3: 2
+      :committee-type_3: C
       :subcommittee: SC
       :subcommittee-number: 2
       :subcommittee-type: B
-      :workgroup: WG
-      :workgroup-number: 3
-      :workgroup-type: C
-      :secretariat: SECRETARIAT
       :copyright-year: 2001
       :status: working-draft
       :iteration: 3
@@ -113,6 +115,8 @@ RSpec.describe Asciidoctor::Mpfd do
   </copyright>
   <editorialgroup>
     <committee type="A">TC</committee>
+    <committee type="B">TC2</committee>
+    <committee type="C">TC3</committee>
   </editorialgroup>
 </bibdata><version>
   <edition>2</edition>
@@ -125,6 +129,63 @@ RSpec.describe Asciidoctor::Mpfd do
 
     expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
   end
+
+    it "processes default metadata" do
+    input = <<~"INPUT"
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :docnumber: 1000
+      :status: working-draft
+      :language: en
+      :title: Main Title
+    INPUT
+
+        output = <<~"OUTPUT"
+    <?xml version="1.0" encoding="UTF-8"?>
+<mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
+<bibdata type="article">
+  <title language="en" format="plain">Main Title</title>
+  <docidentifier>1000</docidentifier>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>Mandatory Provident Fund Schemes Authority</name>
+      <abbreviation>MPFA</abbreviation>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>Mandatory Provident Fund Schemes Authority</name>
+      <abbreviation>MPFA</abbreviation>
+    </organization>
+  </contributor>
+  <language>en</language>
+  <script>Latn</script>
+  <status format="plain">working-draft</status>
+  <copyright>
+    <from>#{Date.today.year}</from>
+    <owner>
+      <organization>
+      <name>Mandatory Provident Fund Schemes Authority</name>
+      <abbreviation>MPFA</abbreviation>
+      </organization>
+    </owner>
+  </copyright>
+  <editorialgroup>
+    <committee/>
+  </editorialgroup>
+</bibdata>
+<sections/>
+</mpfd-standard>
+    OUTPUT
+
+    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
+
+    end
 
   it "processes figures" do
     input = <<~"INPUT"
@@ -273,5 +334,154 @@ RSpec.describe Asciidoctor::Mpfd do
     expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
   end
 
+  it "processes sections" do
+        expect(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true))).to be_equivalent_to <<~"OUTPUT"
+        #{ASCIIDOC_BLANK_HDR}
+        
+        Foreword
+
+        == Introduction
+        Introduction
+
+        == Glossary
+        === Subglossary
+        ==== Term
+        Definition
+
+        == Symbols
+        x:: y
+
+        [preface]
+        == Prefatory
+
+        == Clause 
+        === Introduction
+        Clause Introduction
+
+        === Section
+        Section
+
+        [.guidance]
+        === Guidance
+        Guidance
+
+        [.container]
+        === Container
+        Container
+
+        [appendix]
+        == Appendix 1
+        Appendix
+
+        == Bibliography
+        === Subbibliography
+        bibliography
+
+INPUT
+       #{BLANK_HDR}
+       <preface><foreword obligation="informative">
+  <title>Foreword</title>
+  <p id="_">Foreword</p>
+</foreword><introduction id="_" obligation="informative">
+  <title>Introduction</title>
+  <p id="_">Introduction</p>
+</introduction><clause id="_" obligation="normative">
+<title>Glossary</title>
+<terms id="_" obligation="normative">
+  <title>Subglossary</title>
+  <term id="_">
+  <preferred>Term</preferred>
+  <definition><p id="_">Definition</p></definition>
+</term>
+</terms></clause>
+<clause id="_" obligation="normative">
+  <title>Prefatory</title>
+</clause></preface><sections>
+
+<definitions id="_">
+  <dl id="_">
+  <dt>x</dt>
+  <dd>
+    <p id="_">y</p>
+  </dd>
+</dl>
+</definitions>
+
+<clause id="_" obligation="normative"><title>Clause</title><clause id="_" obligation="normative">
+  <title>Introduction</title>
+  <p id="_">Clause Introduction</p>
+</clause>
+<clause id="_" obligation="normative">
+  <title>Section</title>
+  <p id="_">Section</p>
+<clause id="_" guidance="true" obligation="normative">
+  <title>Guidance</title>
+  <p id="_">Guidance</p>
+</clause></clause>
+<clause id="_" container="true" obligation="normative">
+  <title>Container</title>
+  <p id="_">Container</p>
+</clause></clause>
+
+</sections><annex id="_" obligation="normative">
+  <title>Appendix 1</title>
+  <p id="_">Appendix</p>
+</annex><bibliography><clause id="_" obligation="informative">
+  <title>Bibliography</title>
+  <references id="_" obligation="informative">
+  <title>Subbibliography</title>
+  <p id="_">bibliography</p>
+</references>
+</clause></bibliography>
+</mpfd-standard>
+OUTPUT
+  end
+
+    it "processes sections" do
+        expect(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true))).to be_equivalent_to <<~"OUTPUT"
+        #{ASCIIDOC_BLANK_HDR}
+
+        Foreword
+
+        == Introduction
+        Introduction
+
+        == Glossary
+        === Term
+        Definition
+
+        [preface]
+        == Prefatory
+
+        == Bibliography
+        bibliography
+
+INPUT
+#{BLANK_HDR}
+<preface><foreword obligation="informative">
+  <title>Foreword</title>
+  <p id="_">Foreword</p>
+</foreword><introduction id="_" obligation="informative">
+  <title>Introduction</title>
+  <p id="_">Introduction</p>
+</introduction><terms id="_" obligation="normative">
+  <title>Glossary</title>
+  <term id="_">
+  <preferred>Term</preferred>
+  <definition><p id="_">Definition</p></definition>
+</term>
+</terms><clause id="_" obligation="normative">
+  <title>Prefatory</title>
+</clause></preface><sections>
+
+
+
+</sections><bibliography><references id="_" obligation="informative">
+  <title>Bibliography</title>
+  <p id="_">bibliography</p>
+</references></bibliography>
+</mpfd-standard>
+OUTPUT
+end
 
 end

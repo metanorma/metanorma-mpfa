@@ -84,14 +84,6 @@ module IsoDoc
         out.pre node.text # content.gsub(/</, "&lt;").gsub(/>/, "&gt;")
       end
 
-      def term_defs_boilerplate(div, source, term, preface)
-        if source.empty? && term.nil?
-          div << @no_terms_boilerplate
-        else
-          div << term_defs_boilerplate_cont(source, term)
-        end
-      end
-
       def error_parse(node, out)
         # catch elements not defined in ISO
         case node.name
@@ -108,11 +100,6 @@ module IsoDoc
         File.join(File.dirname(__FILE__), loc)
       end
 
-      def info(isoxml, out)
-        @meta.security isoxml, out
-        super
-      end
-
       def i18n_init(lang, script)
         super
         y = if lang == "en"
@@ -121,10 +108,10 @@ module IsoDoc
               YAML.load_file(File.join(File.dirname(__FILE__),
                                        "i18n-zh-Hans.yaml"))
             else
-              YAML.load_file(File.join(File.dirname(__FILE__), "i18n-zh-Hans.yaml"))
+              YAML.load_file(File.join(File.dirname(__FILE__), "i18n-en.yaml"))
             end
-        @annex_lbl = "Appendix"
         @labels = @labels.merge(y)
+        @annex_lbl = y["annex"]
         @clause_lbl = y["clause"]
       end
 
@@ -134,6 +121,11 @@ module IsoDoc
 
       TERM_CLAUSE = "//preface/terms | "\
         "//preface/clause[descendant::terms]".freeze
+
+      SECTIONS_XPATH = 
+         "//foreword | //introduction | //preface/terms | //preface/clause | //annex | "\
+      "//sections/clause | //bibliography/references | "\
+      "//bibliography/clause".freeze
 
       def terms_defs(isoxml, out, num)
         f = isoxml.at(ns(TERM_CLAUSE)) or return num
@@ -150,7 +142,7 @@ module IsoDoc
 
       def preface(isoxml, out)
         isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
-          if c.name == "terms" then  terms_defs isoxml, out, 0
+          if c.name == "terms" || c.at(ns(".//terms")) then terms_defs isoxml, out, 0
           else
             out.div **attr_code(id: c["id"]) do |s|
               clause_name(get_anchors[c['id']][:label],
@@ -197,14 +189,6 @@ module IsoDoc
 
       def annex_name_lbl(clause, num)
         l10n("<b>#{@annex_lbl} #{num}</b>")
-      end
-
-      def xclause_names(docxml, _sect_num)
-        q = "//clause[parent::sections]"
-        @topnum = nil
-        docxml.xpath(ns(q)).each do |c|
-          section_names(c, @topnum, 1)
-        end
       end
 
       def clause_names(docxml, sect_num)
