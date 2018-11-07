@@ -1,4 +1,5 @@
 require "spec_helper"
+require "fileutils"
 
 RSpec.describe Asciidoctor::Mpfd do
   it "has a version number" do
@@ -6,7 +7,10 @@ RSpec.describe Asciidoctor::Mpfd do
   end
 
   it "generates output for the Rice document" do
-    system "cd spec/examples; rm -f rfc6350.doc; rm -f rfc6350.html; rm -d rfc6350.pdf; asciidoctor --trace -b rsd -r 'asciidoctor-rsd' rfc6350.adoc; cd ../.."
+    FileUtils.rm_f %w(spec/examples/rfc6350.xml spec/examples/rfc6350.doc spec/examples/rfc6350.html spec/examples/rfc6350.pdf)
+    FileUtils.cd "spec/examples"
+    Asciidoctor.convert_file "rfc6350.adoc", {:attributes=>{"backend"=>"mpfd"}, :safe=>0, :header_footer=>true, :requires=>["metanorma-mpfd"], :failure_level=>4, :mkdirs=>true, :to_file=>nil}
+    FileUtils.cd "../.."
     expect(File.exist?("spec/examples/rfc6350.doc")).to be true
     expect(File.exist?("spec/examples/rfc6350.html")).to be true
     expect(File.exist?("spec/examples/rfc6350.pdf")).to be true
@@ -77,20 +81,22 @@ RSpec.describe Asciidoctor::Mpfd do
 
     output = <<~"OUTPUT"
     <?xml version="1.0" encoding="UTF-8"?>
-<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+<mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
 <bibdata type="standard">
   <title language="en" format="plain">Main Title</title>
   <docidentifier>1000</docidentifier>
   <contributor>
     <role type="author"/>
     <organization>
-      <name>Ribose</name>
+      <name>Mandatory Provident Fund Schemes Authority</name>
+      <abbreviation>MPFA</abbreviation>
     </organization>
   </contributor>
   <contributor>
     <role type="publisher"/>
     <organization>
-      <name>Ribose</name>
+      <name>Mandatory Provident Fund Schemes Authority</name>
+      <abbreviation>MPFA</abbreviation>
     </organization>
   </contributor>
   <language>en</language>
@@ -100,14 +106,14 @@ RSpec.describe Asciidoctor::Mpfd do
     <from>2001</from>
     <owner>
       <organization>
-        <name>Ribose</name>
+      <name>Mandatory Provident Fund Schemes Authority</name>
+      <abbreviation>MPFA</abbreviation>
       </organization>
     </owner>
   </copyright>
   <editorialgroup>
     <committee type="A">TC</committee>
   </editorialgroup>
-  <security>Client Confidential</security>
 </bibdata><version>
   <edition>2</edition>
   <revision-date>2000-01-01</revision-date>
@@ -185,8 +191,8 @@ RSpec.describe Asciidoctor::Mpfd do
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\.Sourcecode[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
-    expect(html).to match(%r[ div[^{]+\{[^}]+font-family: "Overpass", sans-serif;]m)
-    expect(html).to match(%r[h1, h2, h3, h4, h5, h6 \{[^}]+font-family: "Overpass", sans-serif;]m)
+    expect(html).to match(%r[ div[^{]+\{[^}]+font-family: "Titillium Web", sans-serif;]m)
+    expect(html).to match(%r[h1, h2, h3, h4, h5, h6 \{[^}]+font-family: "Titillium Web", sans-serif;]m)
   end
 
   it "uses Chinese fonts" do

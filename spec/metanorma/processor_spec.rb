@@ -39,6 +39,22 @@ RSpec.describe Metanorma::Mpfd::Processor do
     expect(processor.input_to_isodoc(input, nil)).to be_equivalent_to output
   end
 
+  it "generates XML from IsoDoc XML" do
+    FileUtils.rm_f "test.xml"
+    input = <<~"INPUT"
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+      <sections>
+        <clause id="H" obligation="normative"><title>Clause</title>
+          <p>Text</p>
+        </clause>
+      </sections>
+    </mpfd-standard>
+    INPUT
+
+    processor.output(input, "test.xml", :xml)
+    expect(File.exists?("test.xml")).to be true
+  end
+
   it "generates HTML from IsoDoc XML" do
     FileUtils.rm_f "test.xml"
     FileUtils.rm_f "test.html"

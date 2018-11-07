@@ -46,78 +46,9 @@ RSpec.describe IsoDoc::Mpfd do
     INPUT
 
     output = <<~"OUTPUT"
-        {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>"1000(wd)", :doctitle=>"Main Title", :doctype=>"Standard", :docyear=>"2001", :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :editorialgroup=>[], :ics=>"XXX", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :security=>"Client Confidential", :status=>"Working Draft", :tc=>"TC", :updateddate=>"XXX", :wg=>"XXXX"}
+        {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>"1000(wd)", :doctitle=>"Main Title", :doctype=>"Standard", :docyear=>"2001", :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :edition=>"Second", :editorialgroup=>[], :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :publisher=>"Ribose", :revdate=>"2000-01-01", :revdate_monthyear=>"1 January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :security=>"Client Confidential", :status=>"Working Draft", :tc=>"XXXX", :updateddate=>"XXX", :wg=>"XXXX"}
     OUTPUT
 
-    docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
-  end
-
-  it "abbreviates committee-draft" do
-    input = <<~"INPUT"
-<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
-<bibdata type="standard">
-  <status format="plain">committee-draft</status>
-</bibdata><version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-<sections/>
-</mpfd-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-      {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>"(cd)", :doctitle=>nil, :doctype=>"Standard", :docyear=>nil, :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :editorialgroup=>[], :ics=>"XXX", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :status=>"Committee Draft", :tc=>"XXXX", :updateddate=>"XXX", :wg=>"XXXX"}
-    OUTPUT
-
-    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
-    docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
-  end
-
-  it "abbreviates draft-standard" do
-    input = <<~"INPUT"
-<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
-<bibdata type="standard">
-  <status format="plain">draft-standard</status>
-</bibdata><version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-<sections/>
-</mpfd-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-      {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>"(d)", :doctitle=>nil, :doctype=>"Standard", :docyear=>nil, :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :editorialgroup=>[], :ics=>"XXX", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :status=>"Draft Standard", :tc=>"XXXX", :updateddate=>"XXX", :wg=>"XXXX"}
-    OUTPUT
-
-    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
-    docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
-  end
-
-  it "ignores unrecognised status" do
-    input = <<~"INPUT"
-<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
-<bibdata type="standard">
-  <status format="plain">standard</status>
-</bibdata><version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-<sections/>
-</mpfd-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-      {:accesseddate=>"XXX", :confirmeddate=>"XXX", :createddate=>"XXX", :docnumber=>nil, :doctitle=>nil, :doctype=>"Standard", :docyear=>nil, :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :editorialgroup=>[], :ics=>"XXX", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :status=>"Standard", :tc=>"XXXX", :updateddate=>"XXX", :wg=>"XXXX"}
-    OUTPUT
-
-    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
     expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
   end
@@ -133,9 +64,8 @@ RSpec.describe IsoDoc::Mpfd do
 
     output = <<~"OUTPUT"
     #{HTML_HDR}
-             <br/>
              <div>
-               <h1 class="ForewordTitle">Foreword</h1>
+               <h1/>
                <pre>ABC</pre>
              </div>
              <p class="zzSTDTitle1"/>
@@ -162,124 +92,11 @@ RSpec.describe IsoDoc::Mpfd do
 
     output = <<~"OUTPUT"
         #{HTML_HDR}
-             <br/>
              <div>
-               <h1 class="ForewordTitle">Foreword</h1>
+               <h1/>
                <span class="keyword">ABC</span>
              </div>
              <p class="zzSTDTitle1"/>
-           </div>
-         </body>
-    OUTPUT
-
-    expect(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
-      convert("test", input, true).
-      gsub(%r{^.*<body}m, "<body").
-      gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
-  end
-
-  it "processes simple terms & definitions" do
-    input = <<~"INPUT"
-     <mpfd-standard xmlns="http://riboseinc.com/isoxml">
-       <sections>
-       <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-         <term id="J">
-         <preferred>Term2</preferred>
-       </term>
-        </terms>
-        </sections>
-        </mpfd-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-        #{HTML_HDR}
-             <p class="zzSTDTitle1"/>
-             <div id="H"><h1>1.&#160; Terms and definitions</h1><p>For the purposes of this document,
-           the following terms and definitions apply.</p>
-       <p class="TermNum" id="J">1.1</p>
-         <p class="Terms" style="text-align:left;">Term2</p>
-       </div>
-           </div>
-         </body>
-    OUTPUT
-
-    expect(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
-      convert("test", input, true).
-      gsub(%r{^.*<body}m, "<body").
-      gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
-  end
-
-  it "processes terms & definitions with external source" do
-    input = <<~"INPUT"
-    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
-         <termdocsource type="inline" bibitemid="ISO712"/>
-       <sections>
-       <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-         <term id="J">
-         <preferred>Term2</preferred>
-       </term>
-       </terms>
-        </sections>
-        <bibliography>
-        <references id="_normative_references" obligation="informative"><title>Normative References</title>
-<bibitem id="ISO712" type="standard">
-  <title format="text/plain">Cereals and cereal products?~@~I?~@~T?~@~IDetermination of moisture content?~@~I?~@~T?~@~IReference method</title>
-  <docidentifier>ISO 712</docidentifier>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>International Organization for Standardization</name>
-    </organization>
-  </contributor>
-</bibitem></references>
-</bibliography>
-        </mpfd-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-        #{HTML_HDR}
-             <p class="zzSTDTitle1"/>
-             <div>
-               <h1>1.&#160; Normative references</h1>
-               <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
-                 <p id="ISO712" class="NormRef">ISO 712, <i> Cereals and cereal products?~@~I?~@~T?~@~IDetermination of moisture content?~@~I?~@~T?~@~IReference method</i></p>
-                              </div>
-             <div id="H"><h1>2.&#160; Terms and definitions</h1><p>For the purposes of this document, the terms and definitions
-         given in ISO 712 and the following apply.</p>
-       <p class="TermNum" id="J">2.1</p>
-                <p class="Terms" style="text-align:left;">Term2</p>
-              </div>
-           </div>
-         </body>
-    OUTPUT
-
-    expect(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
-      convert("test", input, true).
-      gsub(%r{^.*<body}m, "<body").
-      gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
-  end
-
-  it "processes empty terms & definitions" do
-    input = <<~"INPUT"
-    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
-      <sections>
-        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-        </terms>
-      </sections>
-    </mpfd-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-        #{HTML_HDR}
-             <p class="zzSTDTitle1"/>
-             <div id="H"><h1>1.&#160; Terms and definitions</h1><p>No terms and definitions are listed in this document.</p>
-       </div>
            </div>
          </body>
     OUTPUT
@@ -303,9 +120,6 @@ RSpec.describe IsoDoc::Mpfd do
         <introduction id="B" obligation="informative"><title>Introduction</title><clause id="C" inline-header="false" obligation="informative">
          <title>Introduction Subsection</title>
        </clause>
-       <patent-notice>
-       <p>This is patent boilerplate</p>
-       </patent-notice>
        </introduction></preface><sections>
        <clause id="D" obligation="normative">
          <title>Scope</title>
@@ -346,9 +160,6 @@ RSpec.describe IsoDoc::Mpfd do
          <title>Annex A.1a</title>
          </clause>
        </clause>
-              <appendix id="Q2" inline-header="false" obligation="normative">
-         <title>An Appendix</title>
-       </appendix>
        </annex><bibliography><references id="R" obligation="informative">
          <title>Normative References</title>
        </references><clause id="S" obligation="informative">
@@ -363,68 +174,35 @@ RSpec.describe IsoDoc::Mpfd do
 
     output = <<~"OUTPUT"
         #{HTML_HDR}
-             <br/>
-             <div>
-               <h1 class="ForewordTitle">Foreword</h1>
+        <div>
+               <h1>Foreword</h1>
                <p id="A">This is a preamble</p>
              </div>
-             <br/>
-             <div class="Section3" id="B">
-               <h1 class="IntroTitle">0.&#160; Introduction</h1>
-               <div id="C">
-          <h2>0.1. Introduction Subsection</h2>
-        </div>
-               <p>This is patent boilerplate</p>
+             <div id="B">
+               <h1>Introduction</h1>
+               <div id="C"><h2>Introduction Subsection</h2>
+
+          </div>
              </div>
              <p class="zzSTDTitle1"/>
-             <div id="D">
-               <h1>1.&#160; Scope</h1>
-               <p id="E">Text</p>
-             </div>
-             <div>
-               <h1>2.&#160; Normative references</h1>
-               <p>There are no normative references in this document.</p>
-             </div>
-             <div id="H"><h1>3.&#160; Terms, definitions, symbols and abbreviated terms</h1><p>For the purposes of this document,
-           the following terms and definitions apply.</p>
-       <div id="I">
-          <h2>3.1. Normal Terms</h2>
-          <p class="TermNum" id="J">3.1.1</p>
-          <p class="Terms" style="text-align:left;">Term2</p>
-
-        </div><div id="K"><h2>3.2. Symbols and abbreviated terms</h2>
-          <dl><dt><p>Symbol</p></dt><dd>Definition</dd></dl>
-        </div></div>
-             <div id="L" class="Symbols">
-               <h1>4.&#160; Symbols and abbreviated terms</h1>
-               <dl>
-                 <dt>
-                   <p>Symbol</p>
-                 </dt>
-                 <dd>Definition</dd>
-               </dl>
-             </div>
              <div id="M">
-               <h1>5.&#160; Clause 4</h1>
-               <div id="N">
-          <h2>5.1. Introduction</h2>
-        </div>
-               <div id="O">
-          <h2>5.2. Clause 4.2</h2>
-        </div>
+               <h1>3.&#160; Clause 4</h1>
+               <div id="N"><h2>3.1. Introduction</h2>
+
+          </div>
+               <div id="O"><h2>3.2. Clause 4.2</h2>
+
+          </div>
              </div>
              <br/>
              <div id="P" class="Section3">
-               <h1 class="Annex"><b>Appendix A</b> (normative) <b>Annex</b></h1>
-               <div id="Q">
-          <h2>A.1. Annex A.1</h2>
-          <div id="Q1">
-          <h3>A.1.1. Annex A.1a</h3>
+               <h1 class="Annex"><b>Appendix A</b> <b>Annex</b></h1>
+               <div id="Q"><h2>A.1. Annex A.1</h2>
+
+            <div id="Q1"><h3>A.1.1. Annex A.1a</h3>
+
+            </div>
           </div>
-        </div>
-               <div id="Q2">
-          <h2>Appendix 1. An Appendix</h2>
-        </div>
              </div>
              <br/>
              <div>
