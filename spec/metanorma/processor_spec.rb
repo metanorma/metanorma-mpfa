@@ -1,5 +1,6 @@
 require "spec_helper"
 require "metanorma"
+require "fileutils"
 
 RSpec.describe Metanorma::Mpfd::Processor do
 
@@ -35,43 +36,87 @@ RSpec.describe Metanorma::Mpfd::Processor do
 </mpfd-standard>
     OUTPUT
 
-    expect(processor.input_to_isodoc(input)).to be_equivalent_to output
+    expect(processor.input_to_isodoc(input, nil)).to be_equivalent_to output
   end
 
   it "generates HTML from IsoDoc XML" do
-    system "rm -f test.xml"
+    FileUtils.rm_f "test.xml"
+    FileUtils.rm_f "test.html"
     input = <<~"INPUT"
     <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <sections>
-        <terms id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-          <term id="J">
-            <preferred>Term2</preferred>
-          </term>
-        </terms>
+        <clause id="H" obligation="normative"><title>Clause</title>
+          <p>Text</p>
+        </clause>
       </sections>
     </mpfd-standard>
     INPUT
 
     output = <<~"OUTPUT"
-    <main class="main-section">
-      <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+    <main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
       <p class="zzSTDTitle1"></p>
       <div id="H">
-        <h1>1.&#xA0; Terms and definitions</h1>
-        <p>For the purposes of this document, the following terms and definitions apply.</p>
-        <h2 class="TermNum" id="J">1.1&#xA0;<p class="Terms" style="text-align:left;">Term2</p></h2>
+        <h1>1.&#xA0; Clause</h1>
+        <p>Text</p>
       </div>
     </main>
     OUTPUT
 
     processor.output(input, "test.html", :html)
-
+    expect(File.exists?("test.html")).to be true
     expect(
-      File.read("test.html", encoding: "utf-8").
-      gsub(%r{^.*<main}m, "<main").
-      gsub(%r{</main>.*}m, "</main>")
+      File.read("test.html", encoding: "utf-8").gsub(%r{^.*<main}m, "<main").gsub(%r{</main>.*}m, "</main>")
     ).to be_equivalent_to output
 
+  end
+
+  it "generates DOC from IsoDoc XML" do
+    FileUtils.rm_f "test.xml"
+    FileUtils.rm_f "test.doc"
+    input = <<~"INPUT"
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+      <sections>
+        <clause id="H" obligation="normative"><title>Clause</title>
+          <p>Text</p>
+        </clause>
+      </sections>
+    </mpfd-standard>
+    INPUT
+
+    output = <<~"OUTPUT"
+    <div class="WordSection3">
+  <p class="zzSTDTitle1"></p>
+  <div><a name="H" id="H"></a>
+    <h1>1.<span style="mso-tab-count:1">&#xA0; </span>Clause</h1>
+    <p class="MsoNormal">Text</p>
+  </div>
+</div>
+    OUTPUT
+
+   processor.output(input, "test.doc", :doc)
+   expect(File.exists?("test.doc")).to be true
+
+   expect(
+      File.read("test.doc", encoding: "utf-8").gsub(%r{^.*<div class="WordSection3"}m, %(<div class="WordSection3")).gsub(%r{<div style="mso-element:footnote-list".*}m, "")
+    ).to be_equivalent_to output
+
+  end
+
+  it "generates PDF from IsoDoc XML" do
+    FileUtils.rm_f "test.xml"
+    FileUtils.rm_f "test.pdf"
+    input = <<~"INPUT"
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+      <sections>
+        <clause id="H" obligation="normative"><title>Clause</title>
+          <p>Text</p>
+        </clause>
+      </sections>
+    </mpfd-standard>
+    INPUT
+
+   processor.output(input, "test.pdf", :pdf)
+   expect(File.exists?("test.pdf")).to be true
   end
 
 end

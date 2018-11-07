@@ -57,30 +57,33 @@ HDR
 
 BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
-       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
-       <bibdata type="standard">
+       <mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
+       <bibdata type="article">
 
 
          <contributor>
            <role type="author"/>
            <organization>
-             <name>Ribose</name>
+             <name>Mandatory Provident Fund Schemes Authority</name>
+             <abbreviation>MPFA</abbreviation>
            </organization>
          </contributor>
          <contributor>
            <role type="publisher"/>
            <organization>
-             <name>Ribose</name>
+             <name>Mandatory Provident Fund Schemes Authority</name>
+             <abbreviation>MPFA</abbreviation>
            </organization>
          </contributor>
-
+         <language>en</language>
          <script>Latn</script>
 
          <copyright>
            <from>#{Time.new.year}</from>
            <owner>
              <organization>
-               <name>Ribose</name>
+             <name>Mandatory Provident Fund Schemes Authority</name>
+             <abbreviation>MPFA</abbreviation>
              </organization>
            </owner>
          </copyright>
