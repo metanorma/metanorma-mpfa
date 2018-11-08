@@ -509,6 +509,188 @@ RSpec.describe IsoDoc::Mpfd do
   end
 
     it "processes containers" do
+      expect(IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>")).to be_equivalent_to <<~"OUTPUT"
+      <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+<sections>
+    <clause id="A">
+        <title>A</title>
+        <p>
+        <xref target="A"/>
+        <xref target="B"/>
+        <xref target="C"/>
+        <xref target="D"/>
+        <xref target="E"/>
+        <xref target="F"/>
+        <xref target="G"/>
+        <xref target="AA"/>
+        <xref target="AB"/>
+        <xref target="AC"/>
+        <xref target="AD"/>
+        <xref target="AE"/>
+        <xref target="AF"/>
+        <xref target="AG"/>
+        </p>
+    </clause>
+    <clause id="B" container="true">
+        <title>B</title>
+        <clause id="C" inline-header="true">
+            <title>C</title>
+            <clause id="D" inline-header="true">
+                <title>D</title>
+            </clause>
+        </clause>
+        <clause id="E" container="true">
+            <title>E</title>
+            <clause id="F">
+                <title>F</title>
+            </clause>
+            <clause id="G">
+                <title>G</title>
+            </clause>
+        </clause>
+    </clause>
+</sections>
+<annex><title>Annex</title>
+    <clause id="AA">
+        <title>A</title>
+    </clause>
+    <clause id="AB" container="true">
+        <title>B</title>
+        <clause id="AC">
+            <title>C</title>
+            <clause id="AD">
+                <title>D</title>
+            </clause>
+        </clause>
+        <clause id="AE" container="true">
+            <title>E</title>
+            <clause id="AF">
+                <title>F</title>
+            </clause>
+            <clause id="AG">
+                <title>G</title>
+            </clause>
+        </clause>
+    </clause>
+</annex>
+</mpfd-standard>
+INPUT
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+           <div class="title-section">
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class="prefatory-section">
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class="main-section">
+             <p class="zzSTDTitle1"/>
+             <div id="A">
+               <h1>1.&#160; A</h1>
+               <p>
+               <a href="#A">Paragraph 1</a>
+               <a href="#B">B</a>
+               <a href="#C">Paragraph 2</a>
+               <a href="#D">Paragraph 2.1</a>
+               <a href="#E">E</a>
+               <a href="#F">Paragraph 3</a>
+               <a href="#G">Paragraph 4</a>
+               <a href="#AA">Appendix A.1</a>
+               <a href="#AB">B</a>
+               <a href="#AC">Appendix A.1.1</a>
+               <a href="#AD">Appendix A.1.1.1</a>
+               <a href="#AE">E</a>
+               <a href="#AF">Appendix A.1.1.1</a>
+               <a href="#AG">Appendix A.1.1.2</a>
+               </p>
+             </div>
+             <div id="B">
+               <h1 class="containerhdr">B</h1>
+               <div id="C"><span class="zzMoveToFollowing"><b>2. C </b></span>
+
+                   <div id="D"><span class="zzMoveToFollowing"><b>2.1. D </b></span>
+
+                   </div>
+               </div>
+               <div id="E"><h2 class="containerhdr">E</h2>
+
+                   <div id="F"><h2>3. F</h2>
+
+                   </div>
+                   <div id="G"><h2>4. G</h2>
+
+                   </div>
+               </div>
+             </div>
+             <br/>
+             <div class="Section3">
+               <h1 class="Annex"><b>Appendix A</b> <b>Annex</b></h1>
+               <div id="AA"><h2>A.1. A</h2>
+
+           </div>
+               <div id="AB"><h1 class="containerhdr">B</h1>
+
+               <div id="AC"><h3>A.1.1. C</h3>
+
+                   <div id="AD"><h4>A.1.1.1. D</h4>
+
+                   </div>
+               </div>
+               <div id="AE"><h2 class="containerhdr">E</h2>
+
+                   <div id="AF"><h4>A.1.1.1. F</h4>
+
+                   </div>
+                   <div id="AG"><h4>A.1.1.2. G</h4>
+
+                   </div>
+               </div>
+           </div>
+             </div>
+           </div>
+         </body>
+OUTPUT
+
     end
+
+    it "processes ordered list style" do
+          input = <<~"INPUT"
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+<preface><foreword>
+<ol type="roman">
+<li><ol type="arabic">
+<li>A
+</ol>
+</ol>
+</foreword></preface>
+</mpfd-standard>
+    INPUT
+
+    output = <<~"OUTPUT"
+    #{HTML_HDR}
+          <div>
+        <h1/>
+        <ol type="i">
+<li><ol type="1">
+<li>A
+</li>
+</ol>
+</li></ol>
+      </div>
+      <p class="zzSTDTitle1"/>
+    </div>
+  </body>
+    OUTPUT
+
+    expect(
+      IsoDoc::Mpfd::HtmlConvert.new({}).
+      convert("test", input, true).
+      gsub(%r{^.*<body}m, "<body").
+      gsub(%r{</body>.*}m, "</body>")
+    ).to be_equivalent_to output
+  end
+
+
 
 end

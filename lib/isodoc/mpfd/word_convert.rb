@@ -53,44 +53,6 @@ module IsoDoc
         end
       end
 
-      def make_body2(body, docxml)
-        body.div **{ class: "WordSection2" } do |div2|
-          info docxml, div2
-          div2.p { |p| p << "&nbsp;" } # placeholder
-        end
-        #body.br **{ clear: "all", style: "page-break-before:auto;mso-break-type:section-break;" }
-        section_break(body)
-      end
-
-      def title(isoxml, _out)
-        main = isoxml&.at(ns("//title[@language='en']"))&.text
-        set_metadata(:doctitle, main)
-      end
-
-      def generate_header(filename, dir)
-        return unless @header
-        template = Liquid::Template.parse(File.read(@header, encoding: "UTF-8"))
-        meta = @meta.get
-        meta[:filename] = filename
-        params = meta.map { |k, v| [k.to_s, v] }.to_h
-        File.open("header.html", "w") { |f| f.write(template.render(params)) }
-        @files_to_delete << "header.html"
-        "header.html"
-      end
-
-      def header_strip(h)
-        h = h.to_s.gsub(%r{<br/>}, " ").sub(/<\/?h[12][^>]*>/, "")
-        h1 = to_xhtml_fragment(h.dup)
-        h1.traverse do |x|
-          x.replace(" ") if x.name == "span" &&
-            /mso-tab-count/.match(x["style"])
-          x.remove if x.name == "span" && x["class"] == "MsoCommentReference"
-          x.remove if x.name == "a" && x["epub:type"] == "footnote"
-          x.replace(x.children) if x.name == "a"
-        end
-        from_xhtml(h1)
-      end
-
       def annex_name(annex, name, div)
         div.h1 **{ class: "Annex" } do |t|
           t << "#{get_anchors[annex['id']][:label]} "
@@ -159,22 +121,6 @@ module IsoDoc
       end
 
       FRONT_CLAUSE = "//*[parent::preface]".freeze
-      #FRONT_CLAUSE = "//clause[parent::preface] | //terms[parent::preface]".freeze
-
-      def preface(isoxml, out)
-        isoxml.xpath(ns(FRONT_CLAUSE)).each do |c|
-          if c.name == "terms" || c.at(ns(".//terms")) then  terms_defs isoxml, out, 0
-          else
-            out.div **attr_code(id: c["id"]) do |s|
-              clause_name(get_anchors[c['id']][:label],
-                          c&.at(ns("./title"))&.content, s, nil)
-              c.elements.reject { |c1| c1.name == "title" }.each do |c1|
-                parse(c1, s)
-              end
-            end
-          end
-        end
-      end
 
       def initial_anchor_names(d)
         d.xpath(ns(FRONT_CLAUSE)).each do |c|
@@ -187,14 +133,6 @@ module IsoDoc
         termexample_anchor_names(d)
       end
 
-
-      def middle(isoxml, out)
-        middle_title(out)
-        clause isoxml, out
-        annex isoxml, out
-        bibliography isoxml, out
-      end
-
       def make_body2(body, docxml)
         body.div **{ class: "WordSection2" } do |div2|
           info docxml, div2
@@ -205,7 +143,6 @@ module IsoDoc
         end
         section_break(body)
       end
-
 
       def middle(isoxml, out)
         middle_title(out)
@@ -247,9 +184,7 @@ module IsoDoc
       def sect_names(clause, num, i, lvl, prev_lvl)
         return i if clause.nil?
         curr = i
-        if clause["container"]
-          retlvl = lvl+1
-        else
+        if !clause["container"]
           retlvl = lvl
           i+=1
           curr = i
@@ -274,7 +209,7 @@ module IsoDoc
       def annex_naming(c, num, lvl, i)
         if c["guidance"] then annex_names1(c, "#{num}E", lvl + 1)
         else
-          i+= 1
+          i+= 1 unless c["container"]
           annex_names1(c, "#{num}.#{i}", lvl + 1)
         end
         i
@@ -285,14 +220,15 @@ module IsoDoc
                                    xref: "#{@annex_lbl} #{num}", level: 1 }
         i = 0
         clause.xpath(ns("./clause")).each do |c|
+          container_names(c, 0)
           i = annex_naming(c, num, 1, i)
         end
         hierarchical_asset_names(clause, num)
       end
 
       def annex_names1(clause, num, level)
-        @anchors[clause["id"]] = { label: num, xref: "#{@annex_lbl} #{num}",
-                                   level: level }
+        clause["container"] or @anchors[clause["id"]] = 
+          { label: num, xref: "#{@annex_lbl} #{num}", level: level }
         i = 0
         clause.xpath(ns("./clause")).each do |c|
           i = annex_naming(c, num, level, i)

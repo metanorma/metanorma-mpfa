@@ -85,7 +85,7 @@ RSpec.describe Asciidoctor::Mpfd do
     <?xml version="1.0" encoding="UTF-8"?>
 <mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
 <bibdata type="standard">
-  <title language="en" format="plain">Main Title</title>
+  <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
   <contributor>
     <role type="author"/>
@@ -147,7 +147,7 @@ RSpec.describe Asciidoctor::Mpfd do
     <?xml version="1.0" encoding="UTF-8"?>
 <mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
 <bibdata type="article">
-  <title language="en" format="plain">Main Title</title>
+  <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
   <contributor>
     <role type="author"/>

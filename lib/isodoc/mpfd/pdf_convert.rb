@@ -218,9 +218,7 @@ module IsoDoc
       def sect_names(clause, num, i, lvl, prev_lvl)
         return i if clause.nil?
         curr = i
-        if clause["container"]
-          retlvl = lvl+1
-        else
+        if !clause["container"]
           retlvl = lvl
           i+=1
           curr = i
@@ -245,7 +243,7 @@ module IsoDoc
       def annex_naming(c, num, lvl, i)
         if c["guidance"] then annex_names1(c, "#{num}E", lvl + 1)
         else
-          i+= 1
+          i+= 1 unless c["container"]
           annex_names1(c, "#{num}.#{i}", lvl + 1)
         end
         i
@@ -256,14 +254,15 @@ module IsoDoc
                                    xref: "#{@annex_lbl} #{num}", level: 1 }
         i = 0
         clause.xpath(ns("./clause")).each do |c|
+          container_names(c, 0)
           i = annex_naming(c, num, 1, i)
         end
         hierarchical_asset_names(clause, num)
       end
 
       def annex_names1(clause, num, level)
-        @anchors[clause["id"]] = { label: num, xref: "#{@annex_lbl} #{num}",
-                                   level: level }
+        clause["container"] or @anchors[clause["id"]] = 
+          { label: num, xref: "#{@annex_lbl} #{num}", level: level }
         i = 0
         clause.xpath(ns("./clause")).each do |c|
           i = annex_naming(c, num, level, i)
