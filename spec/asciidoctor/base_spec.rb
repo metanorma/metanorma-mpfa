@@ -87,6 +87,7 @@ RSpec.describe Asciidoctor::Mpfd do
 <bibdata type="standard">
   <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
+  <docnumber>1000</docnumber>
   <contributor>
     <role type="author"/>
     <organization>
@@ -149,6 +150,7 @@ RSpec.describe Asciidoctor::Mpfd do
 <bibdata type="article">
   <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
+  <docnumber>1000</docnumber>
   <contributor>
     <role type="author"/>
     <organization>

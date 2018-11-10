@@ -55,6 +55,7 @@ module Asciidoctor
 
       def metadata_id(node, xml)
         xml.docidentifier { |i| i << node.attr("docnumber") }
+        xml.docnumber { |i| i << node.attr("docnumber") }
       end
 
       def metadata_copyright(node, xml)

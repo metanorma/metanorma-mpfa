@@ -27,14 +27,7 @@ module IsoDoc
 
       def docid(isoxml, _out)
         docnumber = isoxml.at(ns("//bibdata/docidentifier"))
-        docstatus = isoxml.at(ns("//bibdata/status"))
-        dn = docnumber&.text
-        if docstatus
-          set(:status, status_print(docstatus.text))
-          abbr = status_abbr(docstatus.text)
-          dn = "#{dn}(#{abbr})" unless abbr.empty?
-        end
-        set(:docnumber, dn)
+        set(:docnumber, docnumber&.text)
       end
 
       def doctype(isoxml, _out)
@@ -43,10 +36,6 @@ module IsoDoc
         t = b["type"].split(/[- ]/).
           map{ |w| w.capitalize unless w == "MPF" }.join(" ")
         set(:doctype, t)
-      end
-
-      def status_print(status)
-        status.split(/-/).map{ |w| w.capitalize }.join(" ")
       end
 
       def status_abbr(status)
