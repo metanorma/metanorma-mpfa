@@ -1235,3 +1235,12 @@ a.anchorjs-link:hover {
   }
 
 }
+
+<!--IE fix patch: start -->
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .main-section h1 {margin-left:14px;}
+  .main-section h2, h3, h4, ol, ul, p, .ms-table-wrap {margin-left:75px;}
+  .main-section li p {margin-left:5px;}
+  .main-section li {margin-left:25px;}
+}
+<!--IE fix patch: end -->
