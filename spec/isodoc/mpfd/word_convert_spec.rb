@@ -58,6 +58,10 @@ RSpec.describe IsoDoc::Mpfd do
     input = <<~"INPUT"
         <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
+      <abstract obligation="informative">
+         <title>Summary</title>
+         <p id="AA">This is an abstract</p>
+       </abstract>
       <foreword obligation="informative">
          <title>Foreword</title>
          <p id="A">This is a preamble</p>
@@ -124,6 +128,11 @@ RSpec.describe IsoDoc::Mpfd do
            </div>
            <br clear="all" class="section"/>
            <div class="WordSection2">
+           <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+<div>
+  <h1 class="AbstractTitle">Abstract</h1>
+  <p id="AA">This is an abstract</p>
+</div>
              <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
              <div>
                <h1 class="ForewordTitle">Foreword</h1>

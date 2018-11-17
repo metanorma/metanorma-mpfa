@@ -47,6 +47,8 @@ module Asciidoctor
             elsif @biblio then bibliography_parse(a, xml, node)
             elsif node.attr("style") == "bibliography" && node.level == 1
               bibliography_parse(a, xml, node)
+            elsif node.attr("style") == "abstract"
+              abstract_parse(a, xml, node)
             elsif node.attr("style") == "appendix" && node.level == 1
               annex_parse(a, xml, node)
             else
@@ -74,7 +76,7 @@ module Asciidoctor
       end
 
       def make_preface(x, s)
-        if x.at("//foreword | //introduction | //terms | //clause[@preface]")
+        if x.at("//foreword | //introduction | //terms | //abstract | //clause[@preface]")
           preface = s.add_previous_sibling("<preface/>").first
           move_sections_into_preface(x, preface)
         end

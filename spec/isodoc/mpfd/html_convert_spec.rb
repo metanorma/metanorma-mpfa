@@ -113,6 +113,10 @@ RSpec.describe IsoDoc::Mpfd do
     input = <<~"INPUT"
     <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
+      <abstract obligation="informative">
+         <title>Summary</title>
+         <p id="AA">This is an abstract</p>
+       </abstract>
       <foreword obligation="informative">
          <title>Foreword</title>
          <p id="A">This is a preamble</p>
@@ -175,6 +179,10 @@ RSpec.describe IsoDoc::Mpfd do
     output = <<~"OUTPUT"
     #{HTML_HDR}
         <div>
+  <h1>Summary</h1>
+  <p id="AA">This is an abstract</p>
+</div>
+<div>
                <h1>Foreword</h1>
                <p id="A">This is a preamble</p>
              </div>
