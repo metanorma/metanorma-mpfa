@@ -80,3 +80,12 @@ $('#toggle').on('click', function(){
 anchors.add('h1, h2, h3, h4');
 </script>
 
+<!--IE fix patch: start -->
+<script>
+  if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > -1) {
+    $(document).ready(function() {
+      $('table', '.main-section').wrap('<div class="ms-table-wrap"></div>');
+    });
+  };
+</script>
+<!--IE fix patch: end -->
