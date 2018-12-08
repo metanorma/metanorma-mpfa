@@ -78,22 +78,6 @@ module IsoDoc
         end
       end
 
-      def pre_parse(node, out)
-        out.pre node.text # content.gsub(/</, "&lt;").gsub(/>/, "&gt;")
-      end
-
-      def error_parse(node, out)
-        # catch elements not defined in ISO
-        case node.name
-        when "pre"
-          pre_parse(node, out)
-        when "keyword"
-          out.span node.text, **{ class: "keyword" }
-        else
-          super
-        end
-      end
-
       def fileloc(loc)
         File.join(File.dirname(__FILE__), loc)
       end

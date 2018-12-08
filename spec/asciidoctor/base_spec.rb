@@ -189,35 +189,6 @@ RSpec.describe Asciidoctor::Mpfd do
 
     end
 
-  it "processes figures" do
-    input = <<~"INPUT"
-      #{ASCIIDOC_BLANK_HDR}
-
-      [[id]]
-      .Figure 1
-      ....
-      This is a literal
-
-      Amen
-      ....
-    INPUT
-
-    output = <<~"OUTPUT"
-    #{BLANK_HDR}
-       <sections>
-                <figure id="id">
-         <name>Figure 1</name>
-         <pre>This is a literal
-
-       Amen</pre>
-       </figure>
-       </sections>
-       </mpfd-standard>
-    OUTPUT
-
-    expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
-  end
-
   it "strips inline header" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
