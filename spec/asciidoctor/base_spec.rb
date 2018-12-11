@@ -88,7 +88,11 @@ RSpec.describe Asciidoctor::Mpfd do
   <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
   <docnumber>1000</docnumber>
-  <contributor>
+  <edition>2</edition>
+<version>
+  <revision-date>2000-01-01</revision-date>
+  <draft>3.4</draft>
+</version>  <contributor>
     <role type="author"/>
     <organization>
       <name>Mandatory Provident Fund Schemes Authority</name>
@@ -119,11 +123,7 @@ RSpec.describe Asciidoctor::Mpfd do
     <committee type="B">TC2</committee>
     <committee type="C">TC3</committee>
   </editorialgroup>
-</bibdata><version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
+</bibdata>
 <sections/>
 </mpfd-standard>
     OUTPUT
@@ -291,8 +291,8 @@ RSpec.describe Asciidoctor::Mpfd do
         <p id="_"><em>emphasis</em>
        <strong>strong</strong>
        <tt>monospace</tt>
-       "double quote"
-       'single quote'
+       “double quote”
+       ‘single quote’
        super<sup>script</sup>
        sub<sub>script</sub>
        <stem type="AsciiMath">a_90</stem>
