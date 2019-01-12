@@ -234,7 +234,7 @@ RSpec.describe IsoDoc::Mpfd do
                <div>
                  <h2 class="Section3">Normative References</h2>
                </div>
-               <div id="S"><h2>Bibliography</h2>
+               <div id="S"><h1>Bibliography</h1>
 
             <div><h2 class="Section3">Bibliography Subsection</h2></div>
           </div>
@@ -410,7 +410,7 @@ RSpec.describe IsoDoc::Mpfd do
         <div>
           <h2 class="Section3">Normative References</h2>
         </div>
-        <div id="S"><h2>Bibliography</h2>
+        <div id="S"><h1>Bibliography</h1>
      <div><h2 class="Section3">Bibliography Subsection</h2></div>
    </div>
       </div>

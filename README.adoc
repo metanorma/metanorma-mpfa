@@ -98,7 +98,7 @@ tables etc, and automatically generating references and citations.
 
 
 [[model_additions]]
-== Asciidoctor features specific to CSAND
+== Asciidoctor features specific to MPFD
 
 The https://github.com/riboseinc/metanorma-standoc[metanorma-standoc]
 gem documents the customisations of Asciidoctor markup common to all metanorma gems.

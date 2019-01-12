@@ -111,15 +111,15 @@ WORD_HDR = <<~"HDR"
     <div class="WordSection1">
       <p>&#160;</p>
     </div>
-    <br clear="all" class="section"/>
+    <p><br clear="all" class="section"/></p>
     <div class="WordSection2">
-      <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
 HDR
 
 WORD_FTR = <<~"FTR"
    <p>&#160;</p>
  </div>
-   <br clear="all" class="section"/>
+   <p><br clear="all" class="section"/></p>
    <div class="WordSection3">
      <p class="zzSTDTitle1"/>
    </div>

@@ -126,19 +126,19 @@ RSpec.describe IsoDoc::Mpfd do
            <div class="WordSection1">
              <p>&#160;</p>
            </div>
-           <br clear="all" class="section"/>
+           <p><br clear="all" class="section"/></p>
            <div class="WordSection2">
-           <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+           <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
 <div>
   <h1 class="AbstractTitle">Abstract</h1>
   <p id="AA">This is an abstract</p>
 </div>
-             <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div>
                <h1 class="ForewordTitle">Foreword</h1>
                <p id="A">This is a preamble</p>
              </div>
-             <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div class="Section3" id="B">
                <h1 class="IntroTitle">Introduction</h1>
                <div id="C"><h2>Introduction Subsection</h2>
@@ -159,7 +159,7 @@ RSpec.describe IsoDoc::Mpfd do
              </div>
              <p>&#160;</p>
            </div>
-           <br clear="all" class="section"/>
+           <p><br clear="all" class="section"/></p>
            <div class="WordSection3">
              <p class="zzSTDTitle1"/>
              <div id="M">
@@ -171,7 +171,7 @@ RSpec.describe IsoDoc::Mpfd do
 
         </div>
              </div>
-             <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div id="P" class="Section3">
                <h1 class="Annex"><b>Appendix A</b> <b>Annex</b></h1>
                <div id="Q"><h2>A.1. Annex A.1</h2>
@@ -181,7 +181,7 @@ RSpec.describe IsoDoc::Mpfd do
           </div>
         </div>
              </div>
-             <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div>
                <h1 class="Section3">Bibliography</h1>
                <div>
@@ -271,14 +271,14 @@ RSpec.describe IsoDoc::Mpfd do
     <div class="WordSection1">
       <p>&#160;</p>
     </div>
-    <br clear="all" class="section"/>
+    <p><br clear="all" class="section"/></p>
     <div class="WordSection2">
-      <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
       <div>
         <h1 class="ForewordTitle">&#21069;&#35328;</h1>
         <p id="A">This is a preamble</p>
       </div>
-      <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
       <div class="Section3" id="B">
         <h1 class="IntroTitle">&#24341;&#35328;</h1>
         <div id="C"><h2>Introduction Subsection</h2>
@@ -299,7 +299,7 @@ RSpec.describe IsoDoc::Mpfd do
       </div>
       <p>&#160;</p>
     </div>
-    <br clear="all" class="section"/>
+    <p><br clear="all" class="section"/></p>
     <div class="WordSection3">
       <p class="zzSTDTitle1"/>
       <div id="M">
@@ -311,7 +311,7 @@ RSpec.describe IsoDoc::Mpfd do
 
  </div>
       </div>
-      <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
       <div id="P" class="Section3">
         <h1 class="Annex">&#38468;&#24405;A <b>Annex</b></h1>
         <div id="Q"><h2>A.1. Annex A.1</h2>
@@ -321,7 +321,7 @@ RSpec.describe IsoDoc::Mpfd do
    </div>
  </div>
       </div>
-      <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
       <div>
         <h1 class="Section3">&#21442;&#32771;&#25991;&#29486;</h1>
         <div>
@@ -409,11 +409,11 @@ INPUT
            <div class="WordSection1">
              <p>&#160;</p>
            </div>
-           <br clear="all" class="section"/>
+           <p><br clear="all" class="section"/></p>
            <div class="WordSection2">
              <p>&#160;</p>
            </div>
-           <br clear="all" class="section"/>
+           <p><br clear="all" class="section"/></p>
            <div class="WordSection3">
              <p class="zzSTDTitle1"/>
              <div id="A">
@@ -453,7 +453,7 @@ INPUT
                    </div>
                </div>
              </div>
-             <br clear="all" style="mso-special-character:line-break;page-break-before:always"/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div class="Section3">
                <h1 class="Annex"><b>Appendix A</b> <b>Annex</b></h1>
                <div id="AA"><h2>A.1. A</h2>
