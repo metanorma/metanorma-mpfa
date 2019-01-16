@@ -12,10 +12,14 @@ module IsoDoc
       def initialize(options)
         @libdir = File.dirname(__FILE__)
         super
+      end
+
+      def convert1(docxml, filename, dir)
         FileUtils.cp html_doc_path("logo.jpg"), "logo.jpg"
         FileUtils.cp html_doc_path('mpfa-logo-no-text@4x.png'), "mpfa-logo-no-text@4x.png"
         @files_to_delete << "logo.jpg"
         @files_to_delete << "mpfa-logo-no-text@4x.png"
+        super
       end
 
       def default_fonts(options)
@@ -107,9 +111,9 @@ module IsoDoc
         "//preface/clause[descendant::terms]".freeze
 
       SECTIONS_XPATH = 
-         "//foreword | //introduction | //preface/terms | //preface/clause | //annex | "\
-      "//sections/clause | //bibliography/references | "\
-      "//bibliography/clause".freeze
+        "//foreword | //introduction | //preface/terms | //preface/clause | //annex | "\
+        "//sections/clause | //bibliography/references | "\
+        "//bibliography/clause".freeze
 
       def terms_defs(isoxml, out, num)
         f = isoxml.at(ns(TERM_CLAUSE)) or return num
