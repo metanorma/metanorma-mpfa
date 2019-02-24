@@ -45,7 +45,7 @@ module Asciidoctor
           else
             if @term_def then term_def_subclause_parse(a, xml, node)
             elsif @biblio then bibliography_parse(a, xml, node)
-            elsif node.attr("style") == "bibliography" && node.level == 1
+            elsif node.attr("style") == "bibliography"
               bibliography_parse(a, xml, node)
             elsif node.attr("style") == "abstract"
               abstract_parse(a, xml, node)
