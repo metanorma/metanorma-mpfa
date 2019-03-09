@@ -1,8 +1,8 @@
 = Metanorma-MPFD: Metanorma processor for MPFA documents
 
 image:https://img.shields.io/gem/v/metanorma-mpfd.svg["Gem Version", link="https://rubygems.org/gems/metanorma-mpfd"]
-image:https://img.shields.io/travis/riboseinc/metanorma-mpfd/master.svg["Build Status", link="https://travis-ci.com/riboseinc/metanorma-mpfd"]
-image:https://codeclimate.com/github/riboseinc/metanorma-mpfd/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/metanorma-mpfd"]
+image:https://img.shields.io/travis/metanorma/metanorma-mpfd/master.svg["Build Status", link="https://travis-ci.com/metanorma/metanorma-mpfd"]
+image:https://codeclimate.com/github/metanorma/metanorma-mpfd/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/metanorma-mpfd"]
 
 WARNING: This gem is still under development. Moreover, unlike other Metanorma gems, 
 there is no formal MPFD specification, and this work is still currently exploratory.
@@ -13,9 +13,9 @@ This gem processes http://asciidoctor.org/[Asciidoctor] documents following
 a template for generating documents for the http://www.mpfa.org.hk[Mandatory Provident Fund Schemes Authority of Hong Kong]
 (MPFA). (MPFD stands for Mandatory Provident Fund Schemes Authority Documents.)
 
-The gem currently inherits from the https://github.com/riboseinc/metanorma-standoc
+The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
 gem, and aligns closely to it. Refer to the ISO gem documentation
-for guidance, including https://github.com/riboseinc/metanorma-iso/wiki/Guidance-for-authoring
+for guidance, including https://github.com/metanorma/metanorma-iso/wiki/Guidance-for-authoring
 
 The following outputs are generated.
 
@@ -53,17 +53,17 @@ document.
 
 The gem then converts the XML into HTML and DOC.
 
-Sample documents are available at http://github.com/riboseinc/mpfd-documents/
+Sample documents are available at http://github.com/metanorma/mpfd-documents/
 
 === Installation
 
-If you are using a Mac, the https://github.com/riboseinc/metanorma-macos-setup
+If you are using a Mac, the https://github.com/metanorma/metanorma-macos-setup
 repository has instructions on setting up your machine to run Metanorma
 scripts such as this one. You need only run the following in a Terminal console:
 
 [source,console]
 ----
-$ bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup/master/metanorma-setup)
+$ bash <(curl -s https://raw.githubusercontent.com/metanorma/metanorma-macos-setup/master/metanorma-setup)
 $ gem install metanorma-mpfd
 $ gem install metanorma-cli
 ----
@@ -76,7 +76,7 @@ The metanorma-cli gem is the command-line interface for the Metanorma tool suite
 === Document model
 
 The MPFD model is an instance of the
-https://github.com/riboseinc/isodoc-models[StandardDocument model].
+https://github.com/metanorma/metanorma-model-standoc[StandardDocument model].
 
 The Metanorma XML format intends to introduce rigor into the MPFD
 standards authoring process, and is prescribed in a separate document.
@@ -100,7 +100,7 @@ tables etc, and automatically generating references and citations.
 [[model_additions]]
 == Asciidoctor features specific to MPFD
 
-The https://github.com/riboseinc/metanorma-standoc[metanorma-standoc]
+The https://github.com/metanorma/metanorma-standoc[metanorma-standoc]
 gem documents the customisations of Asciidoctor markup common to all metanorma gems.
 The following markup is specific to this gem.
 
@@ -141,7 +141,7 @@ and glossary.
 
 === Guidance clauses
 
-Compliance documents in the MPFA (e.g. https://github.com/riboseinc/mpfd-documents/blob/master/compliance/mpfd-compliance.adoc)
+Compliance documents in the MPFA (e.g. https://github.com/metanorma/mpfd-documents/blob/master/compliance/mpfd-compliance.adoc)
 present compliance standards, following by an "Explanatory Notes and Guidance" clause. That clause is nested within the
 standards clause, and has a special identifier: the standards clause identifier, followed by E.
 
@@ -270,7 +270,7 @@ This is rendered as
 === Common attributes
 
 The gem relies on Asciidoctor document attributes to provide necessary
-metadata about the document. The https://github.com/riboseinc/metanorma-standoc[metanorma-standoc]
+metadata about the document. The https://github.com/metanorma/metanorma-standoc[metanorma-standoc]
 gem documents the Asciidoctor document attributes common to all metanorma gems. These include:
 
 `:edition:`:: The document edition
@@ -301,9 +301,9 @@ these are otherwise suppressed.
 == Data Models
 
 The MPFD Document format is an instance of the
-https://github.com/riboseinc/isodoc-models[StandardDocument model]. Details of
+https://github.com/metanorma/metanorma-model-standoc[StandardDocument model]. Details of
 this general model can be found on its page. 
 
 == Examples
 
-Sample documents are available at http://github.com/riboseinc/mpfd-documents/
+Sample documents are available at http://github.com/metanorma/mpfd-documents/

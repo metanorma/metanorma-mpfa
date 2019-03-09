@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
     This gem is in active development.
   DESCRIPTION
 
-  spec.homepage      = "https://github.com/riboseinc/metanorma-mpfd"
+  spec.homepage      = "https://github.com/metanorma/metanorma-mpfd"
   spec.license       = "BSD-2-Clause"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
