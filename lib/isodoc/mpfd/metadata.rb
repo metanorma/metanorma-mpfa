@@ -8,7 +8,6 @@ module IsoDoc
     class Metadata < IsoDoc::Metadata
       def initialize(lang, script, labels)
         super
-        # set(:status, "")
       end
 
       def title(isoxml, _out)
