@@ -58,7 +58,7 @@ HDR
 BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
        <mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
-       <bibdata type="article">
+       <bibdata type="standard">
         <title language="en" format="text/plain">Document title</title>
 
          <contributor>
@@ -90,9 +90,9 @@ BLANK_HDR = <<~"HDR"
              </organization>
            </owner>
          </copyright>
-         <editorialgroup>
-           <committee/>
-         </editorialgroup>
+         <ext>
+         <doctype>article</doctype>
+         </ext>
        </bibdata>
 HDR
 

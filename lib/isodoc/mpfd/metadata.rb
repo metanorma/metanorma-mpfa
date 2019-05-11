@@ -30,9 +30,9 @@ module IsoDoc
       end
 
       def doctype(isoxml, _out)
-        b = isoxml.at(ns("//bibdata")) || return
-        return unless b["type"]
-        t = b["type"].split(/[- ]/).
+        b = isoxml&.at(ns("//bibdata/ext/doctype"))&.text || return
+        return unless b
+        t = b.split(/[- ]/).
           map{ |w| w.capitalize unless w == "MPF" }.join(" ")
         set(:doctype, t)
       end

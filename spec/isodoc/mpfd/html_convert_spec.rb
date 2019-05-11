@@ -32,10 +32,13 @@ RSpec.describe IsoDoc::Mpfd do
       </organization>
     </owner>
   </copyright>
+  <ext>
+  <doctype>standard</doctype>
   <editorialgroup>
     <committee type="A">TC</committee>
   </editorialgroup>
   <security>Client Confidential</security>
+  </ext>
 </bibdata><version>
   <edition>2</edition>
   <revision-date>2000-01-01</revision-date>
@@ -46,7 +49,7 @@ RSpec.describe IsoDoc::Mpfd do
     INPUT
 
     output = <<~"OUTPUT"
-    {:accesseddate=>"XXX", :circulateddate=>"XXX", :confirmeddate=>"XXX", :copieddate=>"XXX", :createddate=>"XXX", :docnumber=>"1000", :doctitle=>"Main Title", :doctype=>"Standard", :docyear=>"2001", :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :edition=>"Second", :editorialgroup=>[], :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :obsoletes=>nil, :obsoletes_part=>nil, :publisheddate=>"XXX", :publisher=>"Ribose", :receiveddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"1 January 2000", :sc=>"XXXX", :secretariat=>"XXXX", :stage=>"Published", :tc=>"XXXX", :transmitteddate=>"XXX", :unchangeddate=>"XXX", :unpublished=>false, :updateddate=>"XXX", :wg=>"XXXX"}
+    {:accesseddate=>"XXX", :circulateddate=>"XXX", :confirmeddate=>"XXX", :copieddate=>"XXX", :createddate=>"XXX", :docnumber=>"1000", :doctitle=>"Main Title", :doctype=>"Standard", :docyear=>"2001", :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :edition=>"Second", :implementeddate=>"XXX", :issueddate=>"XXX", :obsoleteddate=>"XXX", :publisheddate=>"XXX", :publisher=>"Ribose", :receiveddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"1 January 2000", :stage=>"Published", :transmitteddate=>"XXX", :unchangeddate=>"XXX", :unpublished=>false, :updateddate=>"XXX"}
     OUTPUT
 
     docxml, filename, dir = csdc.convert_init(input, "test", true)

@@ -121,11 +121,14 @@ RSpec.describe Asciidoctor::Mpfd do
       </organization>
     </owner>
   </copyright>
+  <ext>
+  <doctype>standard</doctype>
   <editorialgroup>
     <committee type="A">TC</committee>
     <committee type="B">TC2</committee>
     <committee type="C">TC3</committee>
   </editorialgroup>
+  </ext>
 </bibdata>
 <sections/>
 </mpfd-standard>
@@ -150,7 +153,7 @@ RSpec.describe Asciidoctor::Mpfd do
         output = <<~"OUTPUT"
     <?xml version="1.0" encoding="UTF-8"?>
 <mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
-<bibdata type="article">
+<bibdata type="standard">
   <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
   <docnumber>1000</docnumber>
@@ -180,9 +183,9 @@ RSpec.describe Asciidoctor::Mpfd do
       </organization>
     </owner>
   </copyright>
-  <editorialgroup>
-    <committee/>
-  </editorialgroup>
+  <ext>
+  <doctype>article</doctype>
+  </ext>
 </bibdata>
 <sections/>
 </mpfd-standard>
