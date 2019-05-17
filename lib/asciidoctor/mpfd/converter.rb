@@ -5,6 +5,7 @@ require "isodoc/mpfd/html_convert"
 require "isodoc/mpfd/word_convert"
 require_relative "section"
 require "fileutils"
+require_relative "./validate"
 
 module Asciidoctor
   module Mpfd
