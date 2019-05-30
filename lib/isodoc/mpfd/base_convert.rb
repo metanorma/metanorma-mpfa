@@ -4,7 +4,7 @@ require  "fileutils"
 
 module IsoDoc
   module Mpfd
-  	module BaseConvert
+    module BaseConvert
       def convert1(docxml, filename, dir)
         FileUtils.cp html_doc_path("logo.jpg"), File.join(@localdir, "logo.jpg")
         FileUtils.cp html_doc_path('mpfa-logo-no-text@4x.png'), File.join(@localdir, "mpfa-logo-no-text@4x.png")
@@ -19,7 +19,7 @@ module IsoDoc
 
       def annex_name(annex, name, div)
         div.h1 **{ class: "Annex" } do |t|
-          t << "#{get_anchors[annex['id']][:label]} "
+          t << "#{anchor(annex['id'], :label)} "
           t.b do |b|
             name&.children&.each { |c2| parse(c2, b) }
           end
@@ -44,7 +44,7 @@ module IsoDoc
         @annex_lbl = y["annex"]
         @clause_lbl = y["clause"]
       end
-      
+
       def terms_defs_title(f)
         return f&.at(ns("./title"))&.content
       end
@@ -75,7 +75,7 @@ module IsoDoc
           if c.name == "terms" || c.at(ns(".//terms")) then terms_defs isoxml, out, 0
           else
             out.div **attr_code(id: c["id"]) do |s|
-              clause_name(get_anchors[c['id']][:label],
+              clause_name(anchor(c['id'], :label),
                           c&.at(ns("./title"))&.content, s, nil)
               c.elements.reject { |c1| c1.name == "title" }.each do |c1|
                 parse(c1, s)
@@ -190,7 +190,7 @@ module IsoDoc
       def clause(isoxml, out)
         isoxml.xpath(ns(self.class::MIDDLE_CLAUSE)).each do |c|
           out.div **attr_code(id: c["id"]) do |s|
-            clause_name(get_anchors[c['id']][:label],
+            clause_name(anchor(c['id'], :label),
                         c&.at(ns("./title"))&.content, s, class: c["container"] ? "containerhdr" : nil )
             c.elements.reject { |c1| c1.name == "title" }.each do |c1|
               parse(c1, s)
@@ -204,8 +204,8 @@ module IsoDoc
           inline_header_title(out, node, c1)
         else
           attrs = { class: node["container"] ? "containerhdr" : nil }
-          div.send "h#{get_anchors[node['id']][:level]}", **attr_code(attrs) do |h|
-            lbl = get_anchors[node['id']][:label]
+          div.send "h#{anchor(node['id'], :level]) || '1'}", **attr_code(attrs) do |h|
+            lbl = anchor(node['id'], :label, false)
             h << "#{lbl}. " if lbl && !@suppressheadingnumbers
             c1&.children&.each { |c2| parse(c2, h) }
           end
@@ -215,6 +215,6 @@ module IsoDoc
       def ol_depth(node)
         ol_style(node["type"])
       end
-  	end
+    end
   end
 end
