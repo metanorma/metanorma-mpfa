@@ -171,7 +171,7 @@ module IsoDoc
         @anchors[clause["id"]] = { label: annex_name_lbl(clause, num),
                                    xref: "#{@annex_lbl} #{num}", level: 1 }
         i = 0
-        clause.xpath(ns("./clause")).each do |c|
+        clause.xpath(ns("./clause | ./references")).each do |c|
           container_names(c, 0)
           i = annex_naming(c, num, 1, i)
         end
@@ -182,7 +182,7 @@ module IsoDoc
         clause["container"] or @anchors[clause["id"]] = 
           { label: num, xref: "#{@annex_lbl} #{num}", level: level }
         i = 0
-        clause.xpath(ns("./clause")).each do |c|
+        clause.xpath(ns("./clause | ./references")).each do |c|
           i = annex_naming(c, num, level, i)
         end
       end
