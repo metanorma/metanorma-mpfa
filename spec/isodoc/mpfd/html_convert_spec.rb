@@ -551,9 +551,9 @@ INPUT
              </div>
              <div id="B">
                <h1 class="containerhdr">B</h1>
-               <div id="C"><span class="zzMoveToFollowing"><b>2. C </b></span>
+               <div id="C"><span class="zzMoveToFollowing"><b>2.&#160; C </b></span>
 
-                   <div id="D"><span class="zzMoveToFollowing"><b>2.1. D </b></span>
+                   <div id="D"><span class="zzMoveToFollowing"><b>2.1.&#160; D </b></span>
 
                    </div>
                </div>
