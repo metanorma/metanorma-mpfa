@@ -582,9 +582,12 @@ p.Biblio, p.NormRef {
 3.6 Source Code + figures
  */
 
-.figure, .Sourcecode {
+.Sourcecode {
   font-family: $monospacefont;
   font-variant-ligatures: none;
+}
+
+.figure, .Sourcecode, .pseudocode {
   background-color: #f7f7f7;
   font-size: 0.8em;
   line-height: 1.6em;
@@ -646,7 +649,7 @@ table.example {
 }
 
 
-.example .Sourcecode {
+.example .Sourcecode, .example .pseudocode {
       background: none;
 }
 
@@ -1065,7 +1068,7 @@ a.anchorjs-link:hover {
     margin-top: 1.2em;
   }
 
-  .note, .figure, .Sourcecode, table {
+  .note, .figure, .Sourcecode, .pseudocode, table {
     page-break-inside: avoid;
   }
 
