@@ -11,7 +11,7 @@ RSpec.describe IsoDoc::Mpfd do
 </mpfd-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
     #{WORD_HDR}
     <div>
   <h1 class="ForewordTitle">Foreword</h1>
@@ -20,12 +20,12 @@ RSpec.describe IsoDoc::Mpfd do
     #{WORD_FTR}
     OUTPUT
 
-    expect(
+    expect(xmlpp(
       IsoDoc::Mpfd::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
+    )).to be_equivalent_to output
   end
 
   it "processes keyword" do
@@ -37,7 +37,7 @@ RSpec.describe IsoDoc::Mpfd do
 </mpfd-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
         #{WORD_HDR}
              <div>
               <h1 class="ForewordTitle">Foreword</h1>
@@ -46,12 +46,12 @@ RSpec.describe IsoDoc::Mpfd do
          #{WORD_FTR}
     OUTPUT
 
-    expect(
+    expect(xmlpp(
       IsoDoc::Mpfd::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
+    )).to be_equivalent_to output
   end
 
   it "processes section names" do
@@ -121,7 +121,7 @@ RSpec.describe IsoDoc::Mpfd do
        </mpfd-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
            <body lang="EN-US" link="blue" vlink="#954F72">
            <div class="WordSection1">
              <p>&#160;</p>
@@ -192,11 +192,11 @@ RSpec.describe IsoDoc::Mpfd do
          </body>
     OUTPUT
 
-    expect(
+    expect(xmlpp(
       IsoDoc::Mpfd::WordConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
+    )).to be_equivalent_to output
   end
 
     it "processes Simplified Chinese" do
@@ -266,7 +266,7 @@ RSpec.describe IsoDoc::Mpfd do
        </mpfd-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
     <body lang="EN-US" link="blue" vlink="#954F72">
     <div class="WordSection1">
       <p>&#160;</p>
@@ -331,15 +331,15 @@ RSpec.describe IsoDoc::Mpfd do
     </div>
   </body>
 OUTPUT
-    expect(
+    expect(xmlpp(
       IsoDoc::Mpfd::WordConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
+    )).to be_equivalent_to output
   end
 
     it "processes containers" do
-      expect(IsoDoc::Mpfd::WordConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>")).to be_equivalent_to <<~"OUTPUT"
+      expect(xmlpp(IsoDoc::Mpfd::WordConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <sections>
     <clause id="A">
@@ -497,7 +497,7 @@ OUTPUT
 </mpfd-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
     #{WORD_HDR}
           <div>
         <h1 class="ForewordTitle">Foreword</h1>
@@ -511,12 +511,12 @@ OUTPUT
   #{WORD_FTR}
     OUTPUT
 
-    expect(
+    expect(xmlpp(
       IsoDoc::Mpfd::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
-    ).to be_equivalent_to output
+    )).to be_equivalent_to output
   end
 
 

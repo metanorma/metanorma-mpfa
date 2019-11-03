@@ -36,7 +36,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
 </mpfd-standard>
     OUTPUT
 
-    expect(processor.input_to_isodoc(input, nil)).to be_equivalent_to output
+    expect(xmlpp(processor.input_to_isodoc(input, nil))).to be_equivalent_to xmlpp(output)
   end
 
   it "generates XML from IsoDoc XML" do
@@ -81,8 +81,8 @@ RSpec.describe Metanorma::Mpfd::Processor do
     processor.output(input, "test.html", :html)
     expect(File.exists?("test.html")).to be true
     expect(
-      File.read("test.html", encoding: "utf-8").gsub(%r{^.*<main}m, "<main").gsub(%r{</main>.*}m, "</main>")
-    ).to be_equivalent_to output
+      xmlpp(File.read("test.html", encoding: "utf-8").gsub(%r{^.*<main}m, "<main").gsub(%r{</main>.*}m, "</main>"))
+    ).to be_equivalent_to xmlpp(output)
 
   end
 
@@ -113,8 +113,8 @@ RSpec.describe Metanorma::Mpfd::Processor do
    expect(File.exists?("test.doc")).to be true
 
    expect(
-      File.read("test.doc", encoding: "utf-8").gsub(%r{^.*<div class="WordSection3"}m, %(<div class="WordSection3")).gsub(%r{<div style="mso-element:footnote-list".*}m, "")
-    ).to be_equivalent_to output
+      xmlpp(File.read("test.doc", encoding: "utf-8").gsub(%r{^.*<div class="WordSection3"}m, %(<div class="WordSection3")).gsub(%r{<div style="mso-element:footnote-list".*}m, ""))
+    ).to be_equivalent_to xmlpp(output)
 
   end
 

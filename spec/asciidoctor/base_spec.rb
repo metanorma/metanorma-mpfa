@@ -11,9 +11,9 @@ RSpec.describe Asciidoctor::Mpfd do
   #  FileUtils.cd "spec/examples"
   #  Asciidoctor.convert_file "rfc6350.adoc", {:attributes=>{"backend"=>"mpfd"}, :safe=>0, :header_footer=>true, :requires=>["metanorma-mpfd"], :failure_level=>4, :mkdirs=>true, :to_file=>nil}
   #  FileUtils.cd "../.."
-  #  expect(File.exist?("spec/examples/rfc6350.doc")).to be true
-  #  expect(File.exist?("spec/examples/rfc6350.html")).to be true
-  #  expect(File.exist?("spec/examples/rfc6350.pdf")).to be true
+  #  expect(xmlpp(File.exist?("spec/examples/rfc6350.doc"))).to be true
+  #  expect(xmlpp(File.exist?("spec/examples/rfc6350.html"))).to be true
+  #  expect(xmlpp(File.exist?("spec/examples/rfc6350.pdf"))).to be true
   #end
 
   it "processes a blank document" do
@@ -21,13 +21,13 @@ RSpec.describe Asciidoctor::Mpfd do
     #{ASCIIDOC_BLANK_HDR}
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
 <sections/>
 </mpfd-standard>
     OUTPUT
 
-    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
   end
 
   it "converts a blank document" do
@@ -38,14 +38,14 @@ RSpec.describe Asciidoctor::Mpfd do
       :novalid:
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
 <sections/>
 </mpfd-standard>
     OUTPUT
 
     system "rm -f test.html"
-    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
   end
 
@@ -81,7 +81,7 @@ RSpec.describe Asciidoctor::Mpfd do
       :security: Client Confidential
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
     <?xml version="1.0" encoding="UTF-8"?>
 <mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
 <bibdata type="standard">
@@ -134,7 +134,7 @@ RSpec.describe Asciidoctor::Mpfd do
 </mpfd-standard>
     OUTPUT
 
-    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
   end
 
     it "processes default metadata" do
@@ -150,7 +150,7 @@ RSpec.describe Asciidoctor::Mpfd do
       :title: Main Title
     INPUT
 
-        output = <<~"OUTPUT"
+        output = xmlpp(<<~"OUTPUT")
     <?xml version="1.0" encoding="UTF-8"?>
 <mpfd-standard xmlns="https://open.ribose.com/standards/mpfd">
 <bibdata type="standard">
@@ -191,7 +191,7 @@ RSpec.describe Asciidoctor::Mpfd do
 </mpfd-standard>
     OUTPUT
 
-    expect(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
 
     end
 
@@ -203,7 +203,7 @@ RSpec.describe Asciidoctor::Mpfd do
       == Section 1
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
              <preface><foreword obligation="informative">
          <title>Foreword</title>
@@ -215,7 +215,7 @@ RSpec.describe Asciidoctor::Mpfd do
        </mpfd-standard>
     OUTPUT
 
-    expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)))).to be_equivalent_to output
   end
 
   it "uses default fonts" do
@@ -291,7 +291,7 @@ RSpec.describe Asciidoctor::Mpfd do
       [smallcap]#smallcap#
     INPUT
 
-    output = <<~"OUTPUT"
+    output = xmlpp(<<~"OUTPUT")
             #{BLANK_HDR}
        <sections>
         <p id="_"><em>emphasis</em>
@@ -310,11 +310,11 @@ RSpec.describe Asciidoctor::Mpfd do
        </mpfd-standard>
     OUTPUT
 
-    expect(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)))).to be_equivalent_to output
   end
 
   it "processes sections" do
-        expect(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true))).to be_equivalent_to <<~"OUTPUT"
+        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
         #{ASCIIDOC_BLANK_HDR}
         
         Foreword
@@ -418,7 +418,7 @@ OUTPUT
   end
 
     it "processes sections" do
-        expect(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true))).to be_equivalent_to <<~"OUTPUT"
+        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
         #{ASCIIDOC_BLANK_HDR}
 
         Foreword
