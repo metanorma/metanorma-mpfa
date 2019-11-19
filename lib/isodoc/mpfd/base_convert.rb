@@ -5,13 +5,13 @@ require  "fileutils"
 module IsoDoc
   module Mpfd
     module BaseConvert
-      def convert1(docxml, filename, dir)
-        FileUtils.cp html_doc_path("logo.jpg"), File.join(@localdir, "logo.jpg")
-        FileUtils.cp html_doc_path('mpfa-logo-no-text@4x.png'), File.join(@localdir, "mpfa-logo-no-text@4x.png")
-        @files_to_delete << File.join(@localdir, "logo.jpg")
-        @files_to_delete << File.join(@localdir, "mpfa-logo-no-text@4x.png")
-        super
-      end
+      #def convert1(docxml, filename, dir)
+      #  FileUtils.cp html_doc_path("logo.jpg"), File.join(@localdir, "logo.jpg")
+      #  FileUtils.cp html_doc_path('mpfa-logo-no-text@4x.png'), File.join(@localdir, "mpfa-logo-no-text@4x.png")
+      #  @files_to_delete << File.join(@localdir, "logo.jpg")
+      #  @files_to_delete << File.join(@localdir, "mpfa-logo-no-text@4x.png")
+      #  super
+      #end
 
       def metadata_init(lang, script, labels)
         @meta = Metadata.new(lang, script, labels)
