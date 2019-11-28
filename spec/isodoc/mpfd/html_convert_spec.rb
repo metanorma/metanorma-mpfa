@@ -496,7 +496,7 @@ RSpec.describe IsoDoc::Mpfd do
         </clause>
     </clause>
 </sections>
-<annex><title>Annex</title>
+<annex id="A0"><title>Annex</title>
     <clause id="AA">
         <title>A</title>
     </clause>
@@ -570,7 +570,7 @@ INPUT
                </div>
              </div>
              <br/>
-             <div class="Section3">
+             <div id="A0" class="Section3">
                <h1 class="Annex"><b>Appendix A</b> <b>Annex</b></h1>
                <div id="AA"><h2>A.1. A</h2>
 
