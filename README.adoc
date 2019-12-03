@@ -88,4 +88,8 @@ this general model can be found on its page.
 
 == Examples
 
-Sample documents are available at http://github.com/metanorma/mpfd-documents/
+* Example documents are avalable at the https://github.com/metanorma/mn-samples-mpf[mn-samples-mpf] repository.
+
+////
+* Document templates are available at the https://github.com/metanorma/mn-templates-mpf[mn-templates-mpf] repository.
+/////
