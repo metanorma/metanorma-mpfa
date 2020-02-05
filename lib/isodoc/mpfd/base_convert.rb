@@ -204,7 +204,7 @@ module IsoDoc
           inline_header_title(out, node, c1)
         else
           attrs = { class: node["container"] ? "containerhdr" : nil }
-          div.send "h#{anchor(node['id'], :level) || '1'}", **attr_code(attrs) do |h|
+          div.send "h#{anchor(node['id'], :level, :false) || '1'}", **attr_code(attrs) do |h|
             lbl = anchor(node['id'], :label, false)
             h << "#{lbl}. " if lbl && !@suppressheadingnumbers
             c1&.children&.each { |c2| parse(c2, h) }
