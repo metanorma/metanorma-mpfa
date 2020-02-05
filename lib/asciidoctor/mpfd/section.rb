@@ -23,23 +23,24 @@ module Asciidoctor
         end
       end
 
+      def sectiontype_streamline(ret)
+        case ret
+        when "glossary" then "terms and definitions"
+        else
+          super
+        end
+      end
+
       def section(node)
         a = section_attributes(node)
         noko do |xml|
           case sectiontype(node)
           when "introduction" then introduction_parse(a, xml, node)
-          when "terms and definitions",
-            "terms, definitions, symbols and abbreviated terms",
-            "terms, definitions, symbols and abbreviations",
-            "terms, definitions and symbols",
-            "terms, definitions and abbreviations",
-            "terms, definitions and abbreviated terms",
-            "glossary"
+          when "terms and definitions"
             @term_def = true
             term_def_parse(a, xml, node, true)
             @term_def = false
-          when "symbols and abbreviated terms",
-            "symbols", "abbreviated terms", "abbrevations"
+          when "symbols and abbreviated terms"
             symbols_parse(a, xml, node)
           when "bibliography" then bibliography_parse(a, xml, node)
           else
