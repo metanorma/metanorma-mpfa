@@ -14,6 +14,8 @@ module Asciidoctor
     # schema encapsulation of the document for validation
     #
     class Converter < Standoc::Converter
+      XML_ROOT_TAG = "mpfd-standard".freeze
+      XML_NAMESPACE = "https://open.ribose.com/standards/mpfd".freeze
 
       register_for "mpfd"
 
@@ -74,16 +76,8 @@ module Asciidoctor
       end
 
       def makexml(node)
-        result = ["<?xml version='1.0' encoding='UTF-8'?>\n<mpfd-standard>"]
         @draft = node.attributes.has_key?("draft")
-        result << noko { |ixml| front node, ixml }
-        result << noko { |ixml| middle node, ixml }
-        result << "</mpfd-standard>"
-        result = textcleanup(result)
-        ret1 = cleanup(Nokogiri::XML(result))
-        validate(ret1) unless @novalid
-        ret1.root.add_namespace(nil, MPFD_NAMESPACE)
-        ret1
+        super
       end
 
       def doctype(node)
