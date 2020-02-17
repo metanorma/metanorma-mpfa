@@ -15,7 +15,7 @@ module Asciidoctor
     #
     class Converter < Standoc::Converter
       XML_ROOT_TAG = "mpfd-standard".freeze
-      XML_NAMESPACE = "https://www.metanorma.com/ns/mpfd".freeze
+      XML_NAMESPACE = "https://www.metanorma.org/ns/mpfd".freeze
 
       register_for "mpfd"
 
