@@ -39,7 +39,7 @@ module IsoDoc
         set(:doctype, t)
       end
 
-      def status_abbr(status)
+      def stage_abbr(status)
         case status
         when "working-draft" then "wd"
         when "committee-draft" then "cd"
