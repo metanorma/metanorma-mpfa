@@ -6,16 +6,6 @@ RSpec.describe Asciidoctor::Mpfd do
     expect(Metanorma::Mpfd::VERSION).not_to be nil
   end
 
-  #it "generates output for the Rice document" do
-  #  FileUtils.rm_f %w(spec/examples/rfc6350.xml spec/examples/rfc6350.doc spec/examples/rfc6350.html spec/examples/rfc6350.pdf)
-  #  FileUtils.cd "spec/examples"
-  #  Asciidoctor.convert_file "rfc6350.adoc", {:attributes=>{"backend"=>"mpfd"}, :safe=>0, :header_footer=>true, :requires=>["metanorma-mpfd"], :failure_level=>4, :mkdirs=>true, :to_file=>nil}
-  #  FileUtils.cd "../.."
-  #  expect(xmlpp(File.exist?("spec/examples/rfc6350.doc"))).to be true
-  #  expect(xmlpp(File.exist?("spec/examples/rfc6350.html"))).to be true
-  #  expect(xmlpp(File.exist?("spec/examples/rfc6350.pdf"))).to be true
-  #end
-
   it "processes a blank document" do
     input = <<~"INPUT"
     #{ASCIIDOC_BLANK_HDR}
@@ -333,6 +323,8 @@ RSpec.describe Asciidoctor::Mpfd do
         [preface]
         == Prefatory
 
+        == Acknowledgements
+
         == Clause 
         === Introduction
         Clause Introduction
@@ -375,7 +367,11 @@ INPUT
 </terms></clause>
 <clause id="_" obligation="normative">
   <title>Prefatory</title>
-</clause></preface><sections>
+</clause>
+<acknowledgements id='_' obligation='informative'>
+  <title>Acknowledgements</title>
+</acknowledgements>
+</preface><sections>
 
 <definitions id="_">
 <title>Symbols</title>

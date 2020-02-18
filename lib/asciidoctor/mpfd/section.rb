@@ -31,34 +31,6 @@ module Asciidoctor
         end
       end
 
-      def section(node)
-        a = section_attributes(node)
-        noko do |xml|
-          case sectiontype(node)
-          when "introduction" then introduction_parse(a, xml, node)
-          when "terms and definitions"
-            @term_def = true
-            term_def_parse(a, xml, node, true)
-            @term_def = false
-          when "symbols and abbreviated terms"
-            symbols_parse(a, xml, node)
-          when "bibliography" then bibliography_parse(a, xml, node)
-          else
-            if @term_def then term_def_subclause_parse(a, xml, node)
-            elsif @biblio then bibliography_parse(a, xml, node)
-            elsif node.attr("style") == "bibliography"
-              bibliography_parse(a, xml, node)
-            elsif node.attr("style") == "abstract"
-              abstract_parse(a, xml, node)
-            elsif node.attr("style") == "appendix" && node.level == 1
-              annex_parse(a, xml, node)
-            else
-              clause_parse(a, xml, node)
-            end
-          end
-        end.join("\n")
-      end
-
       def term_def_title(_toplevel, node)
         return node.title
       end
@@ -74,12 +46,16 @@ module Asciidoctor
           c.delete("preface")
           preface.add_child c.remove
         end
+        acknowledgements = x.at("//acknowledgements")
+        preface.add_child acknowledgements.remove if acknowledgements
       end
 
       def make_preface(x, s)
-        if x.at("//foreword | //introduction | //terms | //abstract | //clause[@preface]")
+        if x.at("//foreword | //introduction | //terms | //acknowledgements |"\
+            "//abstract[not(ancestor::bibitem)] | //clause[@preface]")
           preface = s.add_previous_sibling("<preface/>").first
           move_sections_into_preface(x, preface)
+          make_abstract(x, s)
         end
       end
 
