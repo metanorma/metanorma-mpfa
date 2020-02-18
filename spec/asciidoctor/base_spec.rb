@@ -356,7 +356,7 @@ INPUT
 </foreword><introduction id="_" obligation="informative">
   <title>Introduction</title>
   <p id="_">Introduction</p>
-</introduction><clause id="_" obligation="normative">
+</introduction><clause id="_" obligation="informative">
 <title>Glossary</title>
 <terms id="_" obligation="normative">
   <title>Subglossary</title>
@@ -365,7 +365,7 @@ INPUT
   <definition><p id="_">Definition</p></definition>
 </term>
 </terms></clause>
-<clause id="_" obligation="normative">
+<clause id="_" obligation="informative">
   <title>Prefatory</title>
 </clause>
 <acknowledgements id='_' obligation='informative'>
@@ -446,7 +446,7 @@ INPUT
   <preferred>Term</preferred>
   <definition><p id="_">Definition</p></definition>
 </term>
-</terms><clause id="_" obligation="normative">
+</terms><clause id="_" obligation="informative">
   <title>Prefatory</title>
 </clause></preface><sections>
 

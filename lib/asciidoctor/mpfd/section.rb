@@ -42,10 +42,7 @@ module Asciidoctor
         preface.add_child introduction.remove if introduction
         terms = x.at("//sections/clause[descendant::terms]") || x.at("//terms")
         preface.add_child terms.remove if terms
-        x.xpath("//clause[@preface]").each do |c|
-          c.delete("preface")
-          preface.add_child c.remove
-        end
+        move_clauses_into_preface(x, preface)
         acknowledgements = x.at("//acknowledgements")
         preface.add_child acknowledgements.remove if acknowledgements
       end
@@ -60,7 +57,6 @@ module Asciidoctor
       end
 
       def clause_parse(attrs, xml, node)
-        attrs[:preface] = true if node.attr("style") == "preface"
         attrs[:guidance] = true if node.role == "guidance"
         attrs[:container] = true if node.role == "container"
         super
