@@ -195,7 +195,7 @@ RSpec.describe Asciidoctor::Mpfd do
 
     output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
-             <preface><foreword obligation="informative">
+             <preface><foreword id="_" obligation="informative">
          <title>Foreword</title>
          <p id="_">This is a preamble</p>
        </foreword></preface><sections>
@@ -350,7 +350,7 @@ RSpec.describe Asciidoctor::Mpfd do
 
 INPUT
        #{BLANK_HDR}
-       <preface><foreword obligation="informative">
+       <preface><foreword id="_" obligation="informative">
   <title>Foreword</title>
   <p id="_">Foreword</p>
 </foreword><introduction id="_" obligation="informative">
@@ -434,7 +434,7 @@ OUTPUT
 
 INPUT
 #{BLANK_HDR}
-<preface><foreword obligation="informative">
+<preface><foreword id="_" obligation="informative">
   <title>Foreword</title>
   <p id="_">Foreword</p>
 </foreword><introduction id="_" obligation="informative">
