@@ -7,152 +7,61 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-        margin: 0;
-        padding: 0;
-}
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-        border: 0;
-        font-size: 100%;
-}
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, tt, var,
-b, u, i, center,
-dl, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-        vertical-align: baseline;
-}
-
-html, body, div, span, applet, object, iframe,
-p, blockquote,
-a, abbr, acronym, address, big, cite,
-del, dfn, em, img, ins, q, s,
-small, strike, strong, sub, sup, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  font-family: $bodyfont;
-}
-
-code, pre, tt, kbd, samp {
-  font-family: $monospacefont;
-  font-variant-ligatures: none;
-}
-
-code *, pre *, tt *, kbd *, samp * {
-  font-family: $monospacefont !important;
-  font-variant-ligatures: none;
-}
-
-h1, h2, h3, h4, h5, h6, .h2Annex {
-  font-family: $headerfont;
-}
-
-dl {
-  display: grid;
-  grid-template-columns: max-content auto;
-}
-
-dt {
-  grid-column-start: 1;
-}
-
-dd {
-  grid-column-start: 2;
-}
-
-dd p, dt p {
-  margin-top: 0px;
-}
-
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-strong {
-  font-weight: 800;
-}
-
+@import 'base_style/all';
 
 /*
     1. HTML & Body
 */
 
-  body {
-    margin: 0;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 100%;
-    color: #301907;
-    font-weight: 300;
-    font-size: 15px;
-    line-height: 1.4em;
-    background-color: #f7f7f7;
+body {
+  @include bodyStyle1(15px, 1.4em, #301907, #f7f7f7, 300);
+  // @include sidebarNavContainer(323px);
+}
+
+main {
+  margin: 0 0 0 6em;
+}
+
+#toc {
+  @include toc(#301907, #301907, #301907);
+  @include sidebarToc();
+
+  .toc-active a {
+    color: white;
   }
 
-  main {margin: 0 0 0 6em;}
-
-  #toc{
-    font-family: $bodyfont;
-    font-weight: 400;
+  li a {
+    text-transform: uppercase;
   }
+
+  ul {
+    a:hover {
+      box-shadow: none;
+      color: white;
+    }
+  }
+}
+
+nav {
+  @include sidebarNav(#f7f7f7, 328px, 15px);
+}
+
+#toggle {
+  @include sidebarNavToggle(white, #301907)
+}
+
+#myBtn {
+  @include toTopBtn(white, #f36f36);
+  text-transform: uppercase;
+
+  a.anchorjs-link {
+    @include anchorLink(#485094)
+  }
+}
+
+strong {
+  font-weight: 800;
+}
 
 /*
     2. Responsive navigation layout
@@ -210,14 +119,14 @@ strong {
     }
 }
 
-  div.figure > img { 
+  div.figure > img {
     margin-left: auto;
 margin-right: auto;
 display: block;
 max-width: 100%;
 height: auto;
   }
-    
+
 
 #toc ul {
     margin: 0;
