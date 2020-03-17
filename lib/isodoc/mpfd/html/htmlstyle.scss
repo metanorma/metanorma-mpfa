@@ -7,152 +7,67 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-        margin: 0;
-        padding: 0;
-}
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-        border: 0;
-        font-size: 100%;
-}
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, tt, var,
-b, u, i, center,
-dl, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-        vertical-align: baseline;
-}
-
-html, body, div, span, applet, object, iframe,
-p, blockquote,
-a, abbr, acronym, address, big, cite,
-del, dfn, em, img, ins, q, s,
-small, strike, strong, sub, sup, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  font-family: $bodyfont;
-}
-
-code, pre, tt, kbd, samp {
-  font-family: $monospacefont;
-  font-variant-ligatures: none;
-}
-
-code *, pre *, tt *, kbd *, samp * {
-  font-family: $monospacefont !important;
-  font-variant-ligatures: none;
-}
-
-h1, h2, h3, h4, h5, h6, .h2Annex {
-  font-family: $headerfont;
-}
-
-dl {
-  display: grid;
-  grid-template-columns: max-content auto;
-}
-
-dt {
-  grid-column-start: 1;
-}
-
-dd {
-  grid-column-start: 2;
-}
-
-dd p, dt p {
-  margin-top: 0px;
-}
-
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-strong {
-  font-weight: 800;
-}
-
+@import 'base_style/all';
 
 /*
     1. HTML & Body
 */
 
-  body {
-    margin: 0;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 100%;
-    color: #301907;
-    font-weight: 300;
-    font-size: 15px;
-    line-height: 1.4em;
-    background-color: #f7f7f7;
+body {
+  @include bodyStyle1(15px, 1.4em, #301907, #f7f7f7, 300);
+  // @include sidebarNavContainer(323px);
+  main {
+    margin: 0 0 0 6em;
+  }
+}
+
+#toc {
+  @include toc(#301907, #301907, #301907);
+  @include sidebarToc();
+
+  .toc-active,
+  li:hover {
+    background: none;
+    box-shadow: none !important;
+    border-bottom: solid 1px #301907 !important;
   }
 
-  main {margin: 0 0 0 6em;}
-
-  #toc{
-    font-family: $bodyfont;
-    font-weight: 400;
+  li:hover a {
+    color: black;
   }
+
+  li a {
+    text-transform: uppercase;
+  }
+
+  ul {
+    a:hover {
+      box-shadow: none;
+      color: white;
+    }
+  }
+}
+
+nav {
+  @include sidebarNav(#f7f7f7, 328px, 15px);
+}
+
+#toggle {
+  @include sidebarNavToggle(white, #301907)
+}
+
+#myBtn {
+  @include toTopBtn(white, #f36f36);
+  text-transform: uppercase;
+
+  a.anchorjs-link {
+    @include anchorLink(#485094)
+  }
+}
+
+strong {
+  font-weight: 800;
+}
 
 /*
     2. Responsive navigation layout
@@ -160,111 +75,29 @@ strong {
 
 
 @media screen and (min-width: 768px) {
-    nav {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 328px;
-        font-size: 0.9em;
-        overflow: auto;
-        padding: 0 0 0 15px;
-        margin-right: 0px;
-        background-color:#f7f7f7;
-    }
-
-    #toggle {
-        position: fixed;
-        height: 100%;
-        width: 15px;
-        background-color:#301907;
-        color: white!important;
-        cursor: pointer;
-        z-index: 100;
-    }
-
-    #toggle span {
-        text-align: center;
-        width: 100%;
-        position: absolute;
-        top: 50%;
-        transform: translate(0, -50%);
-
-    }
-
-    .container {
-        padding-left: 343px;
-    }
-
-    .rule.toc {
-        display: none;
-    }
-
-    h1.toc-contents {
-        margin-top: 1em;
-    }
-
-    ul#toc-list {
-        padding:0;
-        margin:0;
-    }
-}
-
-  div.figure > img { 
-    margin-left: auto;
-margin-right: auto;
-display: block;
-max-width: 100%;
-height: auto;
+  .container {
+      padding-left: 343px;
   }
-    
 
-#toc ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .rule.toc {
+      display: none;
+  }
+
+  h1.toc-contents {
+      margin-top: 1em;
+  }
+
+  ul#toc-list {
+      padding:0;
+      margin:0;
+  }
+  #toggle {
+    width: 15px;
+  }
 }
 
-#toc li a {
-    padding: 5px 10px;
-}
-
-#toc a {
-    color: #301907;
-    text-decoration: none;
-    display: block;
-}
-
-#toc a:hover {
-    box-shadow: none;
-    color: white;
-}
-
-#toc .h2 {
-    padding-left: 30px;
-}
-
-#toc .h3 {
-    padding-left: 50px;
-}
-
-/*
-#toc .toc-active a {
-    color: white;
-}
-*/
-
-#toc .toc-active, #toc li:hover {
-    border-bottom: solid 1px #301907 !important;
-}
-
-#toc li:hover a {
-  background-color: none;
-  box-shadow: none;
-}
-
-#toc li a {
-  text-transform: uppercase;
+div.figure {
+  @include figureBlock();
 }
 
 /*
@@ -272,56 +105,25 @@ height: auto;
 */
 
 .document-type-band {
-    left:0;
-    top:180px;
-    height: 100%;
-    position: fixed;
-    display: block;
-    z-index: 99;
-    /*box-shadow: -5px 0px 10px #1d1d1d*/
-
+  @include docBand(2, 100%, 180px);
 }
 
 .document-stage-band {
-    left:0;
-    top:0;
-    height: 100%;
-    position: fixed;
-    display: block;
-    z-index: 98;
-    box-shadow: -5px 0px 10px #1d1d1d
+  @include docBand(1, 150);
 }
 
-.document-type {
-    position: relative;
-    width: 25px;
+p.document-type,
+p.document-stage {
+  @include docBandTitle(150);
 }
 
-.document-stage {
-    position: relative;
-    width: 25px;
+#governance-band p.document-type {
+  height: 230px !important;
 }
 
-p.document-type, p.document-stage {
-  color: white;
-  text-transform: uppercase;
-  font-size: 0.9em;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  margin:0;
-  margin-left: 6px;
-  writing-mode:tb-rl;
-	-webkit-transform:rotate(180deg);
-	-moz-transform:rotate(180deg);
-	-o-transform: rotate(180deg);
-	white-space:nowrap;
-	display:block;
-  bottom:0;
-}
-
-p.document-type {
-    font-weight: 400;
-    height: 150px;
+p.document-stage {
+  font-weight: 300;
+  height: 160px;
 }
 
 #governance-band p.document-type {
@@ -423,106 +225,78 @@ p.document-stage {
     3.1 Titles
 */
 
-  h1,h2,h3,h4,h5,h6 {
-    font-family: $headerfont;
-    color: #301907;
-    font-weight: 300;
-    margin-top: 2em;
-  }
-
-  h1 {
-    color: #301907;
-    font-size: 1.6em;
-    /* margin-top: 5em; */
-    margin-bottom: 30px;
-    margin-left: -75px;
-    padding: 45px 15px 15px 50px;
-    border-bottom: solid 5px #FD8924;
-    font-weight: 800;
-  }
-
-  h1#content {
-    margin-top: 0em;
-    margin-left: -2em;
-  }
-
-  h1.containerhdr {
-    font-size: 2em;
-    font-weight: 400;
-    margin-top: 2em;
-    margin-bottom: 30px;
-    border-bottom: none;
-  }
-
-  h2.containerhdr {
-    font-size: 1.8em;
-    font-weight: 400;
-    margin-left: -75px;
-    font-style: italic;
-    padding: 45px 15px 15px 50px;
-  }
-
-  h2 {
-    font-size: 1.5em;
-    font-weight: 400;
-  }
-
-  h3 {
-    font-size: 1.1em;
-    font-weight: 100;
-  }
-
-  .TermNum, .Terms, .AltTerms {
-    color: #301907;
-    font-weight: 100;
-  }
-
-  h2.TermNum {
-    font-size: 0.9em;
-  line-height: 1em;
-  margin: 0;
+h1,h2,h3,h4,h5,h6 {
+  font-family: $headerfont;
+  color: #301907;
+  font-weight: 300;
   margin-top: 2em;
-  }
+}
 
-  p.Terms {
-    font-size: 1.1em;
-    line-height: 1.7em;
-    margin: 0;
-  }
+h1 {
+  color: #301907;
+  font-size: 1.6em;
+  /* margin-top: 5em; */
+  margin-bottom: 30px;
+  margin-left: -75px;
+  padding: 45px 15px 15px 50px;
+  border-bottom: solid 5px #FD8924;
+  font-weight: 800;
+}
+
+h1#content {
+  margin-top: 0em;
+  margin-left: -2em;
+}
+
+h1.containerhdr {
+  font-size: 2em;
+  font-weight: 400;
+  margin-top: 2em;
+  margin-bottom: 30px;
+  border-bottom: none;
+}
+
+h2.containerhdr {
+  font-size: 1.8em;
+  font-weight: 400;
+  margin-left: -75px;
+  font-style: italic;
+  padding: 45px 15px 15px 50px;
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 1.1em;
+  font-weight: 100;
+}
+
+.TermNum, .Terms, .AltTerms {
+  color: #301907;
+  font-weight: 100;
+}
+
+h2.TermNum {
+  font-size: 0.9em;
+line-height: 1em;
+margin: 0;
+margin-top: 2em;
+}
+
+p.Terms {
+  font-size: 1.1em;
+  line-height: 1.7em;
+  margin: 0;
+}
 
   /*
   3.2 Links
    */
 
-a, a:visited{
-  text-decoration: none;
-  color: #485094;
-}
-
-a:hover {
-  color: white;
-  background-color: #301907;
-  box-shadow: 3px 0 0 #301907, -3px 0 0 #301907;
-  /* padding: 2px 0 2px 0; */
-}
-
-::selection {
-  background-color: #1661AD; /* WebKit/Blink Browsers */
-  color: white;
-}
-::-moz-selection {
-  background-color: #1661AD; /* Gecko Browsers */
-  color: white;
-}
-
-.contact-info a:hover {
-  color: #485094;
-  text-decoration: underline;
-  background-color: none;
-  box-shadow: 0 0 0 0;
-}
-
-
+@include elementStyles(#485094, #301907, white);
 
 /*
 3.3 Lists
@@ -561,12 +335,8 @@ ul > li:first-child {
 /*
 3.4 Rules
  */
-
 .rule {
-  width: 100%;
-  height: 1px;
-  background-color: #0e1a85;
-  margin: 2em 0;
+  @include rule(1px, #0e1a85)
 }
 
 /*
@@ -582,24 +352,22 @@ p.Biblio, p.NormRef {
 3.6 Source Code + figures
  */
 
+.figure,
+pre,
+.pseudocode {
+  @include pseudocodeBlock(#f7f7f7);
+}
+
 pre {
-  font-family: $monospacefont;
-  font-variant-ligatures: none;
+  @include monospaceBlockStyle()
 }
 
-.figure, pre, .pseudocode {
-  background-color: #f7f7f7;
-  font-size: 0.8em;
-  line-height: 1.6em;
-  padding: 1.5em;
-  margin: 2em 0 1em 0;
-  overflow: auto;
-}
+@include admonitionBlock();
+@include recommendationBlock();
 
-.FigureTitle, .SourceTitle, .AdmonitionTitle, .RecommendationTitle {
-  font-weight: 700;
-  font-size: 1em;
-  text-align: center;
+.FigureTitle,
+.SourceTitle {
+  @include blockTitle()
 }
 
 /*
@@ -628,29 +396,16 @@ pre {
  */
 
 .example {
-  background-color: #e1eef1;
-  margin: 2em 0 1em 0;
-  padding-left: 2em;
-}
+  @include exampleBlock(#e1eef1, #424242, 1.2em);
 
-table.example {
-  padding: 1.2em;
-}
+  .example-title {
+    margin-top: 0;
+  }
 
-.example p {
-    margin: 0;
-}
-
-.example .example-title {
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-top:0;
-  margin-left:-1.5em;
-}
-
-
-.example pre, .example .pseudocode {
-      background: none;
+  pre,
+  .pseudocode {
+    background: none;
+  }
 }
 
 /*
@@ -658,26 +413,18 @@ table.example {
  */
 
 table {
-  border-collapse: collapse;
-  width: 100%;
-  font-weight: 300;
-  margin: 1em 0 2em 0;
-  margin-left: auto;
-  margin-right: auto;
-  padding-right: 2em;
-}
+  @include table(1px solid black);
 
-table, th, td {
-  border: 1px solid black;
-  font-size: 0.95em;
-}
-
-td, th {
-  padding: 1em;
-}
-
-td.header {
-  font-weight: 400;
+  &.glossary,
+  &.glossary tr,
+  &.glossary td {
+    border: none;
+  }
+  &.glossary td {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    padding-top: 20px;
+  }
 }
 
 p.TableTitle {
@@ -685,17 +432,6 @@ p.TableTitle {
   margin-top: 2.5em;
   font-weight: 400;
 }
-
-table.glossary, table.glossary tr, table.glossary td {
-  border: none;
-}
-
-table.glossary td {
-  border-bottom: 1px solid black;
-  padding-bottom: 5px;
-  padding-top: 20px;
-}
-
 
 /*
 3.10 Footnotes
@@ -716,13 +452,7 @@ a.footnote-number {
  */
 
 .Quote {
-  background-color: #f7f7f7;
-  font-style: italic;
-  width: 80%;
-  padding: 1.5em;
-  margin-top: 2em;
-  margin-left: auto;
-  margin-right: auto;
+  @include blockquoteBlock(#f7f7f7);
 }
 
 
@@ -731,11 +461,9 @@ a.footnote-number {
  */
 
 .formula {
-  background-color: #f7f7f7;
-  padding: 1.5em;
-  margin-top: 2em;
-  text-align: center;
+  @include formulaBlock(#f7f7f7)
 }
+
 
 /*
 3.13 Contact Info
@@ -759,8 +487,7 @@ a.footnote-number {
 }
 
 .contact-info p, .contact-info a {
-  font-family: $monospacefont;
-  font-variant-ligatures: none;
+  @include monospaceBlockStyle();
   font-weight: 400;
 }
 
@@ -991,49 +718,9 @@ padding: 0 2em 0 5em; }
 }
 
 
-/*  .copyright .name, .copyright .address {color: #485094;} */
-
-
-
 /*
 5.0 Other styles
  */
-
-
-
-/*
-To top button
- */
-
-#myBtn {
-  font-family: $monospacefont;
-  font-variant-ligatures: none;
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  z-index: 99;
-  font-size: 12px;
-  border: none;
-  outline: none;
-  background-color: #f36f36;
-  opacity: 0.15;
-  color: white;
-  cursor: pointer;
-  padding: 10px 15px 10px 15px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-#myBtn:hover {
-  opacity: 1;
-}
-
-a.anchorjs-link:hover {
-  background-color: none;
-  color: #485094;
-  box-shadow: none;
-}
 
 @page {
   margin: 2cm 1cm;
@@ -1052,15 +739,6 @@ a.anchorjs-link:hover {
 
   .coverpage-title {
     border-left: 0.5em solid #888;
-  }
-
-  nav {
-    page-break-after: always;
-  }
-
-  body {
-    background-color: white;
-    color: #000;
   }
 
   h1, h2, h3, h4 {
@@ -1091,42 +769,9 @@ a.anchorjs-link:hover {
     margin-top: -5px;
   }
 
-
-  #toggle, .document-stage-band,
-  .document-type-band, button#myBtn {
-    display: none;
-  }
-
-  button#myBtn {
-    background-color: white;
-  }
-
   .container {
     padding-left: 0;
   }
-
-  nav {
-    position: relative;
-    width: auto;
-    font-size: 0.9em;
-    overflow: auto;
-    padding: 0;
-    margin-right: 0;
-    background-color: white;
-  }
-
-  #toc .toc-active a {
-    color: #4D7EA5;
-  }
-
-  #toc .toc-active, #toc li:hover {
-    background-color: white;
-    box-shadow: none !important;
-  }
-
-  #toc li:hover a {
-  color: black; }
-
 
   h1.content {
     margin-top: 2em;
@@ -1266,11 +911,6 @@ a.anchorjs-link:hover {
 
 
 @media screen and (max-width: 768px) {
-  #toc {
-    padding: 0 1.5em 0 1.5em;
-    overflow: visible;
-  }
-
   #toggle {
     display: none;
   }
