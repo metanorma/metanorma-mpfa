@@ -80,17 +80,6 @@ module Asciidoctor
         super
       end
 
-      def doctype(node)
-        d = node.attr("doctype")
-=begin
-        unless %w{policy-and-procedures best-practices circular supporting-document report legal directives proposal standard}.include? d
-          warn "#{d} is not a legal document type: reverting to 'standard'"
-          d = "standard"
-        end
-=end
-        d
-      end
-
       def document(node)
         init(node)
         ret1 = makexml(node)
@@ -103,6 +92,7 @@ module Asciidoctor
           word_converter(node).convert filename unless node.attr("nodoc")
           pdf_converter(node).convert filename unless node.attr("nodoc")
         end
+        @log.write(@filename + ".err") unless @novalid
         @files_to_delete.each { |f| FileUtils.rm f }
         ret
       end
