@@ -1,8 +1,9 @@
 = Metanorma-MPFD: Metanorma processor for MPFA documents
 
 image:https://img.shields.io/gem/v/metanorma-mpfd.svg["Gem Version", link="https://rubygems.org/gems/metanorma-mpfd"]
-image:https://travis-ci.com/metanorma/metanorma-mpfd.svg["Build Status", link="https://travis-ci.com/metanorma/metanorma-mpfd"]
-image:https://ci.appveyor.com/api/projects/status/oprurhccr4hv0yy8?svg=true["Appveyor Build Status", link="https://ci.appveyor.com/project/metanorma/metanorma-mpfd"]
+image:https://github.com/metanorma/metanorma-mpfd/workflows/macos/badge.svg["Build Status (macOS)", link="https://github.com/metanorma/metanorma-mpfd/actions?workflow=macos"]
+image:https://github.com/metanorma/metanorma-mpfd/workflows/ubuntu/badge.svg["Build Status (ubuntu)", link="https://github.com/metanorma/metanorma-mpfd/actions?workflow=ubuntu"]
+image:https://github.com/metanorma/metanorma-mpfd/workflows/windows/badge.svg["Build Status (Windows)", link="https://github.com/metanorma/metanorma-mpfd/actions?workflow=windows"]
 image:https://codeclimate.com/github/metanorma/metanorma-mpfd/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/metanorma-mpfd"]
 image:https://img.shields.io/github/issues-pr-raw/metanorma/metanorma-mpfd.svg["Pull Requests", link="https://github.com/metanorma/metanorma-mpfd/pulls"]
 image:https://img.shields.io/github/commits-since/metanorma/metanorma-mpfd/latest.svg["Commits since latest",link="https://github.com/metanorma/metanorma-mpfd/releases"]
