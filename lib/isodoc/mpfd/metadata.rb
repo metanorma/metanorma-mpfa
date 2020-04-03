@@ -51,8 +51,6 @@ module IsoDoc
 
       def version(isoxml, _out)
         super
-        revdate = get[:revdate]
-        set(:revdate_monthyear, monthyr(revdate))
         edition = isoxml.at(ns("//version/edition"))
         if edition
           set(
