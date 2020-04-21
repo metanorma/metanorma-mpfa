@@ -72,7 +72,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
     <main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
       <p class="zzSTDTitle1"></p>
       <div id="H">
-        <h1 id="toc0">1.&#xA0; Clause</h1>
+        <h1>1.&#xA0; Clause</h1>
         <p>Text</p>
       </div>
     </main>
