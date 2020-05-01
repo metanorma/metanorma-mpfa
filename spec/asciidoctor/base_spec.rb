@@ -356,7 +356,7 @@ INPUT
 </foreword><introduction id="_" obligation="informative">
   <title>Introduction</title>
   <p id="_">Introduction</p>
-</introduction><clause id="_" obligation="informative">
+</introduction><clause id="_" obligation="normative">
 <title>Glossary</title>
 <terms id="_" obligation="normative">
   <title>Subglossary</title>
