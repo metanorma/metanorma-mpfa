@@ -13,8 +13,7 @@ module Metanorma
       def output_formats
         super.merge(
           html: "html",
-          doc: "doc",
-          pdf: "pdf"
+          doc: "doc"
         )
       end
 
@@ -32,8 +31,6 @@ module Metanorma
           IsoDoc::Mpfd::HtmlConvert.new(options).convert(outname, isodoc_node)
         when :doc
           IsoDoc::Mpfd::WordConvert.new(options).convert(outname, isodoc_node)
-        when :pdf
-          IsoDoc::Mpfd::PdfConvert.new(options).convert(outname, isodoc_node)
         else
           super
         end

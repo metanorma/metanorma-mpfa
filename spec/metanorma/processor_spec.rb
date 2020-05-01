@@ -17,7 +17,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
 
   it "registers output formats against metanorma" do
     expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
-    [[:doc, "doc"], [:html, "html"], [:pdf, "pdf"], [:rxl, "rxl"], [:xml, "xml"]]
+    [[:doc, "doc"], [:html, "html"], [:rxl, "rxl"], [:xml, "xml"]]
     OUTPUT
   end
 
@@ -117,22 +117,4 @@ RSpec.describe Metanorma::Mpfd::Processor do
     ).to be_equivalent_to xmlpp(output)
 
   end
-
-  it "generates PDF from IsoDoc XML" do
-    FileUtils.rm_f "test.xml"
-    FileUtils.rm_f "test.pdf"
-    input = <<~"INPUT"
-    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
-      <sections>
-        <clause id="H" obligation="normative"><title>Clause</title>
-          <p>Text</p>
-        </clause>
-      </sections>
-    </mpfd-standard>
-    INPUT
-
-   processor.output(input, "test.pdf", :pdf)
-   expect(File.exists?("test.pdf")).to be true
-  end
-
 end
