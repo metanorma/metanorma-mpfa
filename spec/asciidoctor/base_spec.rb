@@ -404,7 +404,7 @@ INPUT
   <p id="_">Appendix</p>
 </annex><bibliography><clause id="_" obligation="informative">
   <title>Bibliography</title>
-  <references id="_" obligation="informative">
+  <references id="_" obligation="informative" normative="false">
   <title>Subbibliography</title>
   <p id="_">bibliography</p>
 </references>
@@ -452,7 +452,7 @@ INPUT
 
 
 
-</sections><bibliography><references id="_" obligation="informative">
+</sections><bibliography><references id="_" obligation="informative" normative="false">
   <title>Bibliography</title>
   <p id="_">bibliography</p>
 </references></bibliography>
