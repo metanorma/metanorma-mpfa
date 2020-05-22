@@ -2,6 +2,13 @@ require "metanorma/processor"
 
 module Metanorma
   module Mpfd
+    def self.fonts_used
+      {
+        html: ["Titillium Web", "Space Mono"],
+        doc: ["Arial", "Courier New"],
+      }
+    end
+
     class Processor < Metanorma::Processor
 
       def initialize
