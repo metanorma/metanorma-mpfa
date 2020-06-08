@@ -90,6 +90,7 @@ module IsoDoc
 
       def middle(isoxml, out)
         middle_title(out)
+        middle_admonitions(isoxml, out)
         clause isoxml, out
         annex isoxml, out
         bibliography isoxml, out
@@ -163,13 +164,13 @@ module IsoDoc
         @anchors[clause["id"]] = { label: annex_name_lbl(clause, num),
                                    xref: "#{@annex_lbl} #{num}", level: 1 }
         if a = single_annex_special_section(clause)
-        annex_names1(a, "#{num}", 1)
+          annex_names1(a, "#{num}", 1)
         else
-        i = 0
-        clause.xpath(ns("./clause | ./references")).each do |c|
-          container_names(c, 0)
-          i = annex_naming(c, num, 1, i)
-        end
+          i = 0
+          clause.xpath(ns("./clause | ./references")).each do |c|
+            container_names(c, 0)
+            i = annex_naming(c, num, 1, i)
+          end
         end
         hierarchical_asset_names(clause, num)
       end
