@@ -52,11 +52,40 @@ RSpec.describe IsoDoc::Mpfd do
     INPUT
 
     output = <<~"OUTPUT"
-    {:accesseddate=>"XXX", :circulateddate=>"XXX", :confirmeddate=>"XXX", :copieddate=>"XXX", :createddate=>"XXX", :docnumber=>"1000", :docnumeric=>"1000", :doctitle=>"Main Title", :doctype=>"Standard", :docyear=>"2001", :draft=>"3.4", :draftinfo=>" (draft 3.4, 2000-01-01)", :edition=>"Second", :implementeddate=>"XXX", :issueddate=>"XXX", :logo=>"#{File.join(logoloc, "mpfa-logo-no-text@4x.png")}", :obsoleteddate=>"XXX", :publisheddate=>"XXX", :publisher=>"Ribose", :receiveddate=>"XXX", :revdate=>"2000-01-01", :revdate_monthyear=>"1 January 2000", :stage=>"Published", :transmitteddate=>"XXX", :unchangeddate=>"XXX", :unpublished=>false, :updateddate=>"XXX", :vote_endeddate=>"XXX", :vote_starteddate=>"XXX"}
+{:accesseddate=>"XXX",
+:circulateddate=>"XXX",
+:confirmeddate=>"XXX",
+:copieddate=>"XXX",
+:createddate=>"XXX",
+:docnumber=>"1000",
+:docnumeric=>"1000",
+:doctitle=>"Main Title",
+:doctype=>"Standard",
+:docyear=>"2001",
+:draft=>"3.4",
+:draftinfo=>" (draft 3.4, 2000-01-01)",
+:edition=>"Second",
+:implementeddate=>"XXX",
+:issueddate=>"XXX",
+:keywords=>[],
+:logo=>"#{File.join(logoloc, "mpfa-logo-no-text@4x.png")}",
+:obsoleteddate=>"XXX",
+:publisheddate=>"XXX",
+:publisher=>"Ribose",
+:receiveddate=>"XXX",
+:revdate=>"2000-01-01",
+:revdate_monthyear=>"1 January 2000",
+:stage=>"Published",
+:transmitteddate=>"XXX",
+:unchangeddate=>"XXX",
+:unpublished=>false,
+:updateddate=>"XXX",
+:vote_endeddate=>"XXX",
+:vote_starteddate=>"XXX"}
     OUTPUT
 
     docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s)).to be_equivalent_to output
+    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s).gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "processes pre" do
@@ -554,9 +583,9 @@ INPUT
              </div>
              <div id="B">
                <h1 class="containerhdr">B</h1>
-               <div id="C"><span class="zzMoveToFollowing"><b>2.&#160; C </b></span>
+               <div id="C"><span class="zzMoveToFollowing"><b>2.&#160; C&#160; </b></span>
 
-                   <div id="D"><span class="zzMoveToFollowing"><b>2.1.&#160; D </b></span>
+                   <div id="D"><span class="zzMoveToFollowing"><b>2.1.&#160; D&#160; </b></span>
 
                    </div>
                </div>
