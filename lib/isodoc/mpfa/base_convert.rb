@@ -4,7 +4,7 @@ require_relative "xref"
 require  "fileutils"
 
 module IsoDoc
-  module Mpfd
+  module MPFA
     module BaseConvert
       def metadata_init(lang, script, labels)
         @meta = Metadata.new(lang, script, labels)

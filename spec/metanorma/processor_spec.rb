@@ -2,13 +2,13 @@ require "spec_helper"
 require "metanorma"
 require "fileutils"
 
-RSpec.describe Metanorma::Mpfd::Processor do
+RSpec.describe Metanorma::MPFA::Processor do
 
   registry = Metanorma::Registry.instance
-  registry.register(Metanorma::Mpfd::Processor)
+  registry.register(Metanorma::MPFA::Processor)
 
   let(:processor) {
-    registry.find_processor(:mpfd)
+    registry.find_processor(:mpfa)
   }
 
   it "registers against metanorma" do
@@ -22,7 +22,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
   end
 
   it "registers version against metanorma" do
-    expect(processor.version.to_s).to match(%r{^Metanorma::Mpfd })
+    expect(processor.version.to_s).to match(%r{^Metanorma::MPFA })
   end
 
   it "generates IsoDoc XML from a blank document" do

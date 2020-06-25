@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe IsoDoc::Mpfd do
+RSpec.describe IsoDoc::MPFA do
 
   it "processes pre" do
     input = <<~"INPUT"
@@ -21,7 +21,7 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::WordConvert.new({}).
+      IsoDoc::MPFA::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -47,7 +47,7 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::WordConvert.new({}).
+      IsoDoc::MPFA::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -193,7 +193,7 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::WordConvert.new({}).convert("test", input, true).
+      IsoDoc::MPFA::WordConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
     )).to be_equivalent_to output
@@ -332,14 +332,14 @@ RSpec.describe IsoDoc::Mpfd do
   </body>
 OUTPUT
     expect(xmlpp(
-      IsoDoc::Mpfd::WordConvert.new({}).convert("test", input, true).
+      IsoDoc::MPFA::WordConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
     )).to be_equivalent_to output
   end
 
     it "processes containers" do
-      expect(xmlpp(IsoDoc::Mpfd::WordConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      expect(xmlpp(IsoDoc::MPFA::WordConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <sections>
     <clause id="A">
@@ -512,7 +512,7 @@ OUTPUT
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::WordConvert.new({}).
+      IsoDoc::MPFA::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")

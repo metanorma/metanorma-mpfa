@@ -1,7 +1,7 @@
-require_relative "./mpfd/processor"
+require_relative "./mpfa/processor"
 
 module Metanorma
-  module Mpfd
+  module MPFA
 
   end
 end

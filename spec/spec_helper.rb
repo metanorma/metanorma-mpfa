@@ -5,16 +5,16 @@ end
 
 require "bundler/setup"
 require "asciidoctor"
-require "metanorma-mpfd"
-require "asciidoctor/mpfd"
-require "isodoc/mpfd/html_convert"
-require "isodoc/mpfd/word_convert"
+require "metanorma-mpfa"
+require "asciidoctor/mpfa"
+require "isodoc/mpfa/html_convert"
+require "isodoc/mpfa/word_convert"
 require "asciidoctor/standoc/converter"
 require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
 require "metanorma"
-require "metanorma/mpfd"
+require "metanorma/mpfa"
 require "rexml/document"
 
 RSpec.configure do |config|

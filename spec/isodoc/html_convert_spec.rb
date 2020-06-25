@@ -1,11 +1,11 @@
 require "spec_helper"
 
-logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", "lib", "isodoc", "mpfd", "html"))
+logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib", "isodoc", "mpfa", "html"))
 
-RSpec.describe IsoDoc::Mpfd do
+RSpec.describe IsoDoc::MPFA do
 
   it "processes default metadata" do
-    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
+    csdc = IsoDoc::MPFA::HtmlConvert.new({})
     input = <<~"INPUT"
 <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <bibdata type="standard">
@@ -109,7 +109,7 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
+      IsoDoc::MPFA::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -137,7 +137,7 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
+      IsoDoc::MPFA::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -306,7 +306,7 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", input, true).
+      IsoDoc::MPFA::HtmlConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
     )).to be_equivalent_to output
@@ -327,7 +327,7 @@ RSpec.describe IsoDoc::Mpfd do
 </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r{jquery\.min\.js})
     expect(html).to match(%r{Overpass})
@@ -477,7 +477,7 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", input, true).
+      IsoDoc::MPFA::HtmlConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
     )).to be_equivalent_to output
@@ -485,7 +485,7 @@ RSpec.describe IsoDoc::Mpfd do
   end
 
     it "processes containers" do
-      expect(xmlpp(IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      expect(xmlpp(IsoDoc::MPFA::HtmlConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <sections>
     <clause id="A">
@@ -660,7 +660,7 @@ OUTPUT
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
+      IsoDoc::MPFA::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")

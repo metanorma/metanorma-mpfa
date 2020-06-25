@@ -1,9 +1,9 @@
 require "spec_helper"
 require "fileutils"
 
-RSpec.describe Asciidoctor::Mpfd do
+RSpec.describe Asciidoctor::MPFA do
   it "has a version number" do
-    expect(Metanorma::Mpfd::VERSION).not_to be nil
+    expect(Metanorma::MPFA::VERSION).not_to be nil
   end
 
   it "processes a blank document" do
@@ -17,7 +17,7 @@ RSpec.describe Asciidoctor::Mpfd do
 </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
   end
 
   it "converts a blank document" do
@@ -35,7 +35,7 @@ RSpec.describe Asciidoctor::Mpfd do
     OUTPUT
 
     system "rm -f test.html"
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
   end
 
@@ -124,7 +124,7 @@ RSpec.describe Asciidoctor::Mpfd do
 </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
   end
 
     it "processes default metadata" do
@@ -181,7 +181,7 @@ RSpec.describe Asciidoctor::Mpfd do
 </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
 
     end
 
@@ -205,7 +205,7 @@ RSpec.describe Asciidoctor::Mpfd do
        </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfa, header_footer: true)))).to be_equivalent_to output
   end
 
   it "uses default fonts" do
@@ -217,7 +217,7 @@ RSpec.describe Asciidoctor::Mpfd do
     INPUT
 
     system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :mpfd, header_footer: true)
+    Asciidoctor.convert(input, backend: :mpfa, header_footer: true)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\bpre[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
@@ -235,7 +235,7 @@ RSpec.describe Asciidoctor::Mpfd do
     INPUT
 
     system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :mpfd, header_footer: true)
+    Asciidoctor.convert(input, backend: :mpfa, header_footer: true)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\bpre[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
@@ -256,7 +256,7 @@ RSpec.describe Asciidoctor::Mpfd do
     INPUT
 
     system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :mpfd, header_footer: true)
+    Asciidoctor.convert(input, backend: :mpfa, header_footer: true)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\bpre[^{]+\{[^{]+font-family: Andale Mono;]m)
@@ -300,11 +300,11 @@ RSpec.describe Asciidoctor::Mpfd do
        </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfd, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfa, header_footer: true)))).to be_equivalent_to output
   end
 
   it "processes sections" do
-        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfa, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
         #{ASCIIDOC_BLANK_HDR}
         
         Foreword
@@ -414,7 +414,7 @@ OUTPUT
   end
 
     it "processes sections" do
-        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfd, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfa, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
         #{ASCIIDOC_BLANK_HDR}
 
         Foreword

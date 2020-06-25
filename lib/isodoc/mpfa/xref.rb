@@ -1,5 +1,5 @@
 module IsoDoc
-  module Mpfd
+  module MPFA
     class Xref < IsoDoc::Xref
       FRONT_CLAUSE = "//*[parent::preface]".freeze
 

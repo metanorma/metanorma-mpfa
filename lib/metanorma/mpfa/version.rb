@@ -1,5 +1,5 @@
 module Metanorma
-  module Mpfd
-    VERSION = "0.3.22"
+  module MPFA
+    VERSION = "0.4.0"
   end
 end
