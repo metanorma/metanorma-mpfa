@@ -1,92 +1,6 @@
 require "spec_helper"
 
-logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", "lib", "isodoc", "mpfd", "html"))
-
-RSpec.describe IsoDoc::Mpfd do
-
-  it "processes default metadata" do
-    csdc = IsoDoc::Mpfd::HtmlConvert.new({})
-    input = <<~"INPUT"
-<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
-<bibdata type="standard">
-  <title language="en" format="plain">Main Title</title>
-  <docidentifier>1000</docidentifier>
-  <docnumber>1000</docnumber>
-  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>Ribose</name>
-    </organization>
-  </contributor>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>Ribose</name>
-    </organization>
-  </contributor>
-  <language>en</language>
-  <script>Latn</script>
-  <status><stage>published</stage></status>
-  <copyright>
-    <from>2001</from>
-    <owner>
-      <organization>
-        <name>Ribose</name>
-      </organization>
-    </owner>
-  </copyright>
-  <ext>
-  <doctype>standard</doctype>
-  <editorialgroup>
-    <committee type="A">TC</committee>
-  </editorialgroup>
-  <security>Client Confidential</security>
-  </ext>
-</bibdata><version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-<sections/>
-</mpfd-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-{:accesseddate=>"XXX",
-:circulateddate=>"XXX",
-:confirmeddate=>"XXX",
-:copieddate=>"XXX",
-:createddate=>"XXX",
-:docnumber=>"1000",
-:docnumeric=>"1000",
-:doctitle=>"Main Title",
-:doctype=>"Standard",
-:docyear=>"2001",
-:draft=>"3.4",
-:draftinfo=>" (draft 3.4, 2000-01-01)",
-:edition=>"Second",
-:implementeddate=>"XXX",
-:issueddate=>"XXX",
-:keywords=>[],
-:logo=>"#{File.join(logoloc, "mpfa-logo-no-text@4x.png")}",
-:obsoleteddate=>"XXX",
-:publisheddate=>"XXX",
-:publisher=>"Ribose",
-:receiveddate=>"XXX",
-:revdate=>"2000-01-01",
-:revdate_monthyear=>"1 January 2000",
-:stage=>"Published",
-:transmitteddate=>"XXX",
-:unchangeddate=>"XXX",
-:unpublished=>false,
-:updateddate=>"XXX",
-:vote_endeddate=>"XXX",
-:vote_starteddate=>"XXX"}
-    OUTPUT
-
-    docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s).gsub(/, :/, ",\n:")).to be_equivalent_to output
-  end
+RSpec.describe IsoDoc::MPFA do
 
   it "processes pre" do
     input = <<~"INPUT"
@@ -98,18 +12,16 @@ RSpec.describe IsoDoc::Mpfd do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{HTML_HDR}
-             <div>
-               <h1/>
-               <pre>ABC</pre>
-             </div>
-             <p class="zzSTDTitle1"/>
-           </div>
-         </body>
+    #{WORD_HDR}
+    <div>
+  <h1 class="ForewordTitle">Foreword</h1>
+  <pre>ABC</pre>
+  </div>
+    #{WORD_FTR}
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
+      IsoDoc::MPFA::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -126,18 +38,16 @@ RSpec.describe IsoDoc::Mpfd do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{HTML_HDR}
+        #{WORD_HDR}
              <div>
-               <h1/>
+              <h1 class="ForewordTitle">Foreword</h1>
                <span class="keyword">ABC</span>
              </div>
-             <p class="zzSTDTitle1"/>
-           </div>
-         </body>
+         #{WORD_FTR}
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
+      IsoDoc::MPFA::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
@@ -146,7 +56,7 @@ RSpec.describe IsoDoc::Mpfd do
 
   it "processes section names" do
     input = <<~"INPUT"
-    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+        <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
       <abstract obligation="informative">
          <title>Summary</title>
@@ -212,89 +122,66 @@ RSpec.describe IsoDoc::Mpfd do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{HTML_HDR}
-        <div>
-  <h1>Summary</h1>
+           <body lang="EN-US" link="blue" vlink="#954F72">
+           <div class="WordSection1">
+             <p>&#160;</p>
+           </div>
+           <p><br clear="all" class="section"/></p>
+           <div class="WordSection2">
+           <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
+<div>
+  <h1 class="AbstractTitle">Abstract</h1>
   <p id="AA">This is an abstract</p>
 </div>
-<div>
-               <h1>Foreword</h1>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
+             <div>
+               <h1 class="ForewordTitle">Foreword</h1>
                <p id="A">This is a preamble</p>
              </div>
-             <div id="B">
-               <h1>Introduction</h1>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
+             <div class="Section3" id="B">
+               <h1 class="IntroTitle">Introduction</h1>
                <div id="C"><h2>Introduction Subsection</h2>
 
-          </div>
+        </div>
              </div>
              <div id="H">
                <h1>Terms, Definitions, Symbols and Abbreviated Terms</h1>
                <div id="I"><h2>Normal Terms</h2>
 
 
-            <p class="Terms" style="text-align:left;">Term2</p>
+          <p class="Terms" style="text-align:left;">Term2</p>
 
-          </div>
+        </div>
                <div id="K"><h2>Symbols and abbreviated terms</h2>
-            <dl><dt><p>Symbol</p></dt><dd>Definition</dd></dl>
-          </div>
+          <table class="dl"><tr><td valign="top" align="left"><p align="left" style="margin-left:0pt;text-align:left;">Symbol</p></td><td valign="top">Definition</td></tr></table>
+        </div>
              </div>
-             <div>
-               <h1/>
-               <div id="D"><h1>1. Scope</h1>
-
-            <p id="E">Text</p>
-          </div>
-               <div id="L"><h2>Symbols and abbreviated terms</h2>
-            <dl><dt><p>Symbol</p></dt><dd>Definition</dd></dl>
-          </div>
-               <div id="M"><h1>2. Clause 4</h1><div id="N"><h2>2.1. Introduction</h2>
-
-          </div>
-          <div id="O"><h2>2.2. Clause 4.2</h2>
-
-          </div></div>
-             </div>
-             <div id="P">
-               <h1><b>Appendix A</b>.&#160; Annex</h1>
-               <div id="Q"><h2>A.1. Annex A.1</h2>
-
-            <div id="Q1"><h3>A.1.1. Annex A.1a</h3>
-
-            </div>
-          </div>
-             </div>
-             <div>
-               <h1/>
-               <div>
-                 <h2 class="Section3">Normative References</h2>
-               </div>
-               <div id="S"><h1>Bibliography</h1>
-
-            <div><h2 class="Section3">Bibliography Subsection</h2></div>
-          </div>
-             </div>
+             <p>&#160;</p>
+           </div>
+           <p><br clear="all" class="section"/></p>
+           <div class="WordSection3">
              <p class="zzSTDTitle1"/>
              <div id="M">
-               <h1>2.&#160; Clause 4</h1>
+               <h1>2.<span style="mso-tab-count:1">&#160; </span>Clause 4</h1>
                <div id="N"><h2>2.1. Introduction</h2>
 
-          </div>
+        </div>
                <div id="O"><h2>2.2. Clause 4.2</h2>
 
-          </div>
+        </div>
              </div>
-             <br/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div id="P" class="Section3">
                <h1 class="Annex"><b>Appendix A</b> <b>Annex</b></h1>
                <div id="Q"><h2>A.1. Annex A.1</h2>
 
-            <div id="Q1"><h3>A.1.1. Annex A.1a</h3>
+          <div id="Q1"><h3>A.1.1. Annex A.1a</h3>
 
-            </div>
           </div>
+        </div>
              </div>
-             <br/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div>
                <h1 class="Section3">Bibliography</h1>
                <div>
@@ -306,40 +193,19 @@ RSpec.describe IsoDoc::Mpfd do
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", input, true).
+      IsoDoc::MPFA::WordConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
     )).to be_equivalent_to output
   end
 
-  it "injects JS into blank html" do
-    system "rm -f test.html"
+    it "processes Simplified Chinese" do
     input = <<~"INPUT"
-      = Document title
-      Author
-      :docfile: test.adoc
-      :novalid:
-    INPUT
-
-    output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-<sections/>
-</mpfd-standard>
-    OUTPUT
-
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfd, header_footer: true))).to be_equivalent_to output
-    html = File.read("test.html", encoding: "utf-8")
-    expect(html).to match(%r{jquery\.min\.js})
-    expect(html).to match(%r{Overpass})
-  end
-
-  it "processes Simplified Chinese" do
-    input = <<~"INPUT"
-    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
-      <bibdata>
-      <language>zh</language>
-      <script>Hans</script>
-      </bibdata>
+        <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+        <bibdata>
+        <language>zh</language>
+        <script>Hans</script>
+        </bibdata>
       <preface>
       <foreword obligation="informative">
          <title>Foreword</title>
@@ -401,71 +267,61 @@ RSpec.describe IsoDoc::Mpfd do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{HTML_HDR}
+    <body lang="EN-US" link="blue" vlink="#954F72">
+    <div class="WordSection1">
+      <p>&#160;</p>
+    </div>
+    <p><br clear="all" class="section"/></p>
+    <div class="WordSection2">
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
       <div>
-        <h1>Foreword</h1>
+        <h1 class="ForewordTitle">&#21069;&#35328;</h1>
         <p id="A">This is a preamble</p>
       </div>
-      <div id="B">
-        <h1>Introduction</h1>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
+      <div class="Section3" id="B">
+        <h1 class="IntroTitle">&#24341;&#35328;</h1>
         <div id="C"><h2>Introduction Subsection</h2>
-   </div>
+
+ </div>
       </div>
       <div id="H">
         <h1>Terms, Definitions, Symbols and Abbreviated Terms</h1>
         <div id="I"><h2>Normal Terms</h2>
-     <p class="Terms" style="text-align:left;">Term2</p>
-   </div>
+
+
+   <p class="Terms" style="text-align:left;">Term2</p>
+
+ </div>
         <div id="K"><h2>&#31526;&#21495;&#12289;&#20195;&#21495;&#21644;&#32553;&#30053;&#35821;</h2>
-     <dl><dt><p>Symbol</p></dt><dd>Definition</dd></dl>
-   </div>
+   <table class="dl"><tr><td valign="top" align="left"><p align="left" style="margin-left:0pt;text-align:left;">Symbol</p></td><td valign="top">Definition</td></tr></table>
+ </div>
       </div>
-      <div>
-        <h1/>
-        <div id="D"><h1>1. Scope</h1>
-     <p id="E">Text</p>
-   </div>
-        <div id="L"><h2>&#31526;&#21495;&#12289;&#20195;&#21495;&#21644;&#32553;&#30053;&#35821;</h2>
-     <dl><dt><p>Symbol</p></dt><dd>Definition</dd></dl>
-   </div>
-        <div id="M"><h1>2. Clause 4</h1><div id="N"><h2>2.1. Introduction</h2>
-   </div>
-   <div id="O"><h2>2.2. Clause 4.2</h2>
-   </div></div>
-      </div>
-      <div id="P">
-        <h1>&#38468;&#24405;A.&#160; Annex</h1>
-        <div id="Q"><h2>A.1. Annex A.1</h2>
-     <div id="Q1"><h3>A.1.1. Annex A.1a</h3>
-     </div>
-   </div>
-      </div>
-      <div>
-        <h1/>
-        <div>
-          <h2 class="Section3">Normative References</h2>
-        </div>
-        <div id="S"><h1>Bibliography</h1>
-     <div><h2 class="Section3">Bibliography Subsection</h2></div>
-   </div>
-      </div>
+      <p>&#160;</p>
+    </div>
+    <p><br clear="all" class="section"/></p>
+    <div class="WordSection3">
       <p class="zzSTDTitle1"/>
       <div id="M">
-        <h1>2.&#160; Clause 4</h1>
+        <h1>2.<span style="mso-tab-count:1">&#160; </span>Clause 4</h1>
         <div id="N"><h2>2.1. Introduction</h2>
-   </div>
+
+ </div>
         <div id="O"><h2>2.2. Clause 4.2</h2>
-   </div>
+
+ </div>
       </div>
-      <br/>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
       <div id="P" class="Section3">
         <h1 class="Annex">&#38468;&#24405;A <b>Annex</b></h1>
         <div id="Q"><h2>A.1. Annex A.1</h2>
-     <div id="Q1"><h3>A.1.1. Annex A.1a</h3>
-     </div>
+
+   <div id="Q1"><h3>A.1.1. Annex A.1a</h3>
+
    </div>
+ </div>
       </div>
-      <br/>
+      <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
       <div>
         <h1 class="Section3">&#21442;&#32771;&#25991;&#29486;</h1>
         <div>
@@ -474,18 +330,16 @@ RSpec.describe IsoDoc::Mpfd do
       </div>
     </div>
   </body>
-    OUTPUT
-
+OUTPUT
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", input, true).
+      IsoDoc::MPFA::WordConvert.new({}).convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
     )).to be_equivalent_to output
-
   end
 
     it "processes containers" do
-      expect(xmlpp(IsoDoc::Mpfd::HtmlConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      expect(xmlpp(IsoDoc::MPFA::WordConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <sections>
     <clause id="A">
@@ -551,19 +405,19 @@ RSpec.describe IsoDoc::Mpfd do
 </annex>
 </mpfd-standard>
 INPUT
-       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-           <div class="title-section">
+                <body lang="EN-US" link="blue" vlink="#954F72">
+           <div class="WordSection1">
              <p>&#160;</p>
            </div>
-           <br/>
-           <div class="prefatory-section">
+           <p><br clear="all" class="section"/></p>
+           <div class="WordSection2">
              <p>&#160;</p>
            </div>
-           <br/>
-           <div class="main-section">
+           <p><br clear="all" class="section"/></p>
+           <div class="WordSection3">
              <p class="zzSTDTitle1"/>
              <div id="A">
-               <h1>1.&#160; A</h1>
+               <h1>1.<span style="mso-tab-count:1">&#160; </span>A</h1>
                <p>
                <a href="#A">Paragraph 1</a>
                <a href="#B">B</a>
@@ -583,43 +437,43 @@ INPUT
              </div>
              <div id="B">
                <h1 class="containerhdr">B</h1>
-               <div id="C"><span class="zzMoveToFollowing"><b>2.&#160; C&#160; </b></span>
-
-                   <div id="D"><span class="zzMoveToFollowing"><b>2.1.&#160; D&#160; </b></span>
-
+               <div id="C"><span class="zzMoveToFollowing"><b>2.<span style="mso-tab-count:1">&#160; </span>C<span style='mso-tab-count:1'>&#160; </span> </b></span>
+     
+                   <div id="D"><span class="zzMoveToFollowing"><b>2.1.<span style="mso-tab-count:1">&#160; </span>D<span style='mso-tab-count:1'>&#160; </span> </b></span>
+     
                    </div>
                </div>
                <div id="E"><h2 class="containerhdr">E</h2>
-
+     
                    <div id="F"><h2>3. F</h2>
-
+     
                    </div>
                    <div id="G"><h2>4. G</h2>
-
+     
                    </div>
                </div>
              </div>
-             <br/>
+             <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
              <div id="A0" class="Section3">
                <h1 class="Annex"><b>Appendix A</b> <b>Annex</b></h1>
                <div id="AA"><h2>A.1. A</h2>
-
+     
            </div>
                <div id="AB"><h1 class="containerhdr">B</h1>
-
+     
                <div id="AC"><h3>A.1.1. C</h3>
-
+     
                    <div id="AD"><h4>A.1.1.1. D</h4>
-
+     
                    </div>
                </div>
                <div id="AE"><h2 class="containerhdr">E</h2>
-
+     
                    <div id="AF"><h4>A.1.1.1. F</h4>
-
+     
                    </div>
                    <div id="AG"><h4>A.1.1.2. G</h4>
-
+     
                    </div>
                </div>
            </div>
@@ -630,7 +484,7 @@ OUTPUT
 
     end
 
-    it "processes ordered list style" do
+        it "processes ordered list style" do
           input = <<~"INPUT"
 <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <preface><foreword>
@@ -644,9 +498,9 @@ OUTPUT
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{HTML_HDR}
+    #{WORD_HDR}
           <div>
-        <h1/>
+        <h1 class="ForewordTitle">Foreword</h1>
         <ol type="i">
 <li><ol type="1">
 <li>A
@@ -654,13 +508,11 @@ OUTPUT
 </ol>
 </li></ol>
       </div>
-      <p class="zzSTDTitle1"/>
-    </div>
-  </body>
+  #{WORD_FTR}
     OUTPUT
 
     expect(xmlpp(
-      IsoDoc::Mpfd::HtmlConvert.new({}).
+      IsoDoc::MPFA::WordConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")

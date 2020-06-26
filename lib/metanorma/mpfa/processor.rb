@@ -1,7 +1,7 @@
 require "metanorma/processor"
 
 module Metanorma
-  module Mpfd
+  module MPFA
     def self.fonts_used
       {
         html: ["Titillium Web", "Space Mono"],
@@ -12,9 +12,9 @@ module Metanorma
     class Processor < Metanorma::Processor
 
       def initialize
-        @short = :mpfd
+        @short = [:mpfd, :mpfa]
         @input_format = :asciidoc
-        @asciidoctor_backend = :mpfd
+        @asciidoctor_backend = :mpfa
       end
 
       def output_formats
@@ -25,19 +25,21 @@ module Metanorma
       end
 
       def version
-        "Metanorma::Mpfd #{Metanorma::Mpfd::VERSION}"
+        "Metanorma::MPFA #{Metanorma::MPFA::VERSION}"
       end
 
       def input_to_isodoc(file, filename)
         Metanorma::Input::Asciidoc.new.process(file, filename, @asciidoctor_backend)
       end
 
-      def output(isodoc_node, outname, format, options={})
+      def output(isodoc_node, inname, outname, format, options={})
         case format
         when :html
-          IsoDoc::Mpfd::HtmlConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::MPFA::HtmlConvert.new(options).convert(inname, isodoc_node, nil, outname)
         when :doc
-          IsoDoc::Mpfd::WordConvert.new(options).convert(outname, isodoc_node)
+          IsoDoc::MPFA::WordConvert.new(options).convert(inname, isodoc_node, nil, outname)
+        when :presentation
+          IsoDoc::MPFA::PresentationXMLConvert.new(options).convert(inname, isodoc_node, nil, outname)
         else
           super
         end

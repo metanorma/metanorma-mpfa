@@ -2,13 +2,13 @@ require "spec_helper"
 require "metanorma"
 require "fileutils"
 
-RSpec.describe Metanorma::Mpfd::Processor do
+RSpec.describe Metanorma::MPFA::Processor do
 
   registry = Metanorma::Registry.instance
-  registry.register(Metanorma::Mpfd::Processor)
+  registry.register(Metanorma::MPFA::Processor)
 
   let(:processor) {
-    registry.find_processor(:mpfd)
+    registry.find_processor(:mpfa)
   }
 
   it "registers against metanorma" do
@@ -17,12 +17,12 @@ RSpec.describe Metanorma::Mpfd::Processor do
 
   it "registers output formats against metanorma" do
     expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
-    [[:doc, "doc"], [:html, "html"], [:rxl, "rxl"], [:xml, "xml"]]
+    [[:doc, "doc"], [:html, "html"], [:presentation, "presentation.xml"], [:rxl, "rxl"], [:xml, "xml"]]
     OUTPUT
   end
 
   it "registers version against metanorma" do
-    expect(processor.version.to_s).to match(%r{^Metanorma::Mpfd })
+    expect(processor.version.to_s).to match(%r{^Metanorma::MPFA })
   end
 
   it "generates IsoDoc XML from a blank document" do
@@ -51,7 +51,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
     </mpfd-standard>
     INPUT
 
-    processor.output(input, "test.xml", :xml)
+    processor.output(input, "test.xml", "test.xml", :xml)
     expect(File.exists?("test.xml")).to be true
   end
 
@@ -78,7 +78,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
     </main>
     OUTPUT
 
-    processor.output(input, "test.html", :html)
+    processor.output(input, "test.xml", "test.html", :html)
     expect(File.exists?("test.html")).to be true
     expect(
       xmlpp(File.read("test.html", encoding: "utf-8").gsub(%r{^.*<main}m, "<main").gsub(%r{</main>.*}m, "</main>"))
@@ -109,7 +109,7 @@ RSpec.describe Metanorma::Mpfd::Processor do
 </div>
     OUTPUT
 
-   processor.output(input, "test.doc", :doc)
+    processor.output(input, "test.xml", "test.doc", :doc)
    expect(File.exists?("test.doc")).to be true
 
    expect(

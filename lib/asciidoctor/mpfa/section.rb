@@ -1,11 +1,5 @@
-require "asciidoctor"
-require "asciidoctor/mpfd"
-require "asciidoctor/standoc/converter"
-require "isodoc/mpfd/html_convert"
-require "isodoc/mpfd/word_convert"
-
 module Asciidoctor
-  module Mpfd
+  module MPFA
 
     # A {Converter} implementation that generates MPFD output, and a document
     # schema encapsulation of the document for validation

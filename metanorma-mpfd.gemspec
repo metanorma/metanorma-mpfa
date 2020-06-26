@@ -1,21 +1,23 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "metanorma/mpfd/version"
+require "metanorma/mpfa/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "metanorma-mpfd"
-  spec.version       = Metanorma::Mpfd::VERSION
+  spec.name          = "metanorma-mpfa"
+  spec.version       = Metanorma::MPFA::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
-  spec.summary       = "metanorma-mpfd lets you write MPF documents in AsciiDoc."
+  spec.summary       = "metanorma-mpfa lets you write MPFA documents in AsciiDoc."
   spec.description   = <<~DESCRIPTION
-    metanorma-mpfd lets you write MPF documents in AsciiDoc syntax.
+    metanorma-mpfa lets you write MPFA documents in AsciiDoc syntax.
 
     This gem is in active development.
+
+    Formerly known as metanorma-mpfd
   DESCRIPTION
 
-  spec.homepage      = "https://github.com/metanorma/metanorma-mpfd"
+  spec.homepage      = "https://github.com/metanorma/metanorma-mpfa"
   spec.license       = "BSD-2-Clause"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

@@ -3,7 +3,7 @@ require "twitter_cldr"
 require 'date'
 
 module IsoDoc
-  module Mpfd
+  module MPFA
 
     class Metadata < IsoDoc::Metadata
       def initialize(lang, script, labels)

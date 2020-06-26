@@ -1,5 +1,5 @@
 module Asciidoctor
-  module Mpfd
+  module MPFA
     class Converter < Standoc::Converter
       def content_validate(doc)
         super
