@@ -1,4 +1,5 @@
 require_relative "base_convert"
+require_relative "init"
 require "isodoc"
 
 module IsoDoc
@@ -57,6 +58,8 @@ module IsoDoc
         end
         section_break(body)
       end
+
+      include Init
     end
   end
 end
