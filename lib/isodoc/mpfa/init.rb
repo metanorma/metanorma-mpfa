@@ -12,6 +12,21 @@ module IsoDoc
       def xref_init(lang, script, klass, labels, options)
         @xrefs = Xref.new(lang, script, klass, labels, options)
       end
+
+      def i18n_init(lang, script)
+        super
+        y = if lang == "en"
+              YAML.load_file(File.join(File.dirname(__FILE__), "i18n-en.yaml"))
+            elsif lang == "zh" && script == "Hans"
+              YAML.load_file(File.join(File.dirname(__FILE__),
+                                       "i18n-zh-Hans.yaml"))
+            else
+              YAML.load_file(File.join(File.dirname(__FILE__), "i18n-en.yaml"))
+            end
+        @labels = @labels.merge(y)
+        @annex_lbl = y["annex"]
+        @clause_lbl = y["clause"]
+      end
     end
   end
 end
