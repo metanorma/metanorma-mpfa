@@ -345,20 +345,6 @@ OUTPUT
     <clause id="A">
         <title>A</title>
         <p>
-        <xref target="A"/>
-        <xref target="B"/>
-        <xref target="C"/>
-        <xref target="D"/>
-        <xref target="E"/>
-        <xref target="F"/>
-        <xref target="G"/>
-        <xref target="AA"/>
-        <xref target="AB"/>
-        <xref target="AC"/>
-        <xref target="AD"/>
-        <xref target="AE"/>
-        <xref target="AF"/>
-        <xref target="AG"/>
         </p>
     </clause>
     <clause id="B" container="true">
@@ -419,20 +405,6 @@ INPUT
              <div id="A">
                <h1>1.<span style="mso-tab-count:1">&#160; </span>A</h1>
                <p>
-               <a href="#A">Paragraph 1</a>
-               <a href="#B">B</a>
-               <a href="#C">Paragraph 2</a>
-               <a href="#D">Paragraph 2.1</a>
-               <a href="#E">E</a>
-               <a href="#F">Paragraph 3</a>
-               <a href="#G">Paragraph 4</a>
-               <a href="#AA">Appendix A.1</a>
-               <a href="#AB">B</a>
-               <a href="#AC">Appendix A.1.1</a>
-               <a href="#AD">Appendix A.1.1.1</a>
-               <a href="#AE">E</a>
-               <a href="#AF">Appendix A.1.1.1</a>
-               <a href="#AG">Appendix A.1.1.2</a>
                </p>
              </div>
              <div id="B">

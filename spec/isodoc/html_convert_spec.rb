@@ -484,8 +484,8 @@ RSpec.describe IsoDoc::MPFA do
 
   end
 
-    it "processes containers" do
-      expect(xmlpp(IsoDoc::MPFA::HtmlConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "processes containers (Presentation XML)" do
+      expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
 <sections>
     <clause id="A">
@@ -551,6 +551,128 @@ RSpec.describe IsoDoc::MPFA do
 </annex>
 </mpfd-standard>
 INPUT
+<?xml version='1.0'?>
+       <mpfd-standard xmlns='https://open.ribose.com/standards/rsd'>
+         <sections>
+           <clause id='A'>
+             <title>A</title>
+             <p>
+               <xref target='A'>Paragraph 1</xref>
+               <xref target='B'>B</xref>
+               <xref target='C'>Paragraph 2</xref>
+               <xref target='D'>Paragraph 2.1</xref>
+               <xref target='E'>E</xref>
+               <xref target='F'>Paragraph 3</xref>
+               <xref target='G'>Paragraph 4</xref>
+               <xref target='AA'>Appendix A.1</xref>
+               <xref target='AB'>B</xref>
+               <xref target='AC'>Appendix A.1.1</xref>
+               <xref target='AD'>Appendix A.1.1.1</xref>
+               <xref target='AE'>E</xref>
+               <xref target='AF'>Appendix A.1.1.1</xref>
+               <xref target='AG'>Appendix A.1.1.2</xref>
+             </p>
+           </clause>
+           <clause id='B' container='true'>
+             <title>B</title>
+             <clause id='C' inline-header='true'>
+               <title>C</title>
+               <clause id='D' inline-header='true'>
+                 <title>D</title>
+               </clause>
+             </clause>
+             <clause id='E' container='true'>
+               <title>E</title>
+               <clause id='F'>
+                 <title>F</title>
+               </clause>
+               <clause id='G'>
+                 <title>G</title>
+               </clause>
+             </clause>
+           </clause>
+         </sections>
+         <annex id='A0'>
+           <title>Annex</title>
+           <clause id='AA'>
+             <title>A</title>
+           </clause>
+           <clause id='AB' container='true'>
+             <title>B</title>
+             <clause id='AC'>
+               <title>C</title>
+               <clause id='AD'>
+                 <title>D</title>
+               </clause>
+             </clause>
+             <clause id='AE' container='true'>
+               <title>E</title>
+               <clause id='AF'>
+                 <title>F</title>
+               </clause>
+               <clause id='AG'>
+                 <title>G</title>
+               </clause>
+             </clause>
+           </clause>
+         </annex>
+       </mpfd-standard>
+OUTPUT
+  end
+
+    it "processes containers" do
+      expect(xmlpp(IsoDoc::MPFA::HtmlConvert.new({}).convert("test", <<~"INPUT", true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+<sections>
+    <clause id="A">
+        <title>A</title>
+        <p>
+        </p>
+    </clause>
+    <clause id="B" container="true">
+        <title>B</title>
+        <clause id="C" inline-header="true">
+            <title>C</title>
+            <clause id="D" inline-header="true">
+                <title>D</title>
+            </clause>
+        </clause>
+        <clause id="E" container="true">
+            <title>E</title>
+            <clause id="F">
+                <title>F</title>
+            </clause>
+            <clause id="G">
+                <title>G</title>
+            </clause>
+        </clause>
+    </clause>
+</sections>
+<annex id="A0"><title>Annex</title>
+    <clause id="AA">
+        <title>A</title>
+    </clause>
+    <clause id="AB" container="true">
+        <title>B</title>
+        <clause id="AC">
+            <title>C</title>
+            <clause id="AD">
+                <title>D</title>
+            </clause>
+        </clause>
+        <clause id="AE" container="true">
+            <title>E</title>
+            <clause id="AF">
+                <title>F</title>
+            </clause>
+            <clause id="AG">
+                <title>G</title>
+            </clause>
+        </clause>
+    </clause>
+</annex>
+</mpfd-standard>
+INPUT
        <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
            <div class="title-section">
              <p>&#160;</p>
@@ -565,20 +687,6 @@ INPUT
              <div id="A">
                <h1>1.&#160; A</h1>
                <p>
-               <a href="#A">Paragraph 1</a>
-               <a href="#B">B</a>
-               <a href="#C">Paragraph 2</a>
-               <a href="#D">Paragraph 2.1</a>
-               <a href="#E">E</a>
-               <a href="#F">Paragraph 3</a>
-               <a href="#G">Paragraph 4</a>
-               <a href="#AA">Appendix A.1</a>
-               <a href="#AB">B</a>
-               <a href="#AC">Appendix A.1.1</a>
-               <a href="#AD">Appendix A.1.1.1</a>
-               <a href="#AE">E</a>
-               <a href="#AF">Appendix A.1.1.1</a>
-               <a href="#AG">Appendix A.1.1.2</a>
                </p>
              </div>
              <div id="B">
