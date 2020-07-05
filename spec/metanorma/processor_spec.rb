@@ -61,7 +61,7 @@ RSpec.describe Metanorma::MPFA::Processor do
     input = <<~"INPUT"
     <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <sections>
-        <clause id="H" obligation="normative"><title>Clause</title>
+        <clause id="H" obligation="normative"><title>1.<tab/>Clause</title>
           <p>Text</p>
         </clause>
       </sections>
@@ -92,7 +92,7 @@ RSpec.describe Metanorma::MPFA::Processor do
     input = <<~"INPUT"
     <mpfd-standard xmlns="http://riboseinc.com/isoxml">
       <sections>
-        <clause id="H" obligation="normative"><title>Clause</title>
+        <clause id="H" obligation="normative"><title>1.<tab/>Clause</title>
           <p>Text</p>
         </clause>
       </sections>

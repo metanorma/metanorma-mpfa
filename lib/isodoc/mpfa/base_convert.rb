@@ -4,21 +4,12 @@ require  "fileutils"
 module IsoDoc
   module MPFA
     module BaseConvert
-      def annex_name(annex, name, div)
-        div.h1 **{ class: "Annex" } do |t|
-          t << "#{@xrefs.anchor(annex['id'], :label)} "
-          t.b do |b|
-            name&.children&.each { |c2| parse(c2, b) }
-          end
-        end
-      end
-
       def fileloc(loc)
         File.join(File.dirname(__FILE__), loc)
       end
 
       def terms_defs_title(f)
-        return f&.at(ns("./title"))&.content
+        return f&.at(ns("./title"))
       end
 
       TERM_CLAUSE = "//preface/terms | "\
@@ -47,8 +38,7 @@ module IsoDoc
           if c.name == "terms" || c.at(ns(".//terms")) then terms_defs isoxml, out, 0
           else
             out.div **attr_code(id: c["id"]) do |s|
-              clause_name(@xrefs.anchor(c['id'], :label),
-                          c&.at(ns("./title"))&.content, s, nil)
+              clause_name(nil, c&.at(ns("./title")), s, nil)
               c.elements.reject { |c1| c1.name == "title" }.each do |c1|
                 parse(c1, s)
               end
@@ -66,6 +56,7 @@ module IsoDoc
       end
 
       def termdef_parse(node, out)
+        name = node&.at(ns("./name"))&.remove
         set_termdomain("")
         node.children.each { |n| parse(n, out) }
       end
@@ -73,8 +64,8 @@ module IsoDoc
       def clause(isoxml, out)
         isoxml.xpath(ns(middle_clause)).each do |c|
           out.div **attr_code(id: c["id"]) do |s|
-            clause_name(@xrefs.anchor(c['id'], :label),
-                        c&.at(ns("./title"))&.content, s, class: c["container"] ? "containerhdr" : nil )
+            clause_name(nil, c&.at(ns("./title")), s, 
+                        class: c["container"] ? "containerhdr" : nil )
             c.elements.reject { |c1| c1.name == "title" }.each do |c1|
               parse(c1, s)
             end
@@ -82,17 +73,12 @@ module IsoDoc
         end
       end
 
-      def clause_parse_title(node, div, c1, out)
-        if node["inline-header"] == "true"
-          inline_header_title(out, node, c1)
-        else
-          attrs = { class: node["container"] ? "containerhdr" : nil }
-          div.send "h#{@xrefs.anchor(node['id'], :level, :false) || '1'}", **attr_code(attrs) do |h|
-            lbl = @xrefs.anchor(node['id'], :label, false)
-            h << "#{lbl}. " if lbl && !@suppressheadingnumbers
-            c1&.children&.each { |c2| parse(c2, h) }
-          end
-        end
+      def clause_parse_title(node, div, c1, out, header_class = {})
+        attrs = {}
+        attrs = { class: "containerhdr" } if node["container"]
+        header_class = header_class.merge(attrs)
+        #require "byebug"; byebug if node.parent.name == "introduction"
+        super
       end
 
       def ol_depth(node)
