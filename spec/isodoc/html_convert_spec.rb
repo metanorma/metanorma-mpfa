@@ -230,7 +230,7 @@ RSpec.describe IsoDoc::MPFA do
           </introduction>
            <clause id="H" obligation="normative"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
             <title depth="2">Normal Terms</title>
-            <term id="J"><name>.</name>
+            <term id="J">
             <preferred>Term2</preferred>
           </term>
           </terms>
@@ -592,7 +592,7 @@ RSpec.describe IsoDoc::MPFA do
           </introduction>
            <clause id="H" obligation="normative"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
             <title depth="2">Normal Terms</title>
-            <term id="J"><name>.</name>
+            <term id="J">
             <preferred>Term2</preferred>
           </term>
           </terms>
