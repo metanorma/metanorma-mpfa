@@ -303,6 +303,35 @@ RSpec.describe Asciidoctor::MPFA do
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfa, header_footer: true)))).to be_equivalent_to output
   end
 
+    it "processes guidance sections" do
+              expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfa, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        #{ASCIIDOC_BLANK_HDR}
+
+        == Section
+        Section
+
+        Text
+
+        [.guidance]
+        == Guidance
+        Guidance
+        INPUT
+       #{BLANK_HDR}
+  <sections>
+    <clause id='_' obligation='normative'>
+      <title>Section</title>
+      <p id='_'>Section</p>
+      <p id='_'>Text</p>
+      <clause id='_' guidance='true' obligation='normative'>
+        <title>Guidance</title>
+        <p id='_'>Guidance</p>
+      </clause>
+    </clause>
+  </sections>
+</mpfd-standard>
+        OUTPUT
+    end
+
   it "processes sections" do
         expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfa, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
         #{ASCIIDOC_BLANK_HDR}

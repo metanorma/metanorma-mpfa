@@ -12,8 +12,11 @@ module Asciidoctor
           h.delete("inline-header")
         end
         x.xpath("//*[@guidance]").each do |h|
-          c = h.previous_element || next
-          c.add_child h.remove
+          #c = h.at("./preceding-sibling::clause[last()]") || next
+          c = h.xpath("./preceding-sibling::clause")
+          c.empty? and next
+          #c.add_child h.remove
+          c.last.add_child h.remove
         end
       end
 
