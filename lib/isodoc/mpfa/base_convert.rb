@@ -4,10 +4,6 @@ require  "fileutils"
 module IsoDoc
   module MPFA
     module BaseConvert
-      def fileloc(loc)
-        File.join(File.dirname(__FILE__), loc)
-      end
-
       def terms_defs_title(f)
         return f&.at(ns("./title"))
       end

@@ -744,7 +744,7 @@ RSpec.describe IsoDoc::MPFA do
            </div>
            <br/>
            <div>
-             <h1 class='Section3'>&#21442;&#32771;&#25991;&#29486;</h1>
+             <h1 class='Section3'>Bibliography</h1>
              <div>
                <h2 class='Section3'>Bibliography Subsection</h2>
              </div>
@@ -851,7 +851,7 @@ RSpec.describe IsoDoc::MPFA do
              <br clear='all' style='mso-special-character:line-break;page-break-before:always'/>
            </p>
            <div>
-             <h1 class='Section3'>&#21442;&#32771;&#25991;&#29486;</h1>
+             <h1 class='Section3'>Bibliography</h1>
              <div>
                <h2 class='Section3'>Bibliography Subsection</h2>
              </div>
