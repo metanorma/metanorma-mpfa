@@ -402,7 +402,7 @@ INPUT
 </acknowledgements>
 </preface><sections>
 
-<definitions id="_" obligation="normative">
+<definitions id="_" obligation="normative" type="symbols">
 <title>Symbols</title>
   <dl id="_">
   <dt>x</dt>

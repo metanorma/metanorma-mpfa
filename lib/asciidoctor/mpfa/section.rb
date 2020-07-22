@@ -58,7 +58,6 @@ module Asciidoctor
         attrs[:container] = true if node.role == "container"
         super
       end
-
     end
   end
 end

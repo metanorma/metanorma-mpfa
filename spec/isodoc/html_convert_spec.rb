@@ -303,7 +303,7 @@ RSpec.describe IsoDoc::MPFA do
                <p class='Terms' style='text-align:left;'>Term2</p>
              </div>
              <div id='K'>
-               <h2>Symbols and abbreviated terms</h2>
+               <h2>Symbols</h2>
                <dl>
                  <dt>
                    <p>Symbol</p>
@@ -361,7 +361,7 @@ RSpec.describe IsoDoc::MPFA do
              <br clear='all' style='mso-special-character:line-break;page-break-before:always'/>
            </p>
            <div>
-             <h1 class='AbstractTitle'>Abstract</h1>
+             <h1 class='AbstractTitle'>Summary</h1>
              <p id='AA'>This is an abstract</p>
            </div>
            <p>
@@ -387,7 +387,7 @@ RSpec.describe IsoDoc::MPFA do
                <p class='Terms' style='text-align:left;'>Term2</p>
              </div>
              <div id='K'>
-               <h2>Symbols and abbreviated terms</h2>
+               <h2>Symbols</h2>
                <table class='dl'>
                  <tr>
                    <td valign='top' align='left'>
@@ -661,7 +661,7 @@ RSpec.describe IsoDoc::MPFA do
                <p class='Terms' style='text-align:left;'>Term2</p>
              </div>
              <div id='K'>
-               <h2>&#31526;&#21495;&#12289;&#20195;&#21495;&#21644;&#32553;&#30053;&#35821;</h2>
+               <h2>&#31526;&#21495;</h2>
                <dl>
                  <dt>
                    <p>Symbol</p>
@@ -677,7 +677,7 @@ RSpec.describe IsoDoc::MPFA do
                <p id='E'>Text</p>
              </div>
              <div id='L'>
-               <h1>&#31526;&#21495;&#12289;&#20195;&#21495;&#21644;&#32553;&#30053;&#35821;</h1>
+               <h1>&#31526;&#21495;</h1>
                <dl>
                  <dt>
                    <p>Symbol</p>
@@ -766,14 +766,14 @@ RSpec.describe IsoDoc::MPFA do
              <br clear='all' style='mso-special-character:line-break;page-break-before:always'/>
            </p>
            <div>
-             <h1 class='ForewordTitle'>&#21069;&#35328;</h1>
+             <h1 class='ForewordTitle'>Foreword</h1>
              <p id='A'>This is a preamble</p>
            </div>
            <p>
              <br clear='all' style='mso-special-character:line-break;page-break-before:always'/>
            </p>
            <div class='Section3' id='B'>
-             <h1 class='IntroTitle'>&#24341;&#35328;</h1>
+             <h1 class='IntroTitle'>Introduction</h1>
              <div id='C'>
                <h2>Introduction Subsection</h2>
              </div>
@@ -785,7 +785,7 @@ RSpec.describe IsoDoc::MPFA do
                <p class='Terms' style='text-align:left;'>Term2</p>
              </div>
              <div id='K'>
-               <h2>&#31526;&#21495;&#12289;&#20195;&#21495;&#21644;&#32553;&#30053;&#35821;</h2>
+               <h2>&#31526;&#21495;</h2>
                <table class='dl'>
                  <tr>
                    <td valign='top' align='left'>

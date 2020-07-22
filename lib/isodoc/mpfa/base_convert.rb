@@ -4,10 +4,6 @@ require  "fileutils"
 module IsoDoc
   module MPFA
     module BaseConvert
-      def terms_defs_title(f)
-        return f&.at(ns("./title"))
-      end
-
       TERM_CLAUSE = "//preface/terms | "\
         "//preface/clause[descendant::terms]".freeze
 
@@ -19,7 +15,7 @@ module IsoDoc
       def terms_defs(isoxml, out, num)
         f = isoxml.at(ns(self.class::TERM_CLAUSE)) or return num
         out.div **attr_code(id: f["id"]) do |div|
-          clause_name(nil, terms_defs_title(f), div, nil)
+          clause_name(nil, f&.at(ns("./title")), div, nil)
           f.elements.each do |e|
             parse(e, div) unless %w{title source}.include? e.name
           end
@@ -73,7 +69,6 @@ module IsoDoc
         attrs = {}
         attrs = { class: "containerhdr" } if node["container"]
         header_class = header_class.merge(attrs)
-        #require "byebug"; byebug if node.parent.name == "introduction"
         super
       end
 

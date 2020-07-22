@@ -1,2 +1,7 @@
 clause: Paragraph
 annex: Appendix
+termsdef: Glossary
+termsdefsymbolsabbrev: Glossary
+termsdefsymbols: Glossary
+termsdefabbrev: Glossary
+
