@@ -673,7 +673,7 @@ RSpec.describe IsoDoc::MPFA do
            <div>
              <h1/>
              <div id='D'>
-               <h1>1.&#160; Scope</h1>
+               <h1>1.&#12288;Scope</h1>
                <p id='E'>Text</p>
              </div>
              <div id='L'>
@@ -686,12 +686,12 @@ RSpec.describe IsoDoc::MPFA do
                </dl>
              </div>
              <div id='M'>
-               <h1>2.&#160; Clause 4</h1>
+               <h1>2.&#12288;Clause 4</h1>
                <div id='N'>
-                 <h2>2.1.&#160; Introduction</h2>
+                 <h2>2.1.&#12288;Introduction</h2>
                </div>
                <div id='O'>
-                 <h2>2.2.&#160; Clause 4.2</h2>
+                 <h2>2.2.&#12288;Clause 4.2</h2>
                </div>
              </div>
            </div>
@@ -701,9 +701,9 @@ RSpec.describe IsoDoc::MPFA do
                <b>Annex</b>
              </h1>
              <div id='Q'>
-               <h2>A.1.&#160; Annex A.1</h2>
+               <h2>A.1.&#12288;Annex A.1</h2>
                <div id='Q1'>
-                 <h3>A.1.1.&#160; Annex A.1a</h3>
+                 <h3>A.1.1.&#12288;Annex A.1a</h3>
                </div>
              </div>
            </div>
@@ -721,12 +721,12 @@ RSpec.describe IsoDoc::MPFA do
            </div>
            <p class='zzSTDTitle1'/>
            <div id='M'>
-             <h1>2.&#160; Clause 4</h1>
+             <h1>2.&#12288;Clause 4</h1>
              <div id='N'>
-               <h2>2.1.&#160; Introduction</h2>
+               <h2>2.1.&#12288;Introduction</h2>
              </div>
              <div id='O'>
-               <h2>2.2.&#160; Clause 4.2</h2>
+               <h2>2.2.&#12288;Clause 4.2</h2>
              </div>
            </div>
            <br/>
@@ -736,9 +736,9 @@ RSpec.describe IsoDoc::MPFA do
                <b>Annex</b>
              </h1>
              <div id='Q'>
-               <h2>A.1.&#160; Annex A.1</h2>
+               <h2>A.1.&#12288;Annex A.1</h2>
                <div id='Q1'>
-                 <h3>A.1.1.&#160; Annex A.1a</h3>
+                 <h3>A.1.1.&#12288;Annex A.1a</h3>
                </div>
              </div>
            </div>
