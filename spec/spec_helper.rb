@@ -74,14 +74,12 @@ BLANK_HDR = <<~"HDR"
            <role type="author"/>
            <organization>
              <name>Mandatory Provident Fund Schemes Authority</name>
-             <abbreviation>MPFA</abbreviation>
            </organization>
          </contributor>
          <contributor>
            <role type="publisher"/>
            <organization>
              <name>Mandatory Provident Fund Schemes Authority</name>
-             <abbreviation>MPFA</abbreviation>
            </organization>
          </contributor>
          <language>en</language>
@@ -95,7 +93,6 @@ BLANK_HDR = <<~"HDR"
            <owner>
              <organization>
              <name>Mandatory Provident Fund Schemes Authority</name>
-             <abbreviation>MPFA</abbreviation>
              </organization>
            </owner>
          </copyright>

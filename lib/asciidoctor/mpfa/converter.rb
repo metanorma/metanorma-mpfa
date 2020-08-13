@@ -19,24 +19,8 @@ module Asciidoctor
 
       register_for "mpfa"
 
-      def metadata_author(node, xml)
-        xml.contributor do |c|
-          c.role **{ type: "author" }
-          c.organization do |a|
-            a.name "Mandatory Provident Fund Schemes Authority"
-            a.abbreviation "MPFA"
-          end
-        end
-      end
-
-      def metadata_publisher(node, xml)
-        xml.contributor do |c|
-          c.role **{ type: "publisher" }
-          c.organization do |a|
-            a.name "Mandatory Provident Fund Schemes Authority"
-            a.abbreviation "MPFA"
-          end
-        end
+      def default_publisher
+        "Mandatory Provident Fund Schemes Authority"
       end
 
       def metadata_committee(node, xml)
@@ -56,19 +40,6 @@ module Asciidoctor
       def metadata_id(node, xml)
         xml.docidentifier { |i| i << node.attr("docnumber") }
         xml.docnumber { |i| i << node.attr("docnumber") }
-      end
-
-      def metadata_copyright(node, xml)
-        from = node.attr("copyright-year") || Date.today.year
-        xml.copyright do |c|
-          c.from from
-          c.owner do |owner|
-            owner.organization do |o|
-              o.name "Mandatory Provident Fund Schemes Authority"
-              o.abbreviation "MPFA"
-            end
-          end
-        end
       end
 
       def title_validate(root)
