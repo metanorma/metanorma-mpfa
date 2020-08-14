@@ -86,14 +86,12 @@ RSpec.describe Asciidoctor::MPFA do
     <role type="author"/>
     <organization>
       <name>Mandatory Provident Fund Schemes Authority</name>
-      <abbreviation>MPFA</abbreviation>
     </organization>
   </contributor>
   <contributor>
     <role type="publisher"/>
     <organization>
       <name>Mandatory Provident Fund Schemes Authority</name>
-      <abbreviation>MPFA</abbreviation>
     </organization>
   </contributor>
   <language>en</language>
@@ -107,7 +105,6 @@ RSpec.describe Asciidoctor::MPFA do
     <owner>
       <organization>
       <name>Mandatory Provident Fund Schemes Authority</name>
-      <abbreviation>MPFA</abbreviation>
       </organization>
     </owner>
   </copyright>
@@ -151,14 +148,12 @@ RSpec.describe Asciidoctor::MPFA do
     <role type="author"/>
     <organization>
       <name>Mandatory Provident Fund Schemes Authority</name>
-      <abbreviation>MPFA</abbreviation>
     </organization>
   </contributor>
   <contributor>
     <role type="publisher"/>
     <organization>
       <name>Mandatory Provident Fund Schemes Authority</name>
-      <abbreviation>MPFA</abbreviation>
     </organization>
   </contributor>
   <language>en</language>
@@ -169,7 +164,6 @@ RSpec.describe Asciidoctor::MPFA do
     <owner>
       <organization>
       <name>Mandatory Provident Fund Schemes Authority</name>
-      <abbreviation>MPFA</abbreviation>
       </organization>
     </owner>
   </copyright>
