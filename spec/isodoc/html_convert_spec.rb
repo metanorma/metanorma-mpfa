@@ -313,6 +313,10 @@ RSpec.describe IsoDoc::MPFA do
              </div>
            </div>
            <p class='zzSTDTitle1'/>
+           <div id='D'>
+  <h1>1.&#160; Scope</h1>
+  <p id='E'>Text</p>
+</div>
            <div id='M'>
              <h1>2.&#160; Clause 4</h1>
              <div id='N'>
@@ -405,6 +409,14 @@ RSpec.describe IsoDoc::MPFA do
          </p>
          <div class='WordSection3'>
            <p class='zzSTDTitle1'/>
+           <div id='D'>
+  <h1>
+    1.
+    <span style='mso-tab-count:1'>&#160; </span>
+    Scope
+  </h1>
+  <p id='E'>Text</p>
+</div>
            <div id='M'>
              <h1>
                2.
@@ -536,7 +548,8 @@ RSpec.describe IsoDoc::MPFA do
          <dd>Definition</dd>
          </dl>
        </definitions>
-        </preface><sections>
+       </clause>
+       </preface><sections>
        <clause id="D" obligation="normative" type="scope">
          <title>Scope</title>
          <p id="E">Text</p>
@@ -576,7 +589,7 @@ RSpec.describe IsoDoc::MPFA do
     INPUT
 
     presxml = <<~OUTPUT
-     <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
          <bibdata>
          <language>zh</language>
          <script>Hans</script>
@@ -602,7 +615,8 @@ RSpec.describe IsoDoc::MPFA do
             <dd>Definition</dd>
             </dl>
           </definitions>
-           </clause><sections>
+          </clause>
+          </preface><sections>
           <clause id="D" obligation="normative" type="scope">
             <title depth="1">1.<tab/>Scope</title>
             <p id="E">Text</p>
@@ -630,7 +644,7 @@ RSpec.describe IsoDoc::MPFA do
             </clause>
           </clause>
           </annex><bibliography><references id="R" obligation="informative" normative="true">
-            <title depth="2">Normative References</title>
+            <title depth="1">[R].<tab/>Normative References</title>
           </references><clause id="S" obligation="informative">
             <title depth="1">Bibliography</title>
             <references id="T" obligation="informative" normative="false">
@@ -638,8 +652,7 @@ RSpec.describe IsoDoc::MPFA do
           </references>
           </clause>
           </bibliography>
-          </preface>
-       </mpfd-standard>
+          </mpfd-standard>
        OUTPUT
 
     html = xmlpp(<<~"OUTPUT")
@@ -670,56 +683,11 @@ RSpec.describe IsoDoc::MPFA do
                </dl>
              </div>
            </div>
-           <div>
-             <h1/>
-             <div id='D'>
-               <h1>1.&#12288;Scope</h1>
-               <p id='E'>Text</p>
-             </div>
-             <div id='L'>
-               <h1>&#31526;&#21495;</h1>
-               <dl>
-                 <dt>
-                   <p>Symbol</p>
-                 </dt>
-                 <dd>Definition</dd>
-               </dl>
-             </div>
-             <div id='M'>
-               <h1>2.&#12288;Clause 4</h1>
-               <div id='N'>
-                 <h2>2.1.&#12288;Introduction</h2>
-               </div>
-               <div id='O'>
-                 <h2>2.2.&#12288;Clause 4.2</h2>
-               </div>
-             </div>
-           </div>
-           <div id='P'>
-             <h1>
-               <b>&#38468;&#24405;A</b>
-               <b>Annex</b>
-             </h1>
-             <div id='Q'>
-               <h2>A.1.&#12288;Annex A.1</h2>
-               <div id='Q1'>
-                 <h3>A.1.1.&#12288;Annex A.1a</h3>
-               </div>
-             </div>
-           </div>
-           <div>
-             <h1/>
-             <div>
-               <h2 class='Section3'>Normative References</h2>
-             </div>
-             <div id='S'>
-               <h1>Bibliography</h1>
-               <div>
-                 <h2 class='Section3'>Bibliography Subsection</h2>
-               </div>
-             </div>
-           </div>
            <p class='zzSTDTitle1'/>
+           <div id='D'>
+  <h1>1.&#12288;Scope</h1>
+  <p id='E'>Text</p>
+</div>
            <div id='M'>
              <h1>2.&#12288;Clause 4</h1>
              <div id='N'>
@@ -803,6 +771,14 @@ RSpec.describe IsoDoc::MPFA do
          </p>
          <div class='WordSection3'>
            <p class='zzSTDTitle1'/>
+           <div id='D'>
+  <h1>
+    1.
+    <span style='mso-tab-count:1'>&#160; </span>
+    Scope
+  </h1>
+  <p id='E'>Text</p>
+</div>
            <div id='M'>
              <h1>
                2.
@@ -860,7 +836,7 @@ RSpec.describe IsoDoc::MPFA do
        </body>
 OUTPUT
 
-    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(presxml)
+    expect((IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(
       IsoDoc::MPFA::HtmlConvert.new({}).convert("test", presxml, true).
       gsub(%r{^.*<body}m, "<body").
@@ -942,7 +918,7 @@ OUTPUT
 </mpfd-standard>
 INPUT
 presxml = <<~OUTPUT
-<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
        <sections>
            <clause id="A">
                <title depth="1">1.<tab/>A</title>
@@ -1224,7 +1200,7 @@ word = <<~OUTPUT
          </div>
        </body>
 OUTPUT
-      expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(presxml)
+      expect((IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(presxml)
       expect(xmlpp(IsoDoc::MPFA::HtmlConvert.new({}).convert("test", presxml, true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(html)
       expect(xmlpp(IsoDoc::MPFA::WordConvert.new({}).convert("test", presxml, true).gsub(%r{^.*<body}m, "<body").gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(word)
     end
