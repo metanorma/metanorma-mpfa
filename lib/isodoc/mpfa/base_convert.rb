@@ -28,6 +28,7 @@ module IsoDoc
       def preface(isoxml, out)
         isoxml.xpath(ns(self.class::FRONT_CLAUSE)).each do |c|
           if c.name == "terms" || c.at(ns(".//terms")) then terms_defs isoxml, out, 0
+          elsif !is_clause?(c.name) then parse(c, out)
           else
             out.div **attr_code(id: c["id"]) do |s|
               clause_name(nil, c&.at(ns("./title")), s, nil)
@@ -37,6 +38,10 @@ module IsoDoc
             end
           end
         end
+      end
+
+      def middle_clause
+        "//clause[parent::sections][not(descendant::terms)]"
       end
 
       def middle(isoxml, out)
