@@ -73,7 +73,7 @@ RSpec.describe Asciidoctor::MPFA do
 
     output = xmlpp(<<~"OUTPUT")
     <?xml version="1.0" encoding="UTF-8"?>
-<mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd">
+<mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
 <bibdata type="standard">
   <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
@@ -139,7 +139,7 @@ RSpec.describe Asciidoctor::MPFA do
 
         output = xmlpp(<<~"OUTPUT")
     <?xml version="1.0" encoding="UTF-8"?>
-<mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd">
+<mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
 <bibdata type="standard">
   <title language="en" format="text/plain">Main Title</title>
   <docidentifier>1000</docidentifier>
