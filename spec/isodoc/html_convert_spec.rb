@@ -594,6 +594,10 @@ RSpec.describe IsoDoc::MPFA do
          <language>zh</language>
          <script>Hans</script>
          </bibdata>
+         <local_bibdata>
+         <language>zh</language>
+         <script>Hans</script>
+         </local_bibdata>
          <preface>
          <foreword obligation="informative">
             <title>Foreword</title>
@@ -836,7 +840,7 @@ RSpec.describe IsoDoc::MPFA do
        </body>
 OUTPUT
 
-    expect((IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(presxml)
+    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(
       IsoDoc::MPFA::HtmlConvert.new({}).convert("test", presxml, true).
       gsub(%r{^.*<body}m, "<body").
