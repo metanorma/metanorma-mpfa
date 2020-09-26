@@ -214,7 +214,7 @@ RSpec.describe IsoDoc::MPFA do
     INPUT
 
     presxml = <<~OUTPUT
-    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
          <preface>
          <abstract obligation="informative">
             <title>Summary</title>
@@ -589,7 +589,7 @@ RSpec.describe IsoDoc::MPFA do
     INPUT
 
     presxml = <<~OUTPUT
-    <mpfd-standard xmlns="http://riboseinc.com/isoxml">
+    <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
          <bibdata>
          <language>zh</language>
          <script>Hans</script>
@@ -918,7 +918,7 @@ OUTPUT
 </mpfd-standard>
 INPUT
 presxml = <<~OUTPUT
-       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd" type="presentation">
        <sections>
            <clause id="A">
                <title depth="1">1.<tab/>A</title>
