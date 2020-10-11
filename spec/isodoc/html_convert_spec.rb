@@ -67,7 +67,6 @@ RSpec.describe IsoDoc::MPFA do
 :edition=>"Second",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
-:keywords=>[],
 :logo=>"#{File.join(logoloc, "mpfa-logo-no-text@4x.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
@@ -85,7 +84,7 @@ RSpec.describe IsoDoc::MPFA do
     OUTPUT
 
     docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s).gsub(/, :/, ",\n:")).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil)).to_s).gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "processes pre" do

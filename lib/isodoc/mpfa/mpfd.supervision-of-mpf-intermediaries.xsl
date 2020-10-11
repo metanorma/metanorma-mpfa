@@ -810,7 +810,12 @@
 			
 			
 		</title-toc>
-		<title-toc lang="fr">Sommaire</title-toc>
+		<title-toc lang="fr">
+			
+				<xsl:text>Sommaire</xsl:text>
+			
+			
+			</title-toc>
 		
 		
 		
@@ -896,10 +901,19 @@
 		
 	</xsl:variable><xsl:variable name="tab_zh">　</xsl:variable><xsl:template name="getTitle">
 		<xsl:param name="name"/>
-		<xsl:variable name="lang">
-			<xsl:call-template name="getLang"/>
+		<xsl:param name="lang"/>
+		<xsl:variable name="lang_">
+			<xsl:choose>
+				<xsl:when test="$lang != ''">
+					<xsl:value-of select="$lang"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="getLang"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="title_" select="$titles/*[local-name() = $name][@lang = $lang]"/>
+		<xsl:variable name="language" select="normalize-space($lang_)"/>
+		<xsl:variable name="title_" select="$titles/*[local-name() = $name][@lang = $language]"/>
 		<xsl:choose>
 			<xsl:when test="normalize-space($title_) != ''">
 				<xsl:value-of select="$title_"/>
@@ -1036,10 +1050,11 @@
 		
 				
 		
-					
+		
 			<xsl:attribute name="text-align">center</xsl:attribute>
 			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
 			<xsl:attribute name="font-size">11pt</xsl:attribute>
+		
 		
 	</xsl:attribute-set><xsl:attribute-set name="appendix-style">
 		
@@ -1261,6 +1276,8 @@
 		
 		
 		
+		
+		
 		<!-- $namespace = 'iso' or  -->
 		
 			<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
@@ -1298,6 +1315,7 @@
 				<xsl:with-param name="table" select="$simple-table"/>
 			</xsl:call-template>
 		</xsl:variable>
+		<!-- colwidths=<xsl:copy-of select="$colwidths"/> -->
 		
 		<!-- <xsl:variable name="colwidths2">
 			<xsl:call-template name="calculate-column-widths">
@@ -1319,10 +1337,13 @@
 		<fo:block-container margin-left="-{$margin-left}mm" margin-right="-{$margin-left}mm">			
 			
 			
-			
-			
-			
 						
+						
+						
+			
+			
+									
+			
 			
 			
 			
@@ -1330,23 +1351,42 @@
 				<xsl:attribute name="margin-left">0mm</xsl:attribute>
 				<xsl:attribute name="margin-right">0mm</xsl:attribute>
 			
-			<fo:table id="{@id}" table-layout="fixed" width="100%" margin-left="{$margin-left}mm" margin-right="{$margin-left}mm" table-omit-footer-at-break="true">
+			
+			
+			
+			<xsl:variable name="table_attributes">
+				<attribute name="table-layout">fixed</attribute>
+				<attribute name="width">100%</attribute>
+				<attribute name="margin-left"><xsl:value-of select="$margin-left"/>mm</attribute>
+				<attribute name="margin-right"><xsl:value-of select="$margin-left"/>mm</attribute>
 				
 				
 				
 				
+								
+								
+								
 				
 				
+					<attribute name="border-top">2pt solid black</attribute>
+					<attribute name="border-bottom">2pt solid black</attribute>
+								
 				
+			</xsl:variable>
+			
+			
+			<fo:table id="{@id}" table-omit-footer-at-break="true">
 				
+				<xsl:for-each select="xalan:nodeset($table_attributes)/attribute">					
+					<xsl:attribute name="{@name}">
+						<xsl:value-of select="."/>
+					</xsl:attribute>
+				</xsl:for-each>
 				
-				
-				
-				
-				
-					<xsl:attribute name="border-top">2pt solid black</xsl:attribute>
-					<xsl:attribute name="border-bottom">2pt solid black</xsl:attribute>
-				
+				<xsl:variable name="isNoteOrFnExist" select="./*[local-name()='note'] or .//*[local-name()='fn'][local-name(..) != 'name']"/>				
+				<xsl:if test="$isNoteOrFnExist = 'true'">
+					<xsl:attribute name="border-bottom">0pt solid black</xsl:attribute> <!-- set 0pt border, because there is a separete table below for footer  -->
+				</xsl:if>
 				
 				<xsl:for-each select="xalan:nodeset($colwidths)//column">
 					<xsl:choose>
@@ -1369,6 +1409,33 @@
 				</xsl:choose>
 				
 			</fo:table>
+			
+			<xsl:for-each select="*[local-name()='tbody']"><!-- select context to tbody -->
+				<xsl:call-template name="insertTableFooterInSeparateTable">
+					<xsl:with-param name="table_attributes" select="$table_attributes"/>
+					<xsl:with-param name="colwidths" select="$colwidths"/>				
+				</xsl:call-template>
+			</xsl:for-each>
+			
+			<!-- insert footer as table -->
+			<!-- <fo:table>
+				<xsl:for-each select="xalan::nodeset($table_attributes)/attribute">
+					<xsl:attribute name="{@name}">
+						<xsl:value-of select="."/>
+					</xsl:attribute>
+				</xsl:for-each>
+				
+				<xsl:for-each select="xalan:nodeset($colwidths)//column">
+					<xsl:choose>
+						<xsl:when test=". = 1 or . = 0">
+							<fo:table-column column-width="proportional-column-width(2)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<fo:table-column column-width="proportional-column-width({.})"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+			</fo:table>-->
 			
 			
 			
@@ -1434,6 +1501,13 @@
 						<xsl:for-each select="xalan:nodeset($table)//tr">
 							<xsl:variable name="td_text">
 								<xsl:apply-templates select="td[$curr-col]" mode="td_text"/>
+								
+								<!-- <xsl:if test="$namespace = 'bipm'">
+									<xsl:for-each select="*[local-name()='td'][$curr-col]//*[local-name()='math']">									
+										<word><xsl:value-of select="normalize-space(.)"/></word>
+									</xsl:for-each>
+								</xsl:if> -->
+								
 							</xsl:variable>
 							<xsl:variable name="words">
 								<xsl:variable name="string_with_added_zerospaces">
@@ -1493,11 +1567,14 @@
 		<xsl:value-of select="*[local-name()='origin']/@citeas"/>
 	</xsl:template><xsl:template match="*[local-name()='link']" mode="td_text">
 		<xsl:value-of select="@target"/>
+	</xsl:template><xsl:template match="*[local-name()='math']" mode="td_text">
+		<xsl:variable name="math_text" select="normalize-space(.)"/>
+		<xsl:value-of select="translate($math_text, ' ', '#')"/><!-- mathml images as one 'word' without spaces -->
 	</xsl:template><xsl:template match="*[local-name()='table2']"/><xsl:template match="*[local-name()='thead']"/><xsl:template match="*[local-name()='thead']" mode="process">
 		<xsl:param name="cols-count"/>
 		<!-- font-weight="bold" -->
 		<fo:table-header>
-						
+			
 			<xsl:apply-templates/>
 		</fo:table-header>
 	</xsl:template><xsl:template name="table-header-title">
@@ -1523,6 +1600,13 @@
 		<xsl:apply-templates/>
 	</xsl:template><xsl:template name="insertTableFooter">
 		<xsl:param name="cols-count"/>
+		<xsl:if test="../*[local-name()='tfoot']">
+			<fo:table-footer>			
+				<xsl:apply-templates select="../*[local-name()='tfoot']" mode="process"/>
+			</fo:table-footer>
+		</xsl:if>
+	</xsl:template><xsl:template name="insertTableFooter2">
+		<xsl:param name="cols-count"/>
 		<xsl:variable name="isNoteOrFnExist" select="../*[local-name()='note'] or ..//*[local-name()='fn'][local-name(..) != 'name']"/>
 		<xsl:if test="../*[local-name()='tfoot'] or           $isNoteOrFnExist = 'true'">
 		
@@ -1543,9 +1627,13 @@
 							<!-- fn will be processed inside 'note' processing -->
 							
 							
-							<!-- except gb -->
+							
+							<!-- except gb and bipm -->
 							
 								<xsl:apply-templates select="../*[local-name()='note']" mode="process"/>
+							
+							
+							
 							
 							
 							<!-- horizontal row separator -->
@@ -1560,6 +1648,84 @@
 				</xsl:if>
 			</fo:table-footer>
 		
+		</xsl:if>
+	</xsl:template><xsl:template name="insertTableFooterInSeparateTable">
+		<xsl:param name="table_attributes"/>
+		<xsl:param name="colwidths"/>
+		
+		<xsl:variable name="isNoteOrFnExist" select="../*[local-name()='note'] or ..//*[local-name()='fn'][local-name(..) != 'name']"/>
+		
+		<xsl:if test="$isNoteOrFnExist = 'true'">
+		
+			<xsl:variable name="cols-count" select="count(xalan:nodeset($colwidths)//column)"/>
+			
+			<fo:table keep-with-previous="always">
+				<xsl:for-each select="xalan:nodeset($table_attributes)/attribute">
+					<xsl:choose>
+						<xsl:when test="@name = 'border-top'">
+							<xsl:attribute name="{@name}">0pt solid black</xsl:attribute>
+						</xsl:when>
+						<xsl:when test="@name = 'border'">
+							<xsl:attribute name="{@name}"><xsl:value-of select="."/></xsl:attribute>
+							<xsl:attribute name="border-top">0pt solid black</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="{@name}"><xsl:value-of select="."/></xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+				
+				<xsl:for-each select="xalan:nodeset($colwidths)//column">
+					<xsl:choose>
+						<xsl:when test=". = 1 or . = 0">
+							<fo:table-column column-width="proportional-column-width(2)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<fo:table-column column-width="proportional-column-width({.})"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+				
+				<fo:table-body>
+					<fo:table-row>
+						<fo:table-cell border="solid black 1pt" padding-left="1mm" padding-right="1mm" padding-top="1mm" number-columns-spanned="{$cols-count}">
+							
+							
+							
+							<!-- fn will be processed inside 'note' processing -->
+							
+							
+							
+							<!-- except gb and bipm -->
+							
+								<xsl:apply-templates select="../*[local-name()='note']" mode="process"/>
+							
+							
+							<!-- <xsl:if test="$namespace = 'bipm'">
+								<xsl:choose>
+									<xsl:when test="ancestor::*[local-name()='preface']">
+										show Note under table in preface (ex. abstract) sections
+										<xsl:apply-templates select="../*[local-name()='note']" mode="process"/>
+									</xsl:when>
+									<xsl:otherwise>
+										empty, because notes show at page side in main sections
+									<fo:block/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if> -->
+							
+							
+							<!-- horizontal row separator -->
+							
+							
+							<!-- fn processing -->
+							<xsl:call-template name="fn_display"/>
+							
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+				
+			</fo:table>
 		</xsl:if>
 	</xsl:template><xsl:template match="*[local-name()='tbody']">
 		
@@ -1613,8 +1779,8 @@
 					
 				</xsl:if>
 				
-								
-								
+				
+				
 				
 			<xsl:apply-templates/>
 		</fo:table-row>
@@ -1639,7 +1805,8 @@
 			
 											
 				<xsl:attribute name="border-top">solid black 2pt</xsl:attribute>
-				<xsl:attribute name="border-bottom">solid black 2pt</xsl:attribute>				
+				<xsl:attribute name="border-bottom">solid black 2pt</xsl:attribute>
+			
 			
 			<xsl:if test="@colspan">
 				<xsl:attribute name="number-columns-spanned">
@@ -1680,7 +1847,8 @@
 			
 			
 			
-						
+			
+			
 			
 			
 			
@@ -1710,14 +1878,17 @@
 				
 				
 				
+				
+				
 				<fo:inline padding-right="2mm">
 					
 					
 					
-				
+					
 					<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
 						
 				</fo:inline>
+				
 				<xsl:apply-templates mode="process"/>
 			</fo:block>
 		
@@ -1741,7 +1912,9 @@
 					
 					
 					
+					
 					<fo:inline font-size="80%" padding-right="5mm" id="{@id}">
+						
 						
 						
 						
@@ -1750,10 +1923,12 @@
 						
 						<xsl:value-of select="@reference"/>
 						
+						
 					</fo:inline>
 					<fo:inline>
 						
-						<xsl:apply-templates/>
+						<!-- <xsl:apply-templates /> -->
+						<xsl:copy-of select="./node()"/>
 					</fo:inline>
 				</fo:block>
 			</xsl:if>
@@ -1790,7 +1965,20 @@
 		<xsl:variable name="following_dl_colwidths">
 			<xsl:if test="*[local-name() = 'dl']"><!-- if there is a 'dl', then set the same columns width as for 'dl' -->
 				<xsl:variable name="html-table">
-					<xsl:variable name="ns" select="substring-before(name(/*), '-')"/>
+					<xsl:variable name="doc_ns">
+						
+					</xsl:variable>
+					<xsl:variable name="ns">
+						<xsl:choose>
+							<xsl:when test="normalize-space($doc_ns)  != ''">
+								<xsl:value-of select="normalize-space($doc_ns)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="substring-before(name(/*), '-')"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<!-- <xsl:variable name="ns" select="substring-before(name(/*), '-')"/> -->
 					<xsl:element name="{$ns}:table">
 						<xsl:for-each select="*[local-name() = 'dl'][1]">
 							<tbody>
@@ -1855,7 +2043,8 @@
 												<xsl:attribute name="margin-bottom">0</xsl:attribute>
 											</xsl:if>
 											
-											<xsl:apply-templates/>
+											<!-- <xsl:apply-templates /> -->
+											<xsl:copy-of select="./node()"/>
 										</fo:block>
 									</fo:table-cell>
 								</fo:table-row>
@@ -1874,9 +2063,12 @@
 			
 			
 			
+			
 			<fo:basic-link internal-destination="{@reference}_{ancestor::*[@id][1]/@id}" fox:alt-text="{@reference}"> <!-- @reference   | ancestor::*[local-name()='clause'][1]/@id-->
 				
+				
 				<xsl:value-of select="@reference"/>
+				
 			</fo:basic-link>
 		</fo:inline>
 	</xsl:template><xsl:template match="*[local-name()='fn']/*[local-name()='p']">
@@ -1974,7 +2166,20 @@
 								</xsl:choose>
 								<!-- create virtual html table for dl/[dt and dd] -->
 								<xsl:variable name="html-table">
-									<xsl:variable name="ns" select="substring-before(name(/*), '-')"/>
+									<xsl:variable name="doc_ns">
+										
+									</xsl:variable>
+									<xsl:variable name="ns">
+										<xsl:choose>
+											<xsl:when test="normalize-space($doc_ns)  != ''">
+												<xsl:value-of select="normalize-space($doc_ns)"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="substring-before(name(/*), '-')"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									<!-- <xsl:variable name="ns" select="substring-before(name(/*), '-')"/> -->
 									<xsl:element name="{$ns}:table">
 										<tbody>
 											<xsl:apply-templates mode="dl"/>
@@ -2118,6 +2323,7 @@
 					
 					
 					
+					
 					<xsl:apply-templates/>
 					<!-- <xsl:if test="$namespace = 'gb'">
 						<xsl:if test="ancestor::*[local-name()='formula']">
@@ -2184,18 +2390,18 @@
 	</xsl:template><xsl:template match="*[local-name()='tt']">
 		<fo:inline xsl:use-attribute-sets="tt-style">
 			<xsl:variable name="_font-size">
-								
-								
-								
 				
 				
 				
 				
 				
 				
-								
 				
-								
+				
+				
+				
+				
+				
 				
 						
 			</xsl:variable>
@@ -2533,7 +2739,7 @@
 		<xsl:value-of select="java:toUpperCase(java:java.lang.String.new(substring($str, 1, 1)))"/>
 		<xsl:value-of select="substring($str, 2)"/>		
 	</xsl:template><xsl:template match="mathml:math">
-		<fo:inline font-family="STIX2Math">
+		<fo:inline font-family="STIX Two Math"> <!--  -->
 			<xsl:variable name="mathml">
 				<xsl:apply-templates select="." mode="mathml"/>
 			</xsl:variable>
@@ -2627,7 +2833,7 @@
 		<xsl:apply-templates/>
 	</xsl:template><xsl:template match="*[local-name() = 'xref']">
 		<fo:basic-link internal-destination="{@target}" fox:alt-text="{@target}" xsl:use-attribute-sets="xref-style">
-						
+			
 			<xsl:apply-templates/>
 		</fo:basic-link>
 	</xsl:template><xsl:template match="*[local-name() = 'formula']" name="formula">
@@ -2833,18 +3039,9 @@
 									<fo:bookmark internal-destination="{contents/item[1]/@id}" starting-state="hide">
 										<fo:bookmark-title>
 											<xsl:variable name="bookmark-title_">
-												<xsl:choose>
-													<xsl:when test="@lang = 'en'">
-														
-														
-														</xsl:when>
-													<xsl:when test="@lang = 'fr'">
-														
-														
-													</xsl:when>
-													<xsl:when test="@lang = 'de'">Deutsche</xsl:when>
-													<xsl:otherwise><xsl:value-of select="@lang"/> version</xsl:otherwise>
-												</xsl:choose>
+												<xsl:call-template name="getLangVersion">
+													<xsl:with-param name="lang" select="@lang"/>
+												</xsl:call-template>
 											</xsl:variable>
 											<xsl:choose>
 												<xsl:when test="normalize-space($bookmark-title_) != ''">
@@ -2886,6 +3083,20 @@
 				
 			</fo:bookmark-tree>
 		</xsl:if>
+	</xsl:template><xsl:template name="getLangVersion">
+		<xsl:param name="lang"/>
+		<xsl:choose>
+			<xsl:when test="$lang = 'en'">
+				
+				
+				</xsl:when>
+			<xsl:when test="$lang = 'fr'">
+				
+				
+			</xsl:when>
+			<xsl:when test="$lang = 'de'">Deutsche</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$lang"/> version</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template><xsl:template match="item" mode="bookmark">
 		<fo:bookmark internal-destination="{@id}" starting-state="hide">
 				<fo:bookmark-title>
@@ -2900,7 +3111,7 @@
 	</xsl:template><xsl:template match="title" mode="bookmark"/><xsl:template match="text()" mode="bookmark"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |         *[local-name() = 'image']/*[local-name() = 'name']" mode="presentation">
 		<xsl:if test="normalize-space() != ''">			
 			<fo:block xsl:use-attribute-sets="figure-name-style">
-								
+				
 				<xsl:apply-templates/>
 			</fo:block>
 		</xsl:if>
@@ -3526,6 +3737,7 @@
 	</xsl:template><xsl:template match="*[local-name() = 'clause']">
 		<fo:block>
 			<xsl:call-template name="setId"/>			
+			
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'definitions']">
@@ -3560,6 +3772,7 @@
 							<xsl:otherwise><xsl:value-of select="$note-body-indent-table"/></xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
+					
 					
 					<fo:block-container margin-left="0mm">
 						<fo:block>
@@ -3742,6 +3955,7 @@
 						<dc:title>
 							<xsl:variable name="title">
 								
+								
 																
 									<xsl:value-of select="/*/*[local-name() = 'bibdata']/*[local-name() = 'title'][@language = 'en']"/>
 								
@@ -3760,9 +3974,11 @@
 						<dc:creator>
 							
 							
+							
 						</dc:creator>
 						<dc:description>
 							<xsl:variable name="abstract">
+								
 								
 								
 								
