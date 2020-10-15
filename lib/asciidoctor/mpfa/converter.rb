@@ -56,7 +56,7 @@ module Asciidoctor
         presentation_xml_converter(node).convert(@filename + ".xml")
         html_converter(node).convert(@filename + ".presentation.xml", nil, false, "#{@filename}.html")
         doc_converter(node).convert(@filename + ".presentation.xml", nil, false, "#{@filename}.doc")
-        pdf_converter(node).convert(@filename + ".presentation.xml", nil, false, "#{@filename}.doc")
+        pdf_converter(node)&.convert(@filename + ".presentation.xml", nil, false, "#{@filename}.pdf")
       end
 
       def validate(doc)
@@ -82,6 +82,7 @@ module Asciidoctor
       end
 
       def pdf_converter(node)
+        return if node.attr("no-pdf")
         IsoDoc::MPFA::PdfConvert.new(doc_extract_attributes(node))
       end
     end

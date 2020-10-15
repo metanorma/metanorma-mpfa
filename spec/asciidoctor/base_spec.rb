@@ -35,8 +35,12 @@ RSpec.describe Asciidoctor::MPFA do
     OUTPUT
 
     system "rm -f test.html"
+    system "rm -f test.doc"
+    system "rm -f test.pdf"
     expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
+    expect(File.exist?("test.pdf")).to be true
+    expect(File.exist?("test.doc")).to be true
   end
 
   it "processes default metadata" do
@@ -208,6 +212,7 @@ RSpec.describe Asciidoctor::MPFA do
       Author
       :docfile: test.adoc
       :novalid:
+      :no-pdf:
     INPUT
 
     system "rm -f test.html"
@@ -226,6 +231,7 @@ RSpec.describe Asciidoctor::MPFA do
       :docfile: test.adoc
       :novalid:
       :script: Hans
+      :no-pdf:
     INPUT
 
     system "rm -f test.html"
@@ -247,6 +253,7 @@ RSpec.describe Asciidoctor::MPFA do
       :body-font: Zapf Chancery
       :header-font: Comic Sans
       :monospace-font: Andale Mono
+      :no-pdf:
     INPUT
 
     system "rm -f test.html"
