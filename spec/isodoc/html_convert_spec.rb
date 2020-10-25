@@ -67,6 +67,7 @@ RSpec.describe IsoDoc::MPFA do
 :edition=>"Second",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
+:lang=>"en",
 :logo=>"#{File.join(logoloc, "mpfa-logo-no-text@4x.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
@@ -74,7 +75,9 @@ RSpec.describe IsoDoc::MPFA do
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"1 January 2000",
+:script=>"Latn",
 :stage=>"Published",
+:stage_display=>"Published",
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>false,
@@ -485,7 +488,7 @@ RSpec.describe IsoDoc::MPFA do
        </body>
     OUTPUT
 
-    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(presxml)
+     expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true).sub(%r{<localized-strings>.*</localized-strings>}m, ""))).to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(
       IsoDoc::MPFA::HtmlConvert.new({}).convert("test", presxml, true).
       gsub(%r{^.*<body}m, "<body").
@@ -505,6 +508,7 @@ RSpec.describe IsoDoc::MPFA do
       Author
       :docfile: test.adoc
       :novalid:
+      :no-pdf:
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -590,13 +594,9 @@ RSpec.describe IsoDoc::MPFA do
     presxml = <<~OUTPUT
     <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
          <bibdata>
-         <language>zh</language>
-         <script>Hans</script>
+         <language current="true">zh</language>
+         <script current="true">Hans</script>
          </bibdata>
-         <local_bibdata>
-         <language>zh</language>
-         <script>Hans</script>
-         </local_bibdata>
          <preface>
          <foreword obligation="informative">
             <title>Foreword</title>
@@ -839,7 +839,7 @@ RSpec.describe IsoDoc::MPFA do
        </body>
 OUTPUT
 
-    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true))).to be_equivalent_to xmlpp(presxml)
+    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true).sub(%r{<localized-strings>.*</localized-strings>}m, ""))).to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(
       IsoDoc::MPFA::HtmlConvert.new({}).convert("test", presxml, true).
       gsub(%r{^.*<body}m, "<body").
