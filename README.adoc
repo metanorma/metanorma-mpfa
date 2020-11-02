@@ -8,14 +8,12 @@ image:https://codeclimate.com/github/metanorma/metanorma-mpfa/badges/gpa.svg["Co
 image:https://img.shields.io/github/issues-pr-raw/metanorma/metanorma-mpfa.svg["Pull Requests", link="https://github.com/metanorma/metanorma-mpfa/pulls"]
 image:https://img.shields.io/github/commits-since/metanorma/metanorma-mpfa/latest.svg["Commits since latest",link="https://github.com/metanorma/metanorma-mpfa/releases"]
 
-_Formerly known as_ `metanorma-mpfd`.
-
 WARNING: This gem is still under development. Moreover, unlike other Metanorma gems, 
 there is no formal MPFA specification, and this work is still currently exploratory.
 
 == Functionality
 
-This gem processes https://www.metanorma.com[Metanorma documents] following
+This gem processes https://www.metanorma.com/[Metanorma documents] following
 a template for generating documents for the http://www.mpfa.org.hk[Mandatory Provident Fund Schemes Authority of Hong Kong].
 
 The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
@@ -77,3 +75,7 @@ this general model can be found on its page.
 ////
 * Document templates are available at the https://github.com/metanorma/mn-templates-mpf[mn-templates-mpf] repository.
 /////
+
+== Notes
+
+Metanorma-MPFA was formerly published as `metanorma-mpfd`.
