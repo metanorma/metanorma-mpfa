@@ -15,7 +15,7 @@ there is no formal MPFA specification, and this work is still currently explorat
 
 == Functionality
 
-This gem processes http://asciidoctor.org/[Asciidoctor] documents following
+This gem processes https://www.metanorma.com[Metanorma documents] following
 a template for generating documents for the http://www.mpfa.org.hk[Mandatory Provident Fund Schemes Authority of Hong Kong].
 
 The gem currently inherits from the https://github.com/metanorma/metanorma-standoc
