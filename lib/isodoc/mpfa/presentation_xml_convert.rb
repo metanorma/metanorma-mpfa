@@ -12,6 +12,15 @@ module IsoDoc
         prefix_name(f, " ", lbl, "title")
       end
 
+      def clause1(f)
+        lbl = @xrefs.anchor(f['id'], :label, f.parent.name != "sections")
+        if lbl == "1" and !f.at(ns("./title"))
+          prefix_name(f, "<tab/>", " ", "title")
+        else
+          super
+        end
+      end
+
       include Init
     end
   end
