@@ -1245,6 +1245,121 @@ OUTPUT
     )).to be_equivalent_to output
   end
 
+    it "skips 1. as section header if no title" do
+          input = <<~"INPUT"
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+<sections><clause id="_introductory" container="true" obligation="normative"><title>Introductory</title><clause id="_138fe231-cdd1-4c51-9bdb-5c0a1e9af502" obligation="normative">
+
+<p id="_69e9c23c-86da-4d2a-8ed7-28843db8112a">Section 5(1) of the <link target="https://www.elegislation.gov.hk/hk/cap485">Mandatory Provident Fund Schemes Ordinance (“the Ordinance”)</link> provides for the exemption of the members of occupational retirement schemes and their employers from the operation of all, or any specified, provisions of <link target="https://www.elegislation.gov.hk/hk/cap485">the Ordinance</link>.</p>
+</clause>
+<clause id="_2" obligation="normative">
+
+<p id="_cfa1993e-1f37-4092-ab18-6d02b7908311">Section 16 of the <link target="https://www.elegislation.gov.hk/hk/cap485B">Mandatory Provident Fund Schemes (Exemption) Regulation (“the Exemption Regulation”)</link> sets out the detailed requirements with respect to the application for exemption of relevant ORSO registered schemes.</p>
+</clause>
+</sections>
+</mpfd-standard>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+  <mpfd-standard xmlns='https://open.ribose.com/standards/rsd' type='presentation'>
+         <sections>
+           <clause id='_introductory' container='true' obligation='normative'>
+             <title depth='1'>Introductory</title>
+             <clause id='_138fe231-cdd1-4c51-9bdb-5c0a1e9af502' obligation='normative'>
+               <title> </title>
+               <p id='_69e9c23c-86da-4d2a-8ed7-28843db8112a'>
+                 Section 5(1) of the 
+                 <link target='https://www.elegislation.gov.hk/hk/cap485'>Mandatory Provident Fund Schemes Ordinance (&#x201C;the Ordinance&#x201D;)</link>
+                  provides for the exemption of the members of occupational retirement
+                 schemes and their employers from the operation of all, or any
+                 specified, provisions of 
+                 <link target='https://www.elegislation.gov.hk/hk/cap485'>the Ordinance</link>
+                 .
+               </p>
+             </clause>
+             <clause id='_2' obligation='normative'>
+               <title>2.</title>
+               <p id='_cfa1993e-1f37-4092-ab18-6d02b7908311'>
+                 Section 16 of the 
+                 <link target='https://www.elegislation.gov.hk/hk/cap485B'>
+                   Mandatory Provident Fund Schemes (Exemption) Regulation (&#x201C;the
+                   Exemption Regulation&#x201D;)
+                 </link>
+                  sets out the detailed requirements with respect to the application
+                 for exemption of relevant ORSO registered schemes.
+               </p>
+             </clause>
+           </clause>
+         </sections>
+       </mpfd-standard>
+    OUTPUT
+
+    expect(xmlpp(
+      IsoDoc::MPFA::PresentationXMLConvert.new({}).
+      convert("test", input, true).
+      gsub(%r{^.*<localized-strings>.*</localized-strings>}m, "")
+    )).to be_equivalent_to output
+  end
+
+     it "do not skip 1. as section header if title" do
+          input = <<~"INPUT"
+<mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+<sections><clause id="_introductory" container="true" obligation="normative"><title>Introductory</title><clause id="_138fe231-cdd1-4c51-9bdb-5c0a1e9af502" obligation="normative"><title>Title</title>
+
+<p id="_69e9c23c-86da-4d2a-8ed7-28843db8112a">Section 5(1) of the <link target="https://www.elegislation.gov.hk/hk/cap485">Mandatory Provident Fund Schemes Ordinance (“the Ordinance”)</link> provides for the exemption of the members of occupational retirement schemes and their employers from the operation of all, or any specified, provisions of <link target="https://www.elegislation.gov.hk/hk/cap485">the Ordinance</link>.</p>
+</clause>
+<clause id="_2" obligation="normative">
+
+<p id="_cfa1993e-1f37-4092-ab18-6d02b7908311">Section 16 of the <link target="https://www.elegislation.gov.hk/hk/cap485B">Mandatory Provident Fund Schemes (Exemption) Regulation (“the Exemption Regulation”)</link> sets out the detailed requirements with respect to the application for exemption of relevant ORSO registered schemes.</p>
+</clause>
+</sections>
+</mpfd-standard>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+  <mpfd-standard xmlns='https://open.ribose.com/standards/rsd' type='presentation'>
+         <sections>
+           <clause id='_introductory' container='true' obligation='normative'>
+             <title depth='1'>Introductory</title>
+             <clause id='_138fe231-cdd1-4c51-9bdb-5c0a1e9af502' obligation='normative'>
+               <title depth='1'>
+                 1.
+                 <tab/>
+                 Title
+               </title>
+               <p id='_69e9c23c-86da-4d2a-8ed7-28843db8112a'>
+                 Section 5(1) of the 
+                 <link target='https://www.elegislation.gov.hk/hk/cap485'>Mandatory Provident Fund Schemes Ordinance (&#x201C;the Ordinance&#x201D;)</link>
+                  provides for the exemption of the members of occupational retirement
+                 schemes and their employers from the operation of all, or any
+                 specified, provisions of 
+                 <link target='https://www.elegislation.gov.hk/hk/cap485'>the Ordinance</link>
+                 .
+               </p>
+             </clause>
+             <clause id='_2' obligation='normative'>
+               <title>2.</title>
+               <p id='_cfa1993e-1f37-4092-ab18-6d02b7908311'>
+                 Section 16 of the 
+                 <link target='https://www.elegislation.gov.hk/hk/cap485B'>
+                   Mandatory Provident Fund Schemes (Exemption) Regulation (&#x201C;the
+                   Exemption Regulation&#x201D;)
+                 </link>
+                  sets out the detailed requirements with respect to the application
+                 for exemption of relevant ORSO registered schemes.
+               </p>
+             </clause>
+           </clause>
+         </sections>
+       </mpfd-standard>
+    OUTPUT
+
+    expect(xmlpp(
+      IsoDoc::MPFA::PresentationXMLConvert.new({}).
+      convert("test", input, true).
+      gsub(%r{^.*<localized-strings>.*</localized-strings>}m, "")
+    )).to be_equivalent_to output
+  end
 
 
 end
