@@ -1,9 +1,7 @@
 = Metanorma-MPFA: Metanorma processor for MPFA documents
 
 image:https://img.shields.io/gem/v/metanorma-mpfa.svg["Gem Version", link="https://rubygems.org/gems/metanorma-mpfa"]
-image:https://github.com/metanorma/metanorma-mpfa/workflows/macos/badge.svg["Build Status (macOS)", link="https://github.com/metanorma/metanorma-mpfa/actions?workflow=macos"]
-image:https://github.com/metanorma/metanorma-mpfa/workflows/ubuntu/badge.svg["Build Status (ubuntu)", link="https://github.com/metanorma/metanorma-mpfa/actions?workflow=ubuntu"]
-image:https://github.com/metanorma/metanorma-mpfa/workflows/windows/badge.svg["Build Status (Windows)", link="https://github.com/metanorma/metanorma-mpfa/actions?workflow=windows"]
+image:https://github.com/metanorma/metanorma-mpfa/workflows/rake/badge.svg["Build Status", link="https://github.com/metanorma/metanorma-mpfa/actions?workflow=rake"]
 image:https://codeclimate.com/github/metanorma/metanorma-mpfa/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/metanorma-mpfa"]
 image:https://img.shields.io/github/issues-pr-raw/metanorma/metanorma-mpfa.svg["Pull Requests", link="https://github.com/metanorma/metanorma-mpfa/pulls"]
 image:https://img.shields.io/github/commits-since/metanorma/metanorma-mpfa/latest.svg["Commits since latest",link="https://github.com/metanorma/metanorma-mpfa/releases"]
