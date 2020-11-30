@@ -14,7 +14,7 @@
 */
 
 body {
-  @include bodyStyle1(15px, 1.4em, #301907, #f7f7f7, 300);
+  @include bodyStyle1($normalfontsize, 1.4em, #301907, #f7f7f7, 300);
   // @include sidebarNavContainer(323px);
   main {
     margin: 0 0 0 6em;
@@ -446,7 +446,7 @@ a.footnote-number {
 }
 
 .footnote {
-  font-size: 0.9em;
+  font-size: $footnotefontsize;
 }
 
 
