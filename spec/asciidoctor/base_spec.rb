@@ -396,7 +396,7 @@ INPUT
 <title>Glossary</title>
 <terms id="_" obligation="normative">
   <title>Subglossary</title>
-  <term id="_">
+  <term id="term-term">
   <preferred>Term</preferred>
   <definition><p id="_">Definition</p></definition>
 </term>
@@ -478,7 +478,7 @@ INPUT
   <p id="_">Introduction</p>
 </introduction><terms id="_" obligation="normative">
   <title>Glossary</title>
-  <term id="_">
+  <term id="term-term">
   <preferred>Term</preferred>
   <definition><p id="_">Definition</p></definition>
 </term>
