@@ -18,6 +18,13 @@ module Metanorma
         )
       end
 
+      def fonts_manifest
+        {
+          "Arial" => nil,
+          "STIX Two Math" => nil,
+        }
+      end
+
       def version
         "Metanorma::MPFA #{Metanorma::MPFA::VERSION}"
       end
