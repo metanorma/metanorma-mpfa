@@ -128,7 +128,7 @@ RSpec.describe Asciidoctor::MPFA do
     expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
   end
 
-    it "processes default metadata" do
+    it "processes metadata, working draft" do
     input = <<~"INPUT"
       = Document title
       Author

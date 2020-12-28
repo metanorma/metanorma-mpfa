@@ -40,7 +40,7 @@ module IsoDoc
         end
       end
 
-      def middle_clause
+      def middle_clause(_docxml)
         "//clause[parent::sections][not(descendant::terms)]"
       end
 
@@ -59,7 +59,7 @@ module IsoDoc
       end
 
       def clause(isoxml, out)
-        isoxml.xpath(ns(middle_clause)).each do |c|
+        isoxml.xpath(ns(middle_clause(isoxml))).each do |c|
           out.div **attr_code(id: c["id"]) do |s|
             clause_name(nil, c&.at(ns("./title")), s, 
                         class: c["container"] ? "containerhdr" : nil )
