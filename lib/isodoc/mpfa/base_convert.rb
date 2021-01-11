@@ -45,7 +45,7 @@ module IsoDoc
       end
 
       def middle(isoxml, out)
-        middle_title(out)
+        middle_title(isoxml, out)
         middle_admonitions(isoxml, out)
         clause isoxml, out
         annex isoxml, out
