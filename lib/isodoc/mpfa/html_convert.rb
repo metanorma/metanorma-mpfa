@@ -18,8 +18,8 @@ module IsoDoc
 
       def default_fonts(options)
         {
-          bodyfont: (options[:script] == "Hans" ? '"SimSun",serif' : '"Titillium Web",sans-serif'),
-          headerfont: (options[:script] == "Hans" ? '"SimHei",sans-serif' : '"Titillium Web",sans-serif'),
+          bodyfont: (options[:script] == "Hans" ? '"Source Han Sans",serif' : '"Titillium Web",sans-serif'),
+          headerfont: (options[:script] == "Hans" ? '"Source Han Sans",sans-serif' : '"Titillium Web",sans-serif'),
           monospacefont: '"Space Mono",monospace',
           normalfontsize: "15px",
           footnotefontsize: "0.9em",

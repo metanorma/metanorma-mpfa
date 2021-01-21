@@ -17,7 +17,7 @@ RSpec.describe Asciidoctor::MPFA do
       expect do
         Metanorma::Compile
           .new
-          .compile("spec/assets/xref_error.adoc", type: "mpfa")
+          .compile("spec/assets/xref_error.adoc", type: "mpfa", :"agree-to-terms" => true)
       end.to(change { File.exist?("spec/assets/xref_error.err") }
               .from(false).to(true))
     end
