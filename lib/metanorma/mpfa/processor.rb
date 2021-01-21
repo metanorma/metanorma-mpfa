@@ -21,6 +21,7 @@ module Metanorma
       def fonts_manifest
         {
           "Arial" => nil,
+          "Source Han Sans" => nil,
           "STIX Two Math" => nil,
         }
       end
