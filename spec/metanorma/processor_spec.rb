@@ -9,12 +9,6 @@ RSpec.describe Metanorma::MPFA::Processor do
 
   let(:processor) { registry.find_processor(:mpfa) }
 
-  around do |example|
-    Dir.mktmpdir("rspec-") do |dir|
-      Dir.chdir(dir) { example.run }
-    end
-  end
-
   it "registers against metanorma" do
     expect(processor).not_to be nil
   end

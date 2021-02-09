@@ -2,13 +2,6 @@ require "spec_helper"
 require "fileutils"
 
 RSpec.describe Asciidoctor::MPFA do
-  around do |example|
-    Dir.mktmpdir("rspec-") do |dir|
-      @temp_dir = dir
-      Dir.chdir(dir) { example.run }
-    end
-  end
-
   it "has a version number" do
     expect(Metanorma::MPFA::VERSION).not_to be nil
   end
