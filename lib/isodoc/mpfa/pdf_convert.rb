@@ -16,7 +16,7 @@ module IsoDoc
         doctype = "standards" unless %w(circular guidelines
         compliance-standards-for-mpf-trustees
         supervision-of-mpf-intermediaries).include? doctype
-        "mpfd.#{doctype}.xsl"
+        "mpfa.#{doctype}.xsl"
       end
     end
   end

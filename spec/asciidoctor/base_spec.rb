@@ -8,13 +8,13 @@ RSpec.describe Asciidoctor::MPFA do
 
   it "processes a blank document" do
     input = <<~"INPUT"
-    #{ASCIIDOC_BLANK_HDR}
+      #{ASCIIDOC_BLANK_HDR}
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-<sections/>
-</mpfd-standard>
+      #{BLANK_HDR}
+      <sections/>
+      </mpfd-standard>
     OUTPUT
 
     expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
@@ -29,14 +29,11 @@ RSpec.describe Asciidoctor::MPFA do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-<sections/>
-</mpfd-standard>
+      #{BLANK_HDR}
+      <sections/>
+      </mpfd-standard>
     OUTPUT
 
-    system "rm -f test.html"
-    system "rm -f test.doc"
-    system "rm -f test.pdf"
     expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true
@@ -76,59 +73,60 @@ RSpec.describe Asciidoctor::MPFA do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <?xml version="1.0" encoding="UTF-8"?>
-<mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
-<bibdata type="standard">
-  <title language="en" format="text/plain">Main Title</title>
-  <docidentifier>1000</docidentifier>
-  <docnumber>1000</docnumber>
-  <edition>2</edition>
-<version>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>Mandatory Provident Fund Schemes Authority</name>
-    </organization>
-  </contributor>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>Mandatory Provident Fund Schemes Authority</name>
-    </organization>
-  </contributor>
-  <language>en</language>
-  <script>Latn</script>
-  <status>
-    <stage>working-draft</stage>
-    <iteration>3</iteration>
-  </status>
-  <copyright>
-    <from>2001</from>
-    <owner>
-      <organization>
-      <name>Mandatory Provident Fund Schemes Authority</name>
-      </organization>
-    </owner>
-  </copyright>
-  <ext>
-  <doctype>standard</doctype>
-  <editorialgroup>
-    <committee type="A">TC</committee>
-    <committee type="B">TC2</committee>
-    <committee type="C">TC3</committee>
-  </editorialgroup>
-  </ext>
-</bibdata>
-<sections/>
-</mpfd-standard>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
+        <bibdata type="standard">
+          <title language="en" format="text/plain">Main Title</title>
+          <docidentifier>1000</docidentifier>
+          <docnumber>1000</docnumber>
+          <edition>2</edition>
+          <version>
+            <revision-date>2000-01-01</revision-date>
+            <draft>3.4</draft>
+          </version>
+          <contributor>
+            <role type="author"/>
+            <organization>
+              <name>Mandatory Provident Fund Schemes Authority</name>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type="publisher"/>
+            <organization>
+              <name>Mandatory Provident Fund Schemes Authority</name>
+            </organization>
+          </contributor>
+          <language>en</language>
+          <script>Latn</script>
+          <status>
+            <stage>working-draft</stage>
+            <iteration>3</iteration>
+          </status>
+          <copyright>
+            <from>2001</from>
+            <owner>
+              <organization>
+              <name>Mandatory Provident Fund Schemes Authority</name>
+              </organization>
+            </owner>
+          </copyright>
+          <ext>
+          <doctype>standard</doctype>
+          <editorialgroup>
+            <committee type="A">TC</committee>
+            <committee type="B">TC2</committee>
+            <committee type="C">TC3</committee>
+          </editorialgroup>
+          </ext>
+        </bibdata>
+        <sections/>
+      </mpfd-standard>
     OUTPUT
 
     expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
   end
 
-    it "processes metadata, working draft" do
+  it "processes metadata, working draft" do
     input = <<~"INPUT"
       = Document title
       Author
@@ -141,47 +139,46 @@ RSpec.describe Asciidoctor::MPFA do
       :title: Main Title
     INPUT
 
-        output = xmlpp(<<~"OUTPUT")
-    <?xml version="1.0" encoding="UTF-8"?>
-<mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
-<bibdata type="standard">
-  <title language="en" format="text/plain">Main Title</title>
-  <docidentifier>1000</docidentifier>
-  <docnumber>1000</docnumber>
-  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>Mandatory Provident Fund Schemes Authority</name>
-    </organization>
-  </contributor>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>Mandatory Provident Fund Schemes Authority</name>
-    </organization>
-  </contributor>
-  <language>en</language>
-  <script>Latn</script>
-  <status><stage>working-draft</stage></status>
-  <copyright>
-    <from>#{Date.today.year}</from>
-    <owner>
-      <organization>
-      <name>Mandatory Provident Fund Schemes Authority</name>
-      </organization>
-    </owner>
-  </copyright>
-  <ext>
-  <doctype>article</doctype>
-  </ext>
-</bibdata>
-<sections/>
-</mpfd-standard>
+    output = xmlpp(<<~"OUTPUT")
+      <?xml version="1.0" encoding="UTF-8"?>
+      <mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
+        <bibdata type="standard">
+          <title language="en" format="text/plain">Main Title</title>
+          <docidentifier>1000</docidentifier>
+          <docnumber>1000</docnumber>
+          <contributor>
+            <role type="author"/>
+            <organization>
+              <name>Mandatory Provident Fund Schemes Authority</name>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type="publisher"/>
+            <organization>
+              <name>Mandatory Provident Fund Schemes Authority</name>
+            </organization>
+          </contributor>
+          <language>en</language>
+          <script>Latn</script>
+          <status><stage>working-draft</stage></status>
+          <copyright>
+            <from>#{Date.today.year}</from>
+            <owner>
+              <organization>
+              <name>Mandatory Provident Fund Schemes Authority</name>
+              </organization>
+            </owner>
+          </copyright>
+          <ext>
+          <doctype>article</doctype>
+          </ext>
+        </bibdata>
+        <sections/>
+      </mpfd-standard>
     OUTPUT
 
     expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
-
-    end
+  end
 
   it "strips inline header" do
     input = <<~"INPUT"
@@ -192,18 +189,19 @@ RSpec.describe Asciidoctor::MPFA do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-             <preface><foreword id="_" obligation="informative">
-         <title>Foreword</title>
-         <p id="_">This is a preamble</p>
-       </foreword></preface><sections>
-       <clause id="_" obligation="normative">
-         <title>Section 1</title>
-       </clause></sections>
-       </mpfd-standard>
+      #{BLANK_HDR}
+      <preface><foreword id="_" obligation="informative">
+      <title>Foreword</title>
+      <p id="_">This is a preamble</p>
+      </foreword></preface><sections>
+      <clause id="_" obligation="normative">
+      <title>Section 1</title>
+      </clause></sections>
+      </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfa, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))))
+      .to be_equivalent_to output
   end
 
   it "uses default fonts" do
@@ -283,217 +281,257 @@ RSpec.describe Asciidoctor::MPFA do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-            #{BLANK_HDR}
-       <sections>
+      #{BLANK_HDR}
+      <sections>
         <p id="_"><em>emphasis</em>
-       <strong>strong</strong>
-       <tt>monospace</tt>
-       “double quote”
-       ‘single quote’
-       super<sup>script</sup>
-       sub<sub>script</sub>
-       <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow>
-  <mi>a</mi>
-</mrow>
-<mrow>
-  <mn>90</mn>
-</mrow>
-</msub></math></stem> 
-       <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub> <mrow> <mrow> <mi mathvariant="bold-italic">F</mi> </mrow> </mrow> <mrow> <mrow> <mi mathvariant="bold-italic">Α</mi> </mrow> </mrow> </msub> </math></stem>
-       <keyword>keyword</keyword>
-       <strike>strike</strike>
-       <smallcap>smallcap</smallcap></p>
-       </sections>
-       </mpfd-standard>
+          <strong>strong</strong>
+          <tt>monospace</tt>
+          “double quote”
+          ‘single quote’
+          super<sup>script</sup>
+          sub<sub>script</sub>
+          <stem type="MathML">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <msub>
+                <mrow>
+                  <mi>a</mi>
+                </mrow>
+                <mrow>
+                  <mn>90</mn>
+                </mrow>
+              </msub>
+            </math>
+          </stem>
+          <stem type="MathML">
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <msub>
+                <mrow>
+                  <mrow>
+                    <mi mathvariant="bold-italic">F</mi>
+                  </mrow>
+                </mrow>
+                <mrow>
+                  <mrow>
+                    <mi mathvariant="bold-italic">Α</mi>
+                  </mrow>
+                </mrow>
+              </msub>
+            </math>
+          </stem>
+          <keyword>keyword</keyword>
+          <strike>strike</strike>
+          <smallcap>smallcap</smallcap>
+        </p>
+      </sections>
+      </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfa, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))))
+      .to be_equivalent_to output
   end
 
-    it "processes guidance sections" do
-              expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfa, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-        #{ASCIIDOC_BLANK_HDR}
+  it "processes guidance sections" do
+    options = [backend: :mpfa, header_footer: true]
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *options)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{ASCIIDOC_BLANK_HDR}
 
-        == Section
-        Section
+      == Section
+      Section
 
-        Text
+      Text
 
-        [.guidance]
-        == Guidance
-        Guidance
-        INPUT
-       #{BLANK_HDR}
-  <sections>
-    <clause id='_' obligation='normative'>
-      <title>Section</title>
-      <p id='_'>Section</p>
-      <p id='_'>Text</p>
-      <clause id='_' guidance='true' obligation='normative'>
-        <title>Guidance</title>
-        <p id='_'>Guidance</p>
-      </clause>
-    </clause>
-  </sections>
-</mpfd-standard>
-        OUTPUT
-    end
+      [.guidance]
+      == Guidance
+      Guidance
+    INPUT
+      #{BLANK_HDR}
+      <sections>
+        <clause id='_' obligation='normative'>
+          <title>Section</title>
+          <p id='_'>Section</p>
+          <p id='_'>Text</p>
+          <clause id='_' guidance='true' obligation='normative'>
+            <title>Guidance</title>
+            <p id='_'>Guidance</p>
+          </clause>
+        </clause>
+      </sections>
+      </mpfd-standard>
+    OUTPUT
+  end
 
   it "processes sections" do
-        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfa, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-        #{ASCIIDOC_BLANK_HDR}
-        
-        Foreword
+    options = [backend: :mpfa, header_footer: true]
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *options)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{ASCIIDOC_BLANK_HDR}
 
-        == Introduction
-        Introduction
+      Foreword
 
-        == Glossary
-        === Subglossary
-        ==== Term
-        Definition
+      == Introduction
+      Introduction
 
-        == Symbols
-        x:: y
+      == Glossary
+      === Subglossary
+      ==== Term
+      Definition
 
-        [preface]
-        == Prefatory
+      == Symbols
+      x:: y
 
-        == Acknowledgements
+      [preface]
+      == Prefatory
 
-        == Clause 
-        === Introduction
-        Clause Introduction
+      == Acknowledgements
 
-        === Section
-        Section
+      == Clause
+      === Introduction
+      Clause Introduction
 
-        [.guidance]
-        === Guidance
-        Guidance
+      === Section
+      Section
 
-        [.container]
-        === Container
-        Container
+      [.guidance]
+      === Guidance
+      Guidance
 
-        [appendix]
-        == Appendix 1
-        Appendix
+      [.container]
+      === Container
+      Container
 
-        == Bibliography
-        === Subbibliography
-        bibliography
+      [appendix]
+      == Appendix 1
+      Appendix
 
-INPUT
-       #{BLANK_HDR}
-       <preface><foreword id="_" obligation="informative">
-  <title>Foreword</title>
-  <p id="_">Foreword</p>
-</foreword><introduction id="_" obligation="informative">
-  <title>Introduction</title>
-  <p id="_">Introduction</p>
-</introduction><clause id="_" obligation="normative">
-<title>Glossary</title>
-<terms id="_" obligation="normative">
-  <title>Subglossary</title>
-  <term id="term-term">
-  <preferred>Term</preferred>
-  <definition><p id="_">Definition</p></definition>
-</term>
-</terms></clause>
-<clause id="_" obligation="informative">
-  <title>Prefatory</title>
-</clause>
-<acknowledgements id='_' obligation='informative'>
-  <title>Acknowledgements</title>
-</acknowledgements>
-</preface><sections>
+      == Bibliography
+      === Subbibliography
+      bibliography
 
-<definitions id="_" obligation="normative" type="symbols">
-<title>Symbols</title>
-  <dl id="_">
-  <dt>x</dt>
-  <dd>
-    <p id="_">y</p>
-  </dd>
-</dl>
-</definitions>
-
-<clause id="_" obligation="normative"><title>Clause</title><clause id="_" obligation="normative">
-  <title>Introduction</title>
-  <p id="_">Clause Introduction</p>
-</clause>
-<clause id="_" obligation="normative">
-  <title>Section</title>
-  <p id="_">Section</p>
-<clause id="_" guidance="true" obligation="normative">
-  <title>Guidance</title>
-  <p id="_">Guidance</p>
-</clause></clause>
-<clause id="_" container="true" obligation="normative">
-  <title>Container</title>
-  <p id="_">Container</p>
-</clause></clause>
-
-</sections><annex id="_" obligation="normative">
-  <title>Appendix 1</title>
-  <p id="_">Appendix</p>
-</annex><bibliography><clause id="_" obligation="informative">
-  <title>Bibliography</title>
-  <references id="_" obligation="informative" normative="false">
-  <title>Subbibliography</title>
-  <p id="_">bibliography</p>
-</references>
-</clause></bibliography>
-</mpfd-standard>
-OUTPUT
+    INPUT
+      #{BLANK_HDR}
+      <preface>
+        <foreword id="_" obligation="informative">
+          <title>Foreword</title>
+          <p id="_">Foreword</p>
+        </foreword>
+        <introduction id="_" obligation="informative">
+          <title>Introduction</title>
+          <p id="_">Introduction</p>
+        </introduction>
+        <clause id="_" obligation="normative">
+          <title>Glossary</title>
+          <terms id="_" obligation="normative">
+            <title>Subglossary</title>
+            <term id="term-term">
+              <preferred>Term</preferred>
+              <definition><p id="_">Definition</p></definition>
+            </term>
+          </terms>
+        </clause>
+        <clause id="_" obligation="informative">
+          <title>Prefatory</title>
+        </clause>
+        <acknowledgements id='_' obligation='informative'>
+          <title>Acknowledgements</title>
+        </acknowledgements>
+      </preface>
+      <sections>
+      <definitions id="_" obligation="normative" type="symbols">
+        <title>Symbols</title>
+          <dl id="_">
+          <dt>x</dt>
+          <dd>
+            <p id="_">y</p>
+          </dd>
+        </dl>
+      </definitions>
+      <clause id="_" obligation="normative">
+        <title>Clause</title>
+        <clause id="_" obligation="normative">
+          <title>Introduction</title>
+          <p id="_">Clause Introduction</p>
+        </clause>
+        <clause id="_" obligation="normative">
+          <title>Section</title>
+          <p id="_">Section</p>
+          <clause id="_" guidance="true" obligation="normative">
+            <title>Guidance</title>
+            <p id="_">Guidance</p>
+          </clause>
+        </clause>
+        <clause id="_" container="true" obligation="normative">
+          <title>Container</title>
+          <p id="_">Container</p>
+        </clause>
+      </clause>
+      </sections>
+      <annex id="_" obligation="normative">
+        <title>Appendix 1</title>
+        <p id="_">Appendix</p>
+      </annex>
+      <bibliography>
+        <clause id="_" obligation="informative">
+          <title>Bibliography</title>
+          <references id="_" obligation="informative" normative="false">
+            <title>Subbibliography</title>
+            <p id="_">bibliography</p>
+          </references>
+        </clause>
+      </bibliography>
+      </mpfd-standard>
+    OUTPUT
   end
 
-    it "processes sections" do
-        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :mpfa, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-        #{ASCIIDOC_BLANK_HDR}
+  it "processes sections" do
+    options = [backend: :mpfa, header_footer: true]
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *options)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{ASCIIDOC_BLANK_HDR}
 
-        Foreword
+      Foreword
 
-        == Introduction
-        Introduction
+      == Introduction
+      Introduction
 
-        == Glossary
-        === Term
-        Definition
+      == Glossary
+      === Term
+      Definition
 
-        [preface]
-        == Prefatory
+      [preface]
+      == Prefatory
 
-        == Bibliography
-        bibliography
+      == Bibliography
+      bibliography
 
-INPUT
-#{BLANK_HDR}
-<preface><foreword id="_" obligation="informative">
-  <title>Foreword</title>
-  <p id="_">Foreword</p>
-</foreword><introduction id="_" obligation="informative">
-  <title>Introduction</title>
-  <p id="_">Introduction</p>
-</introduction><terms id="_" obligation="normative">
-  <title>Glossary</title>
-  <term id="term-term">
-  <preferred>Term</preferred>
-  <definition><p id="_">Definition</p></definition>
-</term>
-</terms><clause id="_" obligation="informative">
-  <title>Prefatory</title>
-</clause></preface><sections>
-
-
-
-</sections><bibliography><references id="_" obligation="informative" normative="false">
-  <title>Bibliography</title>
-  <p id="_">bibliography</p>
-</references></bibliography>
-</mpfd-standard>
-OUTPUT
-end
-
+    INPUT
+      #{BLANK_HDR}
+      <preface>
+        <foreword id="_" obligation="informative">
+          <title>Foreword</title>
+          <p id="_">Foreword</p>
+        </foreword>
+        <introduction id="_" obligation="informative">
+          <title>Introduction</title>
+          <p id="_">Introduction</p>
+        </introduction>
+        <terms id="_" obligation="normative">
+          <title>Glossary</title>
+          <term id="term-term">
+            <preferred>Term</preferred>
+            <definition><p id="_">Definition</p></definition>
+          </term>
+        </terms>
+        <clause id="_" obligation="informative">
+          <title>Prefatory</title>
+        </clause>
+      </preface>
+      <sections>
+      </sections>
+      <bibliography>
+        <references id="_" obligation="informative" normative="false">
+          <title>Bibliography</title>
+          <p id="_">bibliography</p>
+        </references>
+      </bibliography>
+      </mpfd-standard>
+    OUTPUT
+  end
 end

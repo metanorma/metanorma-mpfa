@@ -27,100 +27,106 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.around do |example|
+    Dir.mktmpdir("rspec-") do |dir|
+      Dir.chdir(dir) { example.run }
+    end
+  end
 end
 
-def metadata(x)
-  Hash[x.sort].delete_if{ |k, v| v.nil? || v.respond_to?(:empty?) && v.empty? }
+def metadata(hash)
+  Hash[hash.sort].delete_if { |_, v| v.nil? || v.respond_to?(:empty?) && v.empty? }
 end
 
-def strip_guid(x)
-  x.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"}, ' target="_"')
+def strip_guid(str)
+  str.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"}, ' target="_"')
 end
 
-def htmlencode(x)
-  HTMLEntities.new.encode(x, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n").
-    gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, '&').gsub(/&#x27;/, "'").
-    gsub(/\\u(....)/) { |s| "&#x#{$1.downcase};" }
+def htmlencode(html)
+  HTMLEntities.new.encode(html, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n")
+    .gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, "&").gsub(/&#x27;/, "'")
+    .gsub(/\\u(....)/) { "&#x#{$1.downcase};" }
 end
 
-def xmlpp(x)
+def xmlpp(str)
   s = ""
   f = REXML::Formatters::Pretty.new(2)
   f.compact = true
-  f.write(REXML::Document.new(x),s)
+  f.write(REXML::Document.new(str), s)
   s
 end
 
-ASCIIDOC_BLANK_HDR = <<~"HDR"
-      = Document title
-      Author
-      :docfile: test.adoc
-      :nodoc:
-      :novalid:
+ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
+  = Document title
+  Author
+  :docfile: test.adoc
+  :nodoc:
+  :novalid:
 
 HDR
 
-VALIDATING_BLANK_HDR = <<~"HDR"
-      = Document title
-      Author
-      :docfile: test.adoc
-      :nodoc:
+VALIDATING_BLANK_HDR = <<~"HDR".freeze
+  = Document title
+  Author
+  :docfile: test.adoc
+  :nodoc:
 
 HDR
 
-BLANK_HDR = <<~"HDR"
-       <?xml version="1.0" encoding="UTF-8"?>
-       <mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
-       <bibdata type="standard">
-        <title language="en" format="text/plain">Document title</title>
+BLANK_HDR = <<~"HDR".freeze
+  <?xml version="1.0" encoding="UTF-8"?>
+  <mpfd-standard xmlns="https://www.metanorma.org/ns/mpfd" type="semantic" version="#{Metanorma::MPFA::VERSION}">
+    <bibdata type="standard">
+      <title language="en" format="text/plain">Document title</title>
 
-         <contributor>
-           <role type="author"/>
-           <organization>
-             <name>Mandatory Provident Fund Schemes Authority</name>
-           </organization>
-         </contributor>
-         <contributor>
-           <role type="publisher"/>
-           <organization>
-             <name>Mandatory Provident Fund Schemes Authority</name>
-           </organization>
-         </contributor>
-         <language>en</language>
-         <script>Latn</script>
+      <contributor>
+        <role type="author"/>
+        <organization>
+          <name>Mandatory Provident Fund Schemes Authority</name>
+        </organization>
+      </contributor>
+      <contributor>
+        <role type="publisher"/>
+        <organization>
+          <name>Mandatory Provident Fund Schemes Authority</name>
+        </organization>
+      </contributor>
+      <language>en</language>
+      <script>Latn</script>
 
-         <status>
-                <stage>published</stage>
-        </status>
-         <copyright>
-           <from>#{Time.new.year}</from>
-           <owner>
-             <organization>
-             <name>Mandatory Provident Fund Schemes Authority</name>
-             </organization>
-           </owner>
-         </copyright>
-         <ext>
-         <doctype>article</doctype>
-         </ext>
-       </bibdata>
+      <status>
+        <stage>published</stage>
+      </status>
+      <copyright>
+        <from>#{Time.new.year}</from>
+        <owner>
+          <organization>
+          <name>Mandatory Provident Fund Schemes Authority</name>
+          </organization>
+        </owner>
+      </copyright>
+      <ext>
+        <doctype>article</doctype>
+      </ext>
+    </bibdata>
 HDR
 
-HTML_HDR = <<~"HDR"
-           <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-           <div class="title-section">
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class="prefatory-section">
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class="main-section">
+HTML_HDR = <<~"HDR".freeze
+  <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+    <div class="title-section">
+      <p>&#160;</p>
+    </div>
+    <br/>
+    <div class="prefatory-section">
+      <p>&#160;</p>
+    </div>
+    <br/>
+    <div class="main-section">
 HDR
 
-WORD_HDR = <<~"HDR"
-<body lang="EN-US" link="blue" vlink="#954F72">
+WORD_HDR = <<~"HDR".freeze
+  <body lang="EN-US" link="blue" vlink="#954F72">
     <div class="WordSection1">
       <p>&#160;</p>
     </div>
@@ -129,18 +135,18 @@ WORD_HDR = <<~"HDR"
       <p><br clear="all" style="mso-special-character:line-break;page-break-before:always"/></p>
 HDR
 
-WORD_FTR = <<~"FTR"
-   <p>&#160;</p>
- </div>
-   <p><br clear="all" class="section"/></p>
-   <div class="WordSection3">
-     <p class="zzSTDTitle1"/>
-   </div>
- </body>
+WORD_FTR = <<~"FTR".freeze
+  <p>&#160;</p>
+  </div>
+    <p><br clear="all" class="section"/></p>
+    <div class="WordSection3">
+      <p class="zzSTDTitle1"/>
+    </div>
+  </body>
 FTR
 
 def mock_pdf
-  allow(::Mn2pdf).to receive(:convert) do |url, output, c, d|
+  allow(::Mn2pdf).to receive(:convert) do |url, output,|
     FileUtils.cp(url.gsub(/"/, ""), output.gsub(/"/, ""))
   end
 end
