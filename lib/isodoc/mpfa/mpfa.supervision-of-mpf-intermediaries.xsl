@@ -1235,7 +1235,7 @@
 				
 	</xsl:attribute-set><xsl:attribute-set name="admitted-style">
 		
-	
+		
 	</xsl:attribute-set><xsl:attribute-set name="deprecates-style">
 		
 	</xsl:attribute-set><xsl:attribute-set name="definition-style">
