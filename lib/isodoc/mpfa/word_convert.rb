@@ -31,7 +31,6 @@ module IsoDoc
           htmlstylesheet: html_doc_path("htmlstyle.scss"),
           htmlcoverpage: html_doc_path("html_rsd_titlepage.html"),
           htmlintropage: html_doc_path("html_rsd_intro.html"),
-          scripts: html_doc_path("scripts.html"),
           wordstylesheet: html_doc_path("wordstyle.scss"),
           standardstylesheet: html_doc_path("rsd.scss"),
           header: html_doc_path("header.html"),
