@@ -29,12 +29,13 @@ supported_gem_paths.each do |backend|
 end
 puts
 
-def uuid()
+def uuid
   UUIDTools::UUID.random_create
 end
 
 def extract_documents(m)
-  return [] unless m and m["sections"]
+  return [] unless m && m["sections"]
+
   ret = []
   m["sections"].each do |s|
     ret << s if s["file"]
@@ -45,22 +46,24 @@ end
 
 def hyperlink(link)
   return unless link
+
   link.sub(/\.adoc(?=$|#)/, ".html")
 end
 
 def iterate(sections)
   return "" unless sections
+
   ret = ""
   Array(sections).each do |m|
-    ret+= "<clause id='#{uuid}'>\n"
-    title = m["title"] && m["number"] ? "#{m['number']}. #{m['title']}" : ( m["number"] || m["title"] || "&mdash;" )
+    ret += "<clause id='#{uuid}'>\n"
+    title = m["title"] && m["number"] ? "#{m['number']}. #{m['title']}" : (m["number"] || m["title"] || "&mdash;")
     file = hyperlink(m["file"])
     title = "<link target='#{file}'>#{title}</link>" if file
-    ret+= "<title>#{title}</title>\n"
-    ret+= "<p>#{m['description']}</p>\n" if m["description"]
-    ret+= "<p align='right'>#{m['revdate']}</p>\n" if m["revdate"]
+    ret += "<title>#{title}</title>\n"
+    ret += "<p>#{m['description']}</p>\n" if m["description"]
+    ret += "<p align='right'>#{m['revdate']}</p>\n" if m["revdate"]
     ret += iterate(m["sections"])
-    ret+= "</clause>\n"
+    ret += "</clause>\n"
   end
   ret
 end
@@ -69,20 +72,19 @@ options = {}
 opt_parser = OptionParser.new do |opts|
   opts.banner += " <file>"
   opts.on(
-    '-t',
-    '--type TYPE',
+    "-t",
+    "--type TYPE",
     "Type of standard to generate"
   ) { |v| options[:type] = v.to_sym }
 
-    opts.on(
-    '-r',
-    '--require LIBRARY',
-    'Require LIBRARY prior to execution'
-  ) { |v|
+  opts.on(
+    "-r",
+    "--require LIBRARY",
+    "Require LIBRARY prior to execution"
+  ) do |v|
     options[:require] ||= []
     options[:require] << v
-  }
-
+  end
 
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
@@ -98,7 +100,6 @@ if options[:require]
   end
 end
 
-
 manifest = YAML.load_file(ARGV.pop)
 
 documents = extract_documents(manifest)
@@ -106,41 +107,41 @@ documents = extract_documents(manifest)
 # TODO real lookup of namespaces and root elements
 
 out = <<~END
-<#{options[:type]}-standard xmlns="http://riboseinc.com/isoxml">
-<bibdata type="standard">
-  <title>#{manifest["title"]}</title>
+  <#{options[:type]}-standard xmlns="http://riboseinc.com/isoxml">
+  <bibdata type="standard">
+    <title>#{manifest['title']}</title>
 END
 
 # TODO leave in anchor references?
 #
 documents.each do |d|
   out += <<~END
-  <relation type="partOf">
-    <bibdata type="standard">
-      <title>#{d['title']}</title>
-      <docidentifier>#{d['number']}</docidentifier>
-      <abstract>#{d['description']}</abstract>
-    </bibdata>
-  </relation>
+    <relation type="partOf">
+      <bibdata type="standard">
+        <title>#{d['title']}</title>
+        <docidentifier>#{d['number']}</docidentifier>
+        <abstract>#{d['description']}</abstract>
+      </bibdata>
+    </relation>
   END
 end
 
 out += <<~END
-</bibdata>
-<sections>
+  </bibdata>
+  <sections>
 END
 
-out+=iterate(manifest["sections"])
+out += iterate(manifest["sections"])
 
-out+= <<~END
-</sections>
-<#{options[:type]}-standard>
+out += <<~END
+  </sections>
+  <#{options[:type]}-standard>
 END
-    outfilename = options[:filename].sub(/\.[^.]+$/, ".xml")
-    File.open(outfilename, "w") { |f| f.write out }
+outfilename = options[:filename].sub(/\.[^.]+$/, ".xml")
+File.open(outfilename, "w") { |f| f.write out }
 
-  processor = registry.find_processor(options[:type].to_sym)
-  ext = :html
-    file_extension = "html" || processor.output_formats[ext] 
-    outfilename = options[:filename].sub(/\.[^.]+$/, ".#{file_extension}")
-    processor.output(out, outfilename, ext, {suppressheadingnumbers: true})
+processor = registry.find_processor(options[:type].to_sym)
+ext = :html
+file_extension = "html" || processor.output_formats[ext]
+outfilename = options[:filename].sub(/\.[^.]+$/, ".#{file_extension}")
+processor.output(out, outfilename, ext, { suppressheadingnumbers: true })
