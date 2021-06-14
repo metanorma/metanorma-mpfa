@@ -1,15 +1,15 @@
 require "isodoc"
 require "twitter_cldr"
-require 'date'
+require "date"
 
 module IsoDoc
   module MPFA
-
     class Metadata < IsoDoc::Metadata
       def initialize(lang, script, labels)
         super
-                here = File.dirname(__FILE__)
-        set(:logo, File.expand_path(File.join(here, "html", "mpfa-logo-no-text@4x.png")))
+        here = File.dirname(__FILE__)
+        set(:logo, File.expand_path(File.join(here, "html",
+                                              "mpfa-logo-no-text@4x.png")))
       end
 
       def title(isoxml, _out)
@@ -32,10 +32,10 @@ module IsoDoc
       end
 
       def doctype(isoxml, _out)
-        b = isoxml&.at(ns("//bibdata/ext/doctype"))&.text || return
-        return unless b
-        t = b.split(/[- ]/).
-          map{ |w| w.capitalize unless w == "MPF" }.join(" ")
+        b = isoxml&.at(ns("//bibdata/ext/doctype"))&.text or return
+
+        t = b.split(/[- ]/)
+          .map { |w| w.capitalize unless w == "MPF" }.join(" ")
         set(:doctype, t)
       end
 
@@ -51,21 +51,21 @@ module IsoDoc
 
       def version(isoxml, _out)
         super
-        edition = isoxml.at(ns("//version/edition"))
+        edition = isoxml.at(ns("//bibdata/version/edition"))
         if edition
           set(
             :edition,
-            edition.text.to_i.localize.
-              to_rbnf_s("SpelloutRules", "spellout-ordinal").
-              split(/(\W)/).map(&:capitalize).join
+            edition.text.to_i.localize
+              .to_rbnf_s("SpelloutRules", "spellout-ordinal")
+              .split(/(\W)/).map(&:capitalize).join,
           )
         end
       end
 
       def monthyr(isodate)
         date = DateTime.parse(isodate)
-        date.strftime('%-d %B %Y')    #=> "Sun 04 Feb 2001"
-      rescue
+        date.strftime("%-d %B %Y")    #=> "Sun 04 Feb 2001"
+      rescue StandardError
         # invalid dates get thrown
         isodate
       end
