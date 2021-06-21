@@ -25,6 +25,11 @@ RSpec.describe IsoDoc::MPFA do
         </contributor>
         <language>en</language>
         <script>Latn</script>
+        <version>
+        <edition>2</edition>
+        <revision-date>2000-01-01</revision-date>
+        <draft>3.4</draft>
+      </version>
         <status><stage>published</stage></status>
         <copyright>
           <from>2001</from>
@@ -41,11 +46,7 @@ RSpec.describe IsoDoc::MPFA do
         </editorialgroup>
         <security>Client Confidential</security>
         </ext>
-      </bibdata><version>
-        <edition>2</edition>
-        <revision-date>2000-01-01</revision-date>
-        <draft>3.4</draft>
-      </version>
+      </bibdata>
       <sections/>
       </mpfd-standard>
     INPUT
@@ -214,79 +215,74 @@ RSpec.describe IsoDoc::MPFA do
     INPUT
 
     presxml = <<~OUTPUT
-      <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-        <preface>
-          <abstract obligation="informative">
-            <title>Summary</title>
-            <p id="AA">This is an abstract</p>
-          </abstract>
-          <foreword obligation="informative">
-            <title>Foreword</title>
-            <p id="A">This is a preamble</p>
-          </foreword>
-          <introduction id="B" obligation="informative">
-            <title>Introduction</title>
-            <clause id="C" inline-header="false" obligation="informative">
-              <title depth="2">Introduction Subsection</title>
-            </clause>
+       <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+         <preface>
+           <abstract obligation="informative" displayorder="1">
+             <title>Summary</title>
+             <p id="AA">This is an abstract</p>
+           </abstract>
+           <foreword obligation="informative" displayorder="2">
+             <title>Foreword</title>
+             <p id="A">This is a preamble</p>
+           </foreword>
+           <introduction id="B" obligation="informative" displayorder="3">
+             <title>Introduction</title>
+             <clause id="C" inline-header="false" obligation="informative">
+             <title depth="2">Introduction Subsection</title>
+           </clause>
           </introduction>
-          <clause id="H" obligation="normative">
-            <title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title>
-            <terms id="I" obligation="normative">
-              <title depth="2">Normal Terms</title>
-              <term id="J">
-                <preferred>Term2</preferred>
-              </term>
-            </terms>
-            <definitions id="K">
-              <dl>
-                <dt>Symbol</dt>
-                <dd>Definition</dd>
-              </dl>
-            </definitions>
-          </clause>
-        </preface>
-        <sections>
-          <clause id="D" obligation="normative" type="scope">
-            <title depth="1">1.<tab/>Scope</title>
-            <p id="E">Text</p>
-          </clause>
-
-          <definitions id="L">
+           <clause id="H" obligation="normative" displayorder="4"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
+            <title depth="2">Normal Terms</title>
+            <term id="J">
+            <preferred>Term2</preferred>
+          </term>
+          </terms>
+          <definitions id="K">
             <dl>
             <dt>Symbol</dt>
             <dd>Definition</dd>
             </dl>
           </definitions>
-          <clause id="M" inline-header="false" obligation="normative">
-            <title depth="1">2.<tab/>Clause 4</title>
-            <clause id="N" inline-header="false" obligation="normative">
-              <title depth="2">2.1.<tab/>Introduction</title>
-            </clause>
-            <clause id="O" inline-header="false" obligation="normative">
-              <title depth="2">2.2.<tab/>Clause 4.2</title>
-            </clause>
           </clause>
-
+         </preface>
+        <sections>
+        <clause id="D" obligation="normative" type="scope" displayorder="7">
+          <title depth="1">1.<tab/>Scope</title>
+          <p id="E">Text</p>
+        </clause>
+     
+        <definitions id="L" displayorder="6">
+          <dl>
+          <dt>Symbol</dt>
+          <dd>Definition</dd>
+          </dl>
+        </definitions>
+        <clause id="M" inline-header="false" obligation="normative" displayorder="8"><title depth="1">2.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
+          <title depth="2">2.1.<tab/>Introduction</title>
+        </clause>
+        <clause id="O" inline-header="false" obligation="normative">
+          <title depth="2">2.2.<tab/>Clause 4.2</title>
+        </clause></clause>
+     
         </sections>
-        <annex id="P" inline-header="false" obligation="normative">
+        <annex id="P" inline-header="false" obligation="normative" displayorder="9">
           <title><strong>Appendix A</strong> <strong>Annex</strong></title>
           <clause id="Q" inline-header="false" obligation="normative">
-            <title depth="2">A.1.<tab/>Annex A.1</title>
-            <clause id="Q1" inline-header="false" obligation="normative">
-              <title depth="3">A.1.1.<tab/>Annex A.1a</title>
-            </clause>
+          <title depth="2">A.1.<tab/>Annex A.1</title>
+          <clause id="Q1" inline-header="false" obligation="normative">
+          <title depth="3">A.1.1.<tab/>Annex A.1a</title>
           </clause>
-          <references id="R" obligation="informative" normative="true">
-            <title depth="2">A.2.<tab/>Normative References</title>
-          </references><clause id="S" obligation="informative">
-            <title depth="2">A.3.<tab/>Bibliography</title>
-            <references id="T" obligation="informative" normative="false">
-            <title depth="3">A.3.1.<tab/>Bibliography Subsection</title>
-          </references>
-          </clause>
+        </clause>
+        <references id="R" obligation="informative" normative="true">
+          <title depth="2">A.2.<tab/>Normative References</title>
+        </references><clause id="S" obligation="informative">
+          <title depth="2">A.3.<tab/>Bibliography</title>
+          <references id="T" obligation="informative" normative="false">
+          <title depth="3">A.3.1.<tab/>Bibliography Subsection</title>
+        </references>
+        </clause>
         </annex>
-      </mpfd-standard>
+       </mpfd-standard>
     OUTPUT
 
     html = xmlpp(<<~"OUTPUT")
@@ -459,18 +455,19 @@ RSpec.describe IsoDoc::MPFA do
       </body>
     OUTPUT
 
-    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true).sub(
-                   %r{<localized-strings>.*</localized-strings>}m, ""
-                 ))).to be_equivalent_to xmlpp(presxml)
+    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({})
+      .convert("test", input, true).sub(
+        %r{<localized-strings>.*</localized-strings>}m, ""
+      ))).to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(
              IsoDoc::MPFA::HtmlConvert.new({}).convert("test", presxml, true)
              .gsub(%r{^.*<body}m, "<body")
-             .gsub(%r{</body>.*}m, "</body>")
+             .gsub(%r{</body>.*}m, "</body>"),
            )).to be_equivalent_to html
     expect(xmlpp(
              IsoDoc::MPFA::WordConvert.new({}).convert("test", presxml, true)
               .gsub(%r{^.*<body}m, "<body")
-              .gsub(%r{</body>.*}m, "</body>")
+              .gsub(%r{</body>.*}m, "</body>"),
            )).to be_equivalent_to word
   end
 
@@ -568,69 +565,72 @@ RSpec.describe IsoDoc::MPFA do
     INPUT
 
     presxml = <<~OUTPUT
-      <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-           <bibdata>
-           <language current="true">zh</language>
-           <script current="true">Hans</script>
-           </bibdata>
-           <preface>
-           <foreword obligation="informative">
-              <title>Foreword</title>
-              <p id="A">This is a preamble</p>
-            </foreword>
-             <introduction id="B" obligation="informative"><title>Introduction</title><clause id="C" inline-header="false" obligation="informative">
-              <title depth="2">Introduction Subsection</title>
-            </clause>
-            </introduction>
-             <clause id="H" obligation="normative"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
-              <title depth="2">Normal Terms</title>
-              <term id="J">
-              <preferred>Term2</preferred>
-            </term>
-            </terms>
-            <definitions id="K">
-              <dl>
-              <dt>Symbol</dt>
-              <dd>Definition</dd>
-              </dl>
-            </definitions>
-            </clause>
-            </preface><sections>
-            <clause id="D" obligation="normative" type="scope">
-              <title depth="1">1.<tab/>Scope</title>
-              <p id="E">Text</p>
-            </clause>
-
-            <definitions id="L">
-              <dl>
-              <dt>Symbol</dt>
-              <dd>Definition</dd>
-              </dl>
-            </definitions>
-            <clause id="M" inline-header="false" obligation="normative"><title depth="1">2.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
-              <title depth="2">2.1.<tab/>Introduction</title>
-            </clause>
-            <clause id="O" inline-header="false" obligation="normative">
-              <title depth="2">2.2.<tab/>Clause 4.2</title>
-            </clause></clause>
-
-            </sections><annex id="P" inline-header="false" obligation="normative">
-              <title><strong>&#x9644;&#x5F55;A</strong> <strong>Annex</strong></title>
-              <clause id="Q" inline-header="false" obligation="normative">
-              <title depth="2">A.1.<tab/>Annex A.1</title>
-              <clause id="Q1" inline-header="false" obligation="normative">
-              <title depth="3">A.1.1.<tab/>Annex A.1a</title>
-              </clause>
-            </clause>
-            </annex><bibliography><references id="R" obligation="informative" normative="true">
-              <title depth="1">[R].<tab/>Normative References</title>
-            </references><clause id="S" obligation="informative">
-              <title depth="1">Bibliography</title>
-              <references id="T" obligation="informative" normative="false">
-              <title depth="2">Bibliography Subsection</title>
-            </references>
-            </clause>
-            </bibliography>
+            <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+              <bibdata>
+              <language current="true">zh</language>
+              <script current="true">Hans</script>
+              </bibdata>
+              <preface>
+                <foreword obligation="informative" displayorder="1">
+                  <title>Foreword</title>
+                  <p id="A">This is a preamble</p>
+                </foreword>
+                <introduction id="B" obligation="informative" displayorder="2"><title>Introduction</title>
+                  <clause id="C" inline-header="false" obligation="informative">
+                    <title depth="2">Introduction Subsection</title>
+                  </clause>
+                </introduction>
+                <clause id="H" obligation="normative" displayorder="3"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title>
+                  <terms id="I" obligation="normative">
+                    <title depth="2">Normal Terms</title>
+                    <term id="J">
+                      <preferred>Term2</preferred>
+                    </term>
+                  </terms>
+                  <definitions id="K">
+                    <dl>
+                      <dt>Symbol</dt>
+                      <dd>Definition</dd>
+                    </dl>
+                  </definitions>
+                </clause>
+              </preface>
+              <sections>
+               <clause id="D" obligation="normative" type="scope" displayorder="7">
+                 <title depth="1">1.<tab/>Scope</title>
+                 <p id="E">Text</p>
+               </clause>
+      #{'     '}
+               <definitions id="L" displayorder="6">
+                 <dl>
+                 <dt>Symbol</dt>
+                 <dd>Definition</dd>
+                 </dl>
+               </definitions>
+               <clause id="M" inline-header="false" obligation="normative" displayorder="8"><title depth="1">2.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
+                 <title depth="2">2.1.<tab/>Introduction</title>
+               </clause>
+               <clause id="O" inline-header="false" obligation="normative">
+                 <title depth="2">2.2.<tab/>Clause 4.2</title>
+               </clause></clause>
+      #{'     '}
+               </sections><annex id="P" inline-header="false" obligation="normative" displayorder="9">
+                 <title><strong>&#x9644;&#x5F55;A</strong> <strong>Annex</strong></title>
+                 <clause id="Q" inline-header="false" obligation="normative">
+                 <title depth="2">A.1.<tab/>Annex A.1</title>
+                 <clause id="Q1" inline-header="false" obligation="normative">
+                 <title depth="3">A.1.1.<tab/>Annex A.1a</title>
+                 </clause>
+               </clause>
+               </annex><bibliography><references id="R" obligation="informative" normative="true" displayorder="5">
+                 <title depth="1">[R].<tab/>Normative References</title>
+               </references><clause id="S" obligation="informative" displayorder="10">
+                 <title depth="1">Bibliography</title>
+                 <references id="T" obligation="informative" normative="false">
+                 <title depth="2">Bibliography Subsection</title>
+               </references>
+               </clause>
+              </bibliography>
             </mpfd-standard>
     OUTPUT
 
@@ -815,19 +815,20 @@ RSpec.describe IsoDoc::MPFA do
              </body>
     OUTPUT
 
-    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({}).convert("test", input, true).sub(
-                   %r{<localized-strings>.*</localized-strings>}m, ""
-                 ))).to be_equivalent_to xmlpp(presxml)
+    expect(xmlpp(IsoDoc::MPFA::PresentationXMLConvert.new({})
+      .convert("test", input, true).sub(
+        %r{<localized-strings>.*</localized-strings>}m, ""
+      ))).to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(
              IsoDoc::MPFA::HtmlConvert.new({}).convert("test", presxml, true)
              .gsub(%r{^.*<body}m, "<body")
-             .gsub(%r{</body>.*}m, "</body>")
+             .gsub(%r{</body>.*}m, "</body>"),
            )).to be_equivalent_to xmlpp(html)
 
     expect(xmlpp(
              IsoDoc::MPFA::WordConvert.new({}).convert("test", presxml, true)
               .gsub(%r{^.*<body}m, "<body")
-              .gsub(%r{</body>.*}m, "</body>")
+              .gsub(%r{</body>.*}m, "</body>"),
            )).to be_equivalent_to xmlpp(word)
   end
 
@@ -901,7 +902,7 @@ RSpec.describe IsoDoc::MPFA do
     presxml = <<~OUTPUT
       <mpfd-standard xmlns="https://open.ribose.com/standards/rsd" type="presentation">
       <sections>
-          <clause id="A">
+          <clause id="A" displayorder="1">
               <title depth="1">1.<tab/>A</title>
               <p>
               <xref target="A">Paragraph 1</xref>
@@ -920,7 +921,7 @@ RSpec.describe IsoDoc::MPFA do
               <xref target="AG">Appendix A.1.1.2</xref>
               </p>
           </clause>
-          <clause id="B" container="true">
+          <clause id="B" container="true" displayorder="2">
               <title depth="1">B</title>
               <clause id="C" inline-header="true">
                   <title depth="1">2.<tab/>C</title>
@@ -939,7 +940,7 @@ RSpec.describe IsoDoc::MPFA do
               </clause>
           </clause>
       </sections>
-      <annex id="A0"><title><strong>Appendix A</strong> <strong>Annex</strong></title>
+      <annex id="A0" displayorder="3"><title><strong>Appendix A</strong> <strong>Annex</strong></title>
           <clause id="AA">
               <title depth="2">A.1.<tab/>A</title>
           </clause>
@@ -1232,32 +1233,30 @@ RSpec.describe IsoDoc::MPFA do
 
   it "skips 1. as section header if no title" do
     input = <<~"INPUT"
-            <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
-            <sections><clause id="_introductory" container="true" obligation="normative"><title>Introductory</title><clause id="_138fe231-cdd1-4c51-9bdb-5c0a1e9af502" obligation="normative">
-      #{'      '}
-            <p id="_69e9c23c-86da-4d2a-8ed7-28843db8112a">Section 5(1) of the <link target="https://www.elegislation.gov.hk/hk/cap485">Mandatory Provident Fund Schemes Ordinance (“the Ordinance”)</link> provides for the exemption of the members of occupational retirement schemes and their employers from the operation of all, or any specified, provisions of <link target="https://www.elegislation.gov.hk/hk/cap485">the Ordinance</link>.</p>
-            </clause>
-            <clause id="_2" obligation="normative">
-      #{'      '}
-            <p id="_cfa1993e-1f37-4092-ab18-6d02b7908311">Section 16 of the <link target="https://www.elegislation.gov.hk/hk/cap485B">Mandatory Provident Fund Schemes (Exemption) Regulation (“the Exemption Regulation”)</link> sets out the detailed requirements with respect to the application for exemption of relevant ORSO registered schemes.</p>
-            </clause>
-            </sections>
-            </mpfd-standard>
+      <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+      <sections><clause id="_introductory" container="true" obligation="normative"><title>Introductory</title><clause id="_138fe231-cdd1-4c51-9bdb-5c0a1e9af502" obligation="normative">
+      <p id="_69e9c23c-86da-4d2a-8ed7-28843db8112a">Section 5(1) of the <link target="https://www.elegislation.gov.hk/hk/cap485">Mandatory Provident Fund Schemes Ordinance (“the Ordinance”)</link> provides for the exemption of the members of occupational retirement schemes and their employers from the operation of all, or any specified, provisions of <link target="https://www.elegislation.gov.hk/hk/cap485">the Ordinance</link>.</p>
+      </clause>
+      <clause id="_2" obligation="normative">
+      <p id="_cfa1993e-1f37-4092-ab18-6d02b7908311">Section 16 of the <link target="https://www.elegislation.gov.hk/hk/cap485B">Mandatory Provident Fund Schemes (Exemption) Regulation (“the Exemption Regulation”)</link> sets out the detailed requirements with respect to the application for exemption of relevant ORSO registered schemes.</p>
+      </clause>
+      </sections>
+      </mpfd-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
       <mpfd-standard xmlns='https://open.ribose.com/standards/rsd' type='presentation'>
              <sections>
-               <clause id='_introductory' container='true' obligation='normative'>
+               <clause id='_introductory' container='true' obligation='normative' displayorder="1">
                  <title depth='1'>Introductory</title>
                  <clause id='_138fe231-cdd1-4c51-9bdb-5c0a1e9af502' obligation='normative'>
                    <title> </title>
                    <p id='_69e9c23c-86da-4d2a-8ed7-28843db8112a'>
-                     Section 5(1) of the#{' '}
+                     Section 5(1) of the
                      <link target='https://www.elegislation.gov.hk/hk/cap485'>Mandatory Provident Fund Schemes Ordinance (&#x201C;the Ordinance&#x201D;)</link>
                       provides for the exemption of the members of occupational retirement
                      schemes and their employers from the operation of all, or any
-                     specified, provisions of#{' '}
+                     specified, provisions of
                      <link target='https://www.elegislation.gov.hk/hk/cap485'>the Ordinance</link>
                      .
                    </p>
@@ -1265,7 +1264,7 @@ RSpec.describe IsoDoc::MPFA do
                  <clause id='_2' obligation='normative'>
                    <title>2.</title>
                    <p id='_cfa1993e-1f37-4092-ab18-6d02b7908311'>
-                     Section 16 of the#{' '}
+                     Section 16 of the
                      <link target='https://www.elegislation.gov.hk/hk/cap485B'>
                        Mandatory Provident Fund Schemes (Exemption) Regulation (&#x201C;the
                        Exemption Regulation&#x201D;)
@@ -1282,29 +1281,27 @@ RSpec.describe IsoDoc::MPFA do
     expect(xmlpp(
              IsoDoc::MPFA::PresentationXMLConvert.new({})
              .convert("test", input, true)
-             .gsub(%r{^.*<localized-strings>.*</localized-strings>}m, "")
+             .gsub(%r{^.*<localized-strings>.*</localized-strings>}m, ""),
            )).to be_equivalent_to output
   end
 
   it "do not skip 1. as section header if title" do
     input = <<~"INPUT"
-            <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
-            <sections><clause id="_introductory" container="true" obligation="normative"><title>Introductory</title><clause id="_138fe231-cdd1-4c51-9bdb-5c0a1e9af502" obligation="normative"><title>Title</title>
-      #{'      '}
-            <p id="_69e9c23c-86da-4d2a-8ed7-28843db8112a">Section 5(1) of the <link target="https://www.elegislation.gov.hk/hk/cap485">Mandatory Provident Fund Schemes Ordinance (“the Ordinance”)</link> provides for the exemption of the members of occupational retirement schemes and their employers from the operation of all, or any specified, provisions of <link target="https://www.elegislation.gov.hk/hk/cap485">the Ordinance</link>.</p>
-            </clause>
-            <clause id="_2" obligation="normative">
-      #{'      '}
-            <p id="_cfa1993e-1f37-4092-ab18-6d02b7908311">Section 16 of the <link target="https://www.elegislation.gov.hk/hk/cap485B">Mandatory Provident Fund Schemes (Exemption) Regulation (“the Exemption Regulation”)</link> sets out the detailed requirements with respect to the application for exemption of relevant ORSO registered schemes.</p>
-            </clause>
-            </sections>
-            </mpfd-standard>
+      <mpfd-standard xmlns="https://open.ribose.com/standards/rsd">
+      <sections><clause id="_introductory" container="true" obligation="normative"><title>Introductory</title><clause id="_138fe231-cdd1-4c51-9bdb-5c0a1e9af502" obligation="normative"><title>Title</title>
+      <p id="_69e9c23c-86da-4d2a-8ed7-28843db8112a">Section 5(1) of the <link target="https://www.elegislation.gov.hk/hk/cap485">Mandatory Provident Fund Schemes Ordinance (“the Ordinance”)</link> provides for the exemption of the members of occupational retirement schemes and their employers from the operation of all, or any specified, provisions of <link target="https://www.elegislation.gov.hk/hk/cap485">the Ordinance</link>.</p>
+      </clause>
+      <clause id="_2" obligation="normative">
+      <p id="_cfa1993e-1f37-4092-ab18-6d02b7908311">Section 16 of the <link target="https://www.elegislation.gov.hk/hk/cap485B">Mandatory Provident Fund Schemes (Exemption) Regulation (“the Exemption Regulation”)</link> sets out the detailed requirements with respect to the application for exemption of relevant ORSO registered schemes.</p>
+      </clause>
+      </sections>
+      </mpfd-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
       <mpfd-standard xmlns='https://open.ribose.com/standards/rsd' type='presentation'>
              <sections>
-               <clause id='_introductory' container='true' obligation='normative'>
+               <clause id='_introductory' container='true' obligation='normative' displayorder="1">
                  <title depth='1'>Introductory</title>
                  <clause id='_138fe231-cdd1-4c51-9bdb-5c0a1e9af502' obligation='normative'>
                    <title depth='1'>
@@ -1313,11 +1310,11 @@ RSpec.describe IsoDoc::MPFA do
                      Title
                    </title>
                    <p id='_69e9c23c-86da-4d2a-8ed7-28843db8112a'>
-                     Section 5(1) of the#{' '}
+                     Section 5(1) of the
                      <link target='https://www.elegislation.gov.hk/hk/cap485'>Mandatory Provident Fund Schemes Ordinance (&#x201C;the Ordinance&#x201D;)</link>
                       provides for the exemption of the members of occupational retirement
                      schemes and their employers from the operation of all, or any
-                     specified, provisions of#{' '}
+                     specified, provisions of
                      <link target='https://www.elegislation.gov.hk/hk/cap485'>the Ordinance</link>
                      .
                    </p>
@@ -1325,7 +1322,7 @@ RSpec.describe IsoDoc::MPFA do
                  <clause id='_2' obligation='normative'>
                    <title>2.</title>
                    <p id='_cfa1993e-1f37-4092-ab18-6d02b7908311'>
-                     Section 16 of the#{' '}
+                     Section 16 of the
                      <link target='https://www.elegislation.gov.hk/hk/cap485B'>
                        Mandatory Provident Fund Schemes (Exemption) Regulation (&#x201C;the
                        Exemption Regulation&#x201D;)
@@ -1342,7 +1339,7 @@ RSpec.describe IsoDoc::MPFA do
     expect(xmlpp(
              IsoDoc::MPFA::PresentationXMLConvert.new({})
              .convert("test", input, true)
-             .gsub(%r{^.*<localized-strings>.*</localized-strings>}m, "")
+             .gsub(%r{^.*<localized-strings>.*</localized-strings>}m, ""),
            )).to be_equivalent_to output
   end
 end
