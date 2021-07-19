@@ -438,7 +438,7 @@ RSpec.describe Asciidoctor::MPFA do
       <definitions id="_" obligation="normative" type="symbols">
         <title>Symbols</title>
           <dl id="_">
-          <dt>x</dt>
+          <dt id='symbol-x'>x</dt>
           <dd>
             <p id="_">y</p>
           </dd>
