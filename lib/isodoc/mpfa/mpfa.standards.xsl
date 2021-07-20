@@ -1357,6 +1357,8 @@
 				<fo:block>&#xA0;</fo:block>
 			</xsl:if> -->
 			
+			
+			<!-- Display table's name before table as standalone block -->
 			<!-- $namespace = 'iso' or  -->
 			
 				<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
@@ -1434,6 +1436,10 @@
 					<xsl:attribute name="margin-left">0mm</xsl:attribute>
 					<xsl:attribute name="margin-right">0mm</xsl:attribute>
 				
+				
+				
+				
+				<!-- display table's name before table for PAS inside block-container (2-columnn layout) -->
 				
 				
 				<xsl:variable name="table_width">
