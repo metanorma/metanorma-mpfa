@@ -1053,6 +1053,7 @@
 		
 		
 		
+		
 			<xsl:attribute name="font-size">10pt</xsl:attribute>			
 		
 		
@@ -4432,7 +4433,19 @@
 			</fo:inline>
 		</xsl:if>
 	</xsl:template><xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'p']">
-		<fo:inline><xsl:apply-templates/></fo:inline>
+		<xsl:variable name="element">inline
+			
+		</xsl:variable>		
+		<xsl:choose>			
+			<xsl:when test="contains($element, 'block')">
+				<fo:block xsl:use-attribute-sets="example-p-style">
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline><xsl:apply-templates/></fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template><xsl:template match="*[local-name() = 'example']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="example-style">
 			
