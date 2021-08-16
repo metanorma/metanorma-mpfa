@@ -1,6 +1,7 @@
 require "spec_helper"
 
-logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib", "isodoc", "mpfa", "html"))
+logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib",
+                                     "isodoc", "mpfa", "html"))
 
 RSpec.describe IsoDoc::MPFA do
   it "processes default metadata" do
@@ -87,7 +88,8 @@ RSpec.describe IsoDoc::MPFA do
     OUTPUT
 
     docxml, = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil)).to_s).gsub(/, :/, ",\n:")).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil)).to_s)
+      .gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "processes pre" do
@@ -215,74 +217,72 @@ RSpec.describe IsoDoc::MPFA do
     INPUT
 
     presxml = <<~OUTPUT
-       <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-         <preface>
-           <abstract obligation="informative" displayorder="1">
-             <title>Summary</title>
-             <p id="AA">This is an abstract</p>
-           </abstract>
-           <foreword obligation="informative" displayorder="2">
-             <title>Foreword</title>
-             <p id="A">This is a preamble</p>
-           </foreword>
-           <introduction id="B" obligation="informative" displayorder="3">
-             <title>Introduction</title>
-             <clause id="C" inline-header="false" obligation="informative">
-             <title depth="2">Introduction Subsection</title>
-           </clause>
-          </introduction>
-           <clause id="H" obligation="normative" displayorder="4"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
-            <title depth="2">Normal Terms</title>
-            <term id="J">
-            <preferred>Term2</preferred>
-          </term>
-          </terms>
-          <definitions id="K">
-            <dl>
-            <dt>Symbol</dt>
-            <dd>Definition</dd>
-            </dl>
-          </definitions>
+      <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+        <preface>
+          <abstract obligation="informative" displayorder="1">
+            <title>Summary</title>
+            <p id="AA">This is an abstract</p>
+          </abstract>
+          <foreword obligation="informative" displayorder="2">
+            <title>Foreword</title>
+            <p id="A">This is a preamble</p>
+          </foreword>
+          <introduction id="B" obligation="informative" displayorder="3">
+            <title>Introduction</title>
+            <clause id="C" inline-header="false" obligation="informative">
+            <title depth="2">Introduction Subsection</title>
           </clause>
-         </preface>
-        <sections>
-        <clause id="D" obligation="normative" type="scope" displayorder="7">
-          <title depth="1">1.<tab/>Scope</title>
-          <p id="E">Text</p>
-        </clause>
-     
-        <definitions id="L" displayorder="6">
-          <dl>
-          <dt>Symbol</dt>
-          <dd>Definition</dd>
-          </dl>
-        </definitions>
-        <clause id="M" inline-header="false" obligation="normative" displayorder="8"><title depth="1">2.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
-          <title depth="2">2.1.<tab/>Introduction</title>
-        </clause>
-        <clause id="O" inline-header="false" obligation="normative">
-          <title depth="2">2.2.<tab/>Clause 4.2</title>
-        </clause></clause>
-     
-        </sections>
-        <annex id="P" inline-header="false" obligation="normative" displayorder="9">
-          <title><strong>Appendix A</strong> <strong>Annex</strong></title>
-          <clause id="Q" inline-header="false" obligation="normative">
-          <title depth="2">A.1.<tab/>Annex A.1</title>
-          <clause id="Q1" inline-header="false" obligation="normative">
-          <title depth="3">A.1.1.<tab/>Annex A.1a</title>
-          </clause>
-        </clause>
-        <references id="R" obligation="informative" normative="true">
-          <title depth="2">A.2.<tab/>Normative References</title>
-        </references><clause id="S" obligation="informative">
-          <title depth="2">A.3.<tab/>Bibliography</title>
-          <references id="T" obligation="informative" normative="false">
-          <title depth="3">A.3.1.<tab/>Bibliography Subsection</title>
-        </references>
-        </clause>
-        </annex>
-       </mpfd-standard>
+         </introduction>
+          <clause id="H" obligation="normative" displayorder="4"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
+           <title depth="2">Normal Terms</title>
+           <term id="J">
+           <preferred>Term2</preferred>
+         </term>
+         </terms>
+         <definitions id="K">
+           <dl>
+           <dt>Symbol</dt>
+           <dd>Definition</dd>
+           </dl>
+         </definitions>
+         </clause>
+        </preface>
+       <sections>
+       <clause id="D" obligation="normative" type="scope" displayorder="7">
+         <title depth="1">1.<tab/>Scope</title>
+         <p id="E">Text</p>
+       </clause>
+       <definitions id="L" displayorder="6">
+         <dl>
+         <dt>Symbol</dt>
+         <dd>Definition</dd>
+         </dl>
+       </definitions>
+       <clause id="M" inline-header="false" obligation="normative" displayorder="8"><title depth="1">2.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
+         <title depth="2">2.1.<tab/>Introduction</title>
+       </clause>
+       <clause id="O" inline-header="false" obligation="normative">
+         <title depth="2">2.2.<tab/>Clause 4.2</title>
+       </clause></clause>
+       </sections>
+       <annex id="P" inline-header="false" obligation="normative" displayorder="9">
+         <title><strong>Appendix A</strong> <strong>Annex</strong></title>
+         <clause id="Q" inline-header="false" obligation="normative">
+         <title depth="2">A.1.<tab/>Annex A.1</title>
+         <clause id="Q1" inline-header="false" obligation="normative">
+         <title depth="3">A.1.1.<tab/>Annex A.1a</title>
+         </clause>
+       </clause>
+       <references id="R" obligation="informative" normative="true">
+         <title depth="2">A.2.<tab/>Normative References</title>
+       </references><clause id="S" obligation="informative">
+         <title depth="2">A.3.<tab/>Bibliography</title>
+         <references id="T" obligation="informative" normative="false">
+         <title depth="3">A.3.1.<tab/>Bibliography Subsection</title>
+       </references>
+       </clause>
+       </annex>
+      </mpfd-standard>
     OUTPUT
 
     html = xmlpp(<<~"OUTPUT")
@@ -487,10 +487,12 @@ RSpec.describe IsoDoc::MPFA do
       </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor
+      .convert(input, backend: :mpfa, header_footer: true)))
+      .to be_equivalent_to output
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r{jquery\.min\.js})
-    expect(html).to match(%r{Overpass})
+    expect(html).to match(%r{Titillium Web})
   end
 
   it "processes Simplified Chinese" do
@@ -565,73 +567,71 @@ RSpec.describe IsoDoc::MPFA do
     INPUT
 
     presxml = <<~OUTPUT
-            <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-              <bibdata>
-              <language current="true">zh</language>
-              <script current="true">Hans</script>
-              </bibdata>
-              <preface>
-                <foreword obligation="informative" displayorder="1">
-                  <title>Foreword</title>
-                  <p id="A">This is a preamble</p>
-                </foreword>
-                <introduction id="B" obligation="informative" displayorder="2"><title>Introduction</title>
-                  <clause id="C" inline-header="false" obligation="informative">
-                    <title depth="2">Introduction Subsection</title>
-                  </clause>
-                </introduction>
-                <clause id="H" obligation="normative" displayorder="3"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title>
-                  <terms id="I" obligation="normative">
-                    <title depth="2">Normal Terms</title>
-                    <term id="J">
-                      <preferred>Term2</preferred>
-                    </term>
-                  </terms>
-                  <definitions id="K">
-                    <dl>
-                      <dt>Symbol</dt>
-                      <dd>Definition</dd>
-                    </dl>
-                  </definitions>
-                </clause>
-              </preface>
-              <sections>
-               <clause id="D" obligation="normative" type="scope" displayorder="7">
-                 <title depth="1">1.<tab/>Scope</title>
-                 <p id="E">Text</p>
-               </clause>
-      #{'     '}
-               <definitions id="L" displayorder="6">
-                 <dl>
-                 <dt>Symbol</dt>
-                 <dd>Definition</dd>
-                 </dl>
-               </definitions>
-               <clause id="M" inline-header="false" obligation="normative" displayorder="8"><title depth="1">2.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
-                 <title depth="2">2.1.<tab/>Introduction</title>
-               </clause>
-               <clause id="O" inline-header="false" obligation="normative">
-                 <title depth="2">2.2.<tab/>Clause 4.2</title>
-               </clause></clause>
-      #{'     '}
-               </sections><annex id="P" inline-header="false" obligation="normative" displayorder="9">
-                 <title><strong>&#x9644;&#x5F55;A</strong> <strong>Annex</strong></title>
-                 <clause id="Q" inline-header="false" obligation="normative">
-                 <title depth="2">A.1.<tab/>Annex A.1</title>
-                 <clause id="Q1" inline-header="false" obligation="normative">
-                 <title depth="3">A.1.1.<tab/>Annex A.1a</title>
-                 </clause>
-               </clause>
-               </annex><bibliography><references id="R" obligation="informative" normative="true" displayorder="5">
-                 <title depth="1">[R].<tab/>Normative References</title>
-               </references><clause id="S" obligation="informative" displayorder="10">
-                 <title depth="1">Bibliography</title>
-                 <references id="T" obligation="informative" normative="false">
-                 <title depth="2">Bibliography Subsection</title>
-               </references>
-               </clause>
-              </bibliography>
-            </mpfd-standard>
+      <mpfd-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+        <bibdata>
+        <language current="true">zh</language>
+        <script current="true">Hans</script>
+        </bibdata>
+        <preface>
+          <foreword obligation="informative" displayorder="1">
+            <title>Foreword</title>
+            <p id="A">This is a preamble</p>
+          </foreword>
+          <introduction id="B" obligation="informative" displayorder="2"><title>Introduction</title>
+            <clause id="C" inline-header="false" obligation="informative">
+              <title depth="2">Introduction Subsection</title>
+            </clause>
+          </introduction>
+          <clause id="H" obligation="normative" displayorder="3"><title depth="1">Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <terms id="I" obligation="normative">
+              <title depth="2">Normal Terms</title>
+              <term id="J">
+                <preferred>Term2</preferred>
+              </term>
+            </terms>
+            <definitions id="K">
+              <dl>
+                <dt>Symbol</dt>
+                <dd>Definition</dd>
+              </dl>
+            </definitions>
+          </clause>
+        </preface>
+        <sections>
+         <clause id="D" obligation="normative" type="scope" displayorder="7">
+           <title depth="1">1.<tab/>Scope</title>
+           <p id="E">Text</p>
+         </clause>
+         <definitions id="L" displayorder="6">
+           <dl>
+           <dt>Symbol</dt>
+           <dd>Definition</dd>
+           </dl>
+         </definitions>
+         <clause id="M" inline-header="false" obligation="normative" displayorder="8"><title depth="1">2.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
+           <title depth="2">2.1.<tab/>Introduction</title>
+         </clause>
+         <clause id="O" inline-header="false" obligation="normative">
+           <title depth="2">2.2.<tab/>Clause 4.2</title>
+         </clause></clause>
+         </sections><annex id="P" inline-header="false" obligation="normative" displayorder="9">
+           <title><strong>&#x9644;&#x5F55;A</strong> <strong>Annex</strong></title>
+           <clause id="Q" inline-header="false" obligation="normative">
+           <title depth="2">A.1.<tab/>Annex A.1</title>
+           <clause id="Q1" inline-header="false" obligation="normative">
+           <title depth="3">A.1.1.<tab/>Annex A.1a</title>
+           </clause>
+         </clause>
+         </annex><bibliography><references id="R" obligation="informative" normative="true" displayorder="5">
+           <title depth="1">[R].<tab/>Normative References</title>
+         </references><clause id="S" obligation="informative" displayorder="10">
+           <title depth="1">Bibliography</title>
+           <references id="T" obligation="informative" normative="false">
+           <title depth="2">Bibliography Subsection</title>
+         </references>
+         </clause>
+        </bibliography>
+      </mpfd-standard>
     OUTPUT
 
     html = xmlpp(<<~"OUTPUT")
