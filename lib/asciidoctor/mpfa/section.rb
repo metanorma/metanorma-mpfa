@@ -6,16 +6,14 @@ module Asciidoctor
     #
     class Converter < Standoc::Converter
 
-      def sections_cleanup(x)
+      def sections_cleanup(xml)
         super
-        x.xpath("//*[@inline-header]").each do |h|
+        xml.xpath("//*[@inline-header]").each do |h|
           h.delete("inline-header")
         end
-        x.xpath("//*[@guidance]").each do |h|
-          #c = h.at("./preceding-sibling::clause[last()]") || next
+        xml.xpath("//*[@guidance]").each do |h|
           c = h.xpath("./preceding-sibling::clause")
           c.empty? and next
-          #c.add_child h.remove
           c.last.add_child h.remove
         end
       end
@@ -29,7 +27,7 @@ module Asciidoctor
       end
 
       def term_def_title(_toplevel, node)
-        return node.title
+        node.title
       end
 
       def move_sections_into_preface(x, preface)
