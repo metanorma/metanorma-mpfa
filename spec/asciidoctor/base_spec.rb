@@ -360,7 +360,7 @@ RSpec.describe Asciidoctor::MPFA do
     OUTPUT
   end
 
-  it "processes sections" do
+  it "processes sections #1" do
     options = [backend: :mpfa, header_footer: true]
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *options)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
@@ -422,8 +422,10 @@ RSpec.describe Asciidoctor::MPFA do
           <terms id="_" obligation="normative">
             <title>Subglossary</title>
             <term id="term-term">
-              <preferred>Term</preferred>
-              <definition><p id="_">Definition</p></definition>
+              <preferred><expression><name>Term</name></expression></preferred>
+              <definition>
+            <verbaldefinition><p id="_">Definition</p></verbaldefinition>
+              </definition>
             </term>
           </terms>
         </clause>
@@ -481,7 +483,7 @@ RSpec.describe Asciidoctor::MPFA do
     OUTPUT
   end
 
-  it "processes sections" do
+  it "processes sections #2" do
     options = [backend: :mpfa, header_footer: true]
     expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *options)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
@@ -515,8 +517,14 @@ RSpec.describe Asciidoctor::MPFA do
         <terms id="_" obligation="normative">
           <title>Glossary</title>
           <term id="term-term">
-            <preferred>Term</preferred>
-            <definition><p id="_">Definition</p></definition>
+                  <preferred>
+          <expression>
+            <name>Term</name>
+          </expression>
+        </preferred>
+            <definition>
+            <verbaldefinition><p id="_">Definition</p></verbaldefinition>
+            </definition>
           </term>
         </terms>
         <clause id="_" obligation="informative">
