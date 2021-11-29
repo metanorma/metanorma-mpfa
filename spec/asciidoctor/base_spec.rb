@@ -424,7 +424,7 @@ RSpec.describe Asciidoctor::MPFA do
             <term id="term-term">
               <preferred><expression><name>Term</name></expression></preferred>
               <definition>
-            <verbaldefinition><p id="_">Definition</p></verbaldefinition>
+            <verbal-definition><p id="_">Definition</p></verbal-definition>
               </definition>
             </term>
           </terms>
@@ -523,7 +523,7 @@ RSpec.describe Asciidoctor::MPFA do
           </expression>
         </preferred>
             <definition>
-            <verbaldefinition><p id="_">Definition</p></verbaldefinition>
+            <verbal-definition><p id="_">Definition</p></verbal-definition>
             </definition>
           </term>
         </terms>
