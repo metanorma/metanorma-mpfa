@@ -9,7 +9,6 @@ require_relative "./validate"
 
 module Asciidoctor
   module MPFA
-
     # A {Converter} implementation that generates MPFD output, and a document
     # schema encapsulation of the document for validation
     #
@@ -25,13 +24,14 @@ module Asciidoctor
 
       def metadata_committee(node, xml)
         return unless node.attr("committee")
+
         xml.editorialgroup do |a|
           a.committee node.attr("committee"),
-            **attr_code(type: node.attr("committee-type"))
+                      **attr_code(type: node.attr("committee-type"))
           i = 2
-          while node.attr("committee_#{i}") do
+          while node.attr("committee_#{i}")
             a.committee node.attr("committee_#{i}"),
-              **attr_code(type: node.attr("committee-type_#{i}"))
+                        **attr_code(type: node.attr("committee-type_#{i}"))
             i += 1
           end
         end
@@ -42,7 +42,7 @@ module Asciidoctor
         xml.docnumber { |i| i << node.attr("docnumber") }
       end
 
-      def title_validate(root)
+      def title_validate(_root)
         nil
       end
 
@@ -52,11 +52,14 @@ module Asciidoctor
       end
 
       def outputs(node, ret)
-        File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
-        presentation_xml_converter(node).convert(@filename + ".xml")
-        html_converter(node).convert(@filename + ".presentation.xml", nil, false, "#{@filename}.html")
-        doc_converter(node).convert(@filename + ".presentation.xml", nil, false, "#{@filename}.doc")
-        pdf_converter(node)&.convert(@filename + ".presentation.xml", nil, false, "#{@filename}.pdf")
+        File.open("#{@filename}.xml", "w:UTF-8") { |f| f.write(ret) }
+        presentation_xml_converter(node).convert("#{@filename}.xml")
+        html_converter(node).convert("#{@filename}.presentation.xml", nil,
+                                     false, "#{@filename}.html")
+        doc_converter(node).convert("#{@filename}.presentation.xml", nil,
+                                    false, "#{@filename}.doc")
+        pdf_converter(node)&.convert("#{@filename}.presentation.xml", nil,
+                                     false, "#{@filename}.pdf")
       end
 
       def validate(doc)
@@ -65,8 +68,8 @@ module Asciidoctor
                         File.join(File.dirname(__FILE__), "mpfd.rng"))
       end
 
-      def style(n, t)
-        return
+      def style(_n, _t)
+        nil
       end
 
       def presentation_xml_converter(node)
@@ -83,7 +86,8 @@ module Asciidoctor
 
       def pdf_converter(node)
         return if node.attr("no-pdf")
-        IsoDoc::MPFA::PdfConvert.new(doc_extract_attributes(node))
+
+        IsoDoc::MPFA::PdfConvert.new(pdf_extract_attributes(node))
       end
     end
   end
