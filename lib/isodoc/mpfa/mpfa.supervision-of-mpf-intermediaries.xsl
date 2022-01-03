@@ -322,8 +322,6 @@
 		<fo:inline> </fo:inline>
 	</xsl:template>
 	
-	
-	<xsl:template match="mpfd:bibitem" mode="contents"/>
 
 	<xsl:template match="mpfd:references" mode="contents">
 		<xsl:apply-templates mode="contents"/>			
@@ -463,26 +461,8 @@
 	
 	
 	<xsl:template match="mpfd:bibitem">
-		<fo:block id="{@id}" margin-bottom="12pt" text-indent="-11.7mm" margin-left="11.7mm"> <!-- 12 pt -->
-				<!-- mpfd:docidentifier -->
-			<xsl:if test="mpfd:docidentifier">
-				<xsl:choose>
-					<xsl:when test="mpfd:docidentifier/@type = 'metanorma'"/>
-					<xsl:otherwise><fo:inline><xsl:value-of select="mpfd:docidentifier"/></fo:inline></xsl:otherwise>
-				</xsl:choose>
-			</xsl:if>
-			<xsl:apply-templates select="mpfd:note"/>
-			<xsl:if test="mpfd:docidentifier">, </xsl:if>
-			<fo:inline font-style="italic">
-				<xsl:choose>
-					<xsl:when test="mpfd:title[@type = 'main' and @language = 'en']">
-						<xsl:value-of select="mpfd:title[@type = 'main' and @language = 'en']"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="mpfd:title"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</fo:inline>
+		<fo:block id="{@id}" margin-bottom="12pt" text-indent="-11.7mm" margin-left="11.7mm">
+			<xsl:call-template name="processBibitem"/>
 		</fo:block>
 	</xsl:template>
 	
@@ -589,41 +569,23 @@
 				<fo:list-item-label end-indent="label-end()">
 					<fo:block>
 						<fo:inline>
-							<xsl:number format="[1]"/>
+							<xsl:value-of select="mpfd:docidentifier[@type = 'metanorma-ordinal']"/>
+							<xsl:if test="not(mpfd:docidentifier[@type = 'metanorma-ordinal'])">
+								<xsl:number format="[1]"/>
+							</xsl:if>
 						</fo:inline>
 					</fo:block>
 				</fo:list-item-label>
 				<fo:list-item-body start-indent="body-start()">
 					<fo:block text-align="justify">
-						<xsl:variable name="docidentifier">
-							<xsl:if test="mpfd:docidentifier">
-								<xsl:choose>
-									<xsl:when test="mpfd:docidentifier/@type = 'metanorma'"/>
-									<xsl:otherwise><xsl:value-of select="mpfd:docidentifier"/></xsl:otherwise>
-								</xsl:choose>
-							</xsl:if>
-						</xsl:variable>
-						<fo:inline><xsl:value-of select="$docidentifier"/></fo:inline>
-						<xsl:apply-templates select="mpfd:note"/>
-						<xsl:if test="normalize-space($docidentifier) != ''">, </xsl:if>
-						<xsl:choose>
-							<xsl:when test="mpfd:title[@type = 'main' and @language = 'en']">
-								<xsl:apply-templates select="mpfd:title[@type = 'main' and @language = 'en']"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:apply-templates select="mpfd:title"/>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:apply-templates select="mpfd:formattedref"/>
+						<xsl:call-template name="processBibitem"/>
 					</fo:block>
 				</fo:list-item-body>
 			</fo:list-item>
 		</fo:list-block>
 	</xsl:template>
 	
-	<xsl:template match="mpfd:references[not(@normative='true')]/mpfd:bibitem" mode="contents"/>
-	
-	<xsl:template match="mpfd:references[not(@normative='true')]/mpfd:bibitem/mpfd:title">
+	<xsl:template match="mpfd:references/mpfd:bibitem/mpfd:title">
 		<fo:inline font-style="italic">
 			<xsl:apply-templates/>
 		</fo:inline>
@@ -4127,7 +4089,7 @@
 		<xsl:apply-templates mode="bookmarks"/>
 	</xsl:template><xsl:template match="*[local-name() = 'title' or local-name() = 'name']//*[local-name() = 'stem']" mode="contents">
 		<xsl:apply-templates select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/><xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
+	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/><xsl:template match="*[local-name() = 'references']/*[local-name() = 'bibitem']" mode="contents"/><xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
 	</xsl:template><xsl:template name="addBookmarks">
 		<xsl:param name="contents"/>
@@ -5356,16 +5318,50 @@
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
 		 
 		
 		
+
+		
+
+		
+			<!-- start MPFD bibitem processing -->
+			<xsl:variable name="docidentifier">
+				<xsl:choose>
+					<xsl:when test="mpfd:docidentifier/@type = 'metanorma'"/>
+					<xsl:otherwise><xsl:value-of select="mpfd:docidentifier[not(@type = 'metanorma-ordinal')]"/></xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<fo:inline><xsl:value-of select="$docidentifier"/></fo:inline>
+			<xsl:apply-templates select="mpfd:note"/>
+			<xsl:if test="normalize-space($docidentifier) != ''">, </xsl:if>
+			<xsl:choose>
+				<xsl:when test="mpfd:title[@type = 'main' and @language = 'en']">
+					<xsl:apply-templates select="mpfd:title[@type = 'main' and @language = 'en']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates select="mpfd:title"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:apply-templates select="mpfd:formattedref"/>
+		
+		<!-- end MPFD bibitem processing -->
+		
+		<!-- start M3D bibitem processing -->
+		
+		
 		 
-		
-		
-		
 		
 	</xsl:template><xsl:template name="processBibitemDocId">
-		<xsl:variable name="_doc_ident" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]"/>
+		<xsl:variable name="_doc_ident" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'metanorma-ordinal' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]"/>
 		<xsl:choose>
 			<xsl:when test="normalize-space($_doc_ident) != ''">
 				<!-- <xsl:variable name="type" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]/@type"/>
@@ -5379,7 +5375,7 @@
 				<xsl:if test="$type != ''">
 					<xsl:value-of select="$type"/><xsl:text> </xsl:text>
 				</xsl:if> -->
-				<xsl:value-of select="*[local-name() = 'docidentifier'][not(@type = 'metanorma')]"/>
+				<xsl:value-of select="*[local-name() = 'docidentifier'][not(@type = 'metanorma') and not(@type = 'metanorma-ordinal')]"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template name="processPersonalAuthor">
