@@ -1,7 +1,7 @@
 require "spec_helper"
 require "fileutils"
 
-RSpec.describe Asciidoctor::MPFA do
+RSpec.describe Metanorma::MPFA do
   context "when xref_error.adoc compilation" do
     it "generates error file" do
       File.write("xref_error.adoc", <<~"CONTENT")

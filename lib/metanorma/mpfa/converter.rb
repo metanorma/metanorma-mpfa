@@ -1,13 +1,13 @@
 require "asciidoctor"
-require "asciidoctor/mpfa"
-require "asciidoctor/standoc/converter"
+require "metanorma/mpfa"
+require "metanorma/standoc/converter"
 require "isodoc/mpfa/html_convert"
 require "isodoc/mpfa/word_convert"
 require_relative "section"
 require "fileutils"
 require_relative "./validate"
 
-module Asciidoctor
+module Metanorma
   module MPFA
     # A {Converter} implementation that generates MPFD output, and a document
     # schema encapsulation of the document for validation

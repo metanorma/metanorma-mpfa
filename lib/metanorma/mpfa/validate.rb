@@ -1,4 +1,4 @@
-module Asciidoctor
+module Metanorma
   module MPFA
     class Converter < Standoc::Converter
       def content_validate(doc)

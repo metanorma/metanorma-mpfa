@@ -6,15 +6,14 @@ end
 require "bundler/setup"
 require "asciidoctor"
 require "metanorma-mpfa"
-require "asciidoctor/mpfa"
+require "metanorma/mpfa"
 require "isodoc/mpfa/html_convert"
 require "isodoc/mpfa/word_convert"
-require "asciidoctor/standoc/converter"
+require "metanorma/standoc/converter"
 require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
 require "metanorma"
-require "metanorma/mpfa"
 require "rexml/document"
 
 RSpec.configure do |config|

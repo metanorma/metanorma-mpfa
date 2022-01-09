@@ -1,4 +1,4 @@
-module Asciidoctor
+module Metanorma
   module MPFA
 
     # A {Converter} implementation that generates MPFD output, and a document
