@@ -1,7 +1,7 @@
 require "spec_helper"
 require "fileutils"
 
-RSpec.describe Asciidoctor::MPFA do
+RSpec.describe Metanorma::MPFA do
   it "has a version number" do
     expect(Metanorma::MPFA::VERSION).not_to be nil
   end
