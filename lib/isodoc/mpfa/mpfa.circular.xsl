@@ -607,7 +607,7 @@
 			<fo:inline padding-left="5mm"><xsl:apply-templates/></fo:inline>
 			<fo:inline keep-together.within-line="always">
 				<fo:leader leader-pattern="space"/>
-				<xsl:apply-templates select="../mpfd:name" mode="presentation"/>
+				<xsl:apply-templates select="../mpfd:name" mode="formula_number"/>
 			</fo:inline>
 		</fo:block>		
 	</xsl:template>
@@ -1531,7 +1531,7 @@
 			<!-- Display table's name before table as standalone block -->
 			<!-- $namespace = 'iso' or  -->
 			
-					<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
+					<xsl:apply-templates select="*[local-name()='name']"/> <!-- table's title rendered before table -->
 				
 			
 			
@@ -1649,7 +1649,7 @@
 							<xsl:apply-templates select="*[local-name()='thead']" mode="process_tbody"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:apply-templates/>
+							<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					
@@ -1724,7 +1724,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		
-	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name() = 'name']"/><xsl:template match="*[local-name()='table']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name() = 'name']">
 		<xsl:param name="continued"/>
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="table-name-style">
@@ -1879,7 +1879,7 @@
 		<fo:table-row>
 			<fo:table-cell number-columns-spanned="{$cols-count}" border-left="1.5pt solid white" border-right="1.5pt solid white" border-top="1.5pt solid white" border-bottom="1.5pt solid black">
 				
-				<xsl:apply-templates select="ancestor::*[local-name()='table']/*[local-name()='name']" mode="presentation">
+				<xsl:apply-templates select="ancestor::*[local-name()='table']/*[local-name()='name']">
 					<xsl:with-param name="continued">true</xsl:with-param>
 				</xsl:apply-templates>
 				
@@ -2036,19 +2036,6 @@
 			
 		</fo:table-body>
 		
-	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='name']/text()[1]" priority="2" mode="presentation_name">
-		<xsl:choose>
-			<xsl:when test="substring-after(., '—') != ''">
-				<xsl:text>—</xsl:text><xsl:value-of select="substring-after(., '—')"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="."/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='name']" mode="presentation_name">
-		<xsl:apply-templates mode="presentation_name"/>
-	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='name']/node()" mode="presentation_name">
-		<xsl:apply-templates select="."/>
 	</xsl:template><xsl:template match="*[local-name()='thead']/*[local-name()='tr']" priority="2">
 		<fo:table-row xsl:use-attribute-sets="table-header-row-style">
 		
@@ -2193,13 +2180,13 @@
 				
 				
 				
-				<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+				<xsl:apply-templates select="*[local-name() = 'name']"/>
 					
 			</fo:inline>
 			
 			
 			
-			<xsl:apply-templates mode="process"/>
+			<xsl:apply-templates select="node()[not(local-name() = 'name')]" mode="process"/>
 		</fo:block>
 		
 	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='note']/*[local-name()='name']" mode="process"/><xsl:template match="*[local-name()='table']/*[local-name()='note']/*[local-name()='p']" mode="process">
@@ -2715,12 +2702,12 @@
 					<xsl:if test="normalize-space($key_iso) = 'true'">
 						<xsl:attribute name="margin-top">0</xsl:attribute>
 					</xsl:if>
-					<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+					<xsl:apply-templates select="*[local-name() = 'name']"/>
 				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell>
 				<fo:block>
-					<xsl:apply-templates/>
+					<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 				</fo:block>
 			</fo:table-cell>
 		</fo:table-row>
@@ -3434,7 +3421,7 @@
 		<fo:inline>
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']" mode="formula_number"> <!-- show by demand -->
 		<xsl:if test="normalize-space() != ''">
 			<xsl:text>(</xsl:text><xsl:apply-templates/><xsl:text>)</xsl:text>
 		</xsl:if>
@@ -3478,9 +3465,11 @@
 									</xsl:apply-templates> 
 								</xsl:if>
 								
-								<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+								<xsl:apply-templates select="*[local-name() = 'name']"/>
+								
 							</fo:inline>
-							<xsl:apply-templates/>
+							
+							<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 						</fo:block>
 					
 			</fo:block-container>
@@ -3507,11 +3496,13 @@
 			
 				
 				
-				<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+				<xsl:apply-templates select="*[local-name() = 'name']"/>
+				
 			</fo:inline>
-			<xsl:apply-templates/>
+			
+			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'note']/*[local-name() = 'name'] |               *[local-name() = 'termnote']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'note']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'note']/*[local-name() = 'name']">
 		<xsl:param name="sfx"/>
 		<xsl:variable name="suffix">
 			<xsl:choose>
@@ -3528,7 +3519,7 @@
 			<xsl:apply-templates/>
 			<xsl:value-of select="$suffix"/>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'termnote']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'termnote']/*[local-name() = 'name']">
 		<xsl:param name="sfx"/>
 		<xsl:variable name="suffix">
 			<xsl:choose>
@@ -3556,12 +3547,14 @@
 		<fo:block id="{@id}" xsl:use-attribute-sets="term-style">
 			
 			
+			
+			
 			<xsl:if test="parent::*[local-name() = 'term'] and not(preceding-sibling::*[local-name() = 'term'])">
 				
 			</xsl:if>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'term']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'term']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'term']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<xsl:variable name="level">
 				<xsl:call-template name="getLevelTermName"/>
@@ -3580,8 +3573,10 @@
 				<xsl:with-param name="isDeleted" select="$isDeleted"/>
 			</xsl:call-template>
 			
+			
+			
 			<fo:block xsl:use-attribute-sets="figure-style">
-				<xsl:apply-templates/>
+				<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 			</fo:block>
 			<xsl:call-template name="fn_display_figure"/>
 			<xsl:for-each select="*[local-name() = 'note']">
@@ -3589,15 +3584,15 @@
 			</xsl:for-each>
 			
 			
-					<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+					<xsl:apply-templates select="*[local-name() = 'name']"/> <!-- show figure's name AFTER image -->
 				
 			
 		</fo:block-container>
 	</xsl:template><xsl:template match="*[local-name() = 'figure'][@class = 'pseudocode']">
 		<fo:block id="{@id}">
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-		<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+		<xsl:apply-templates select="*[local-name() = 'name']"/>
 	</xsl:template><xsl:template match="*[local-name() = 'figure'][@class = 'pseudocode']//*[local-name() = 'p']">
 		<fo:block xsl:use-attribute-sets="figure-pseudocode-p-style">
 			<xsl:apply-templates/>
@@ -3974,7 +3969,7 @@
 			</fo:basic-link>
 		 </fo:block>
 	  </fo:block-container>
-	</xsl:template><xsl:template match="*[local-name() = 'emf']"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name']" mode="contents">		
+	</xsl:template><xsl:template match="*[local-name() = 'emf']"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name']" mode="contents">		
 		<xsl:apply-templates mode="contents"/>
 		<xsl:text> </xsl:text>
 	</xsl:template><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name'] |               *[local-name() = 'sourcecode']/*[local-name() = 'name']" mode="bookmarks">		
@@ -4197,7 +4192,7 @@
 				<xsl:apply-templates mode="bookmark"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="title" mode="bookmark"/><xsl:template match="text()" mode="bookmark"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |         *[local-name() = 'image']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="title" mode="bookmark"/><xsl:template match="text()" mode="bookmark"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |         *[local-name() = 'image']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">			
 			<fo:block xsl:use-attribute-sets="figure-name-style">
 				
@@ -4349,11 +4344,11 @@
 				
 				
 				
-				<xsl:apply-templates/>			
+				<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 			</fo:block>
 			
 			
-					<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
+					<xsl:apply-templates select="*[local-name()='name']"/> <!-- show sourcecode's name AFTER content -->
 				
 				
 			
@@ -4367,7 +4362,7 @@
 		<xsl:call-template name="add-zero-spaces-java">
 			<xsl:with-param name="text" select="$text"/>
 		</xsl:call-template>
-	</xsl:template><xsl:template match="*[local-name() = 'sourcecode']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'sourcecode']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'sourcecode']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">		
 			<fo:block xsl:use-attribute-sets="sourcecode-name-style">				
 				<xsl:apply-templates/>
@@ -4375,10 +4370,10 @@
 		</xsl:if>
 	</xsl:template><xsl:template match="*[local-name() = 'permission']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="permission-style">			
-			<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="*[local-name()='name']"/>
+			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'permission']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'permission']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'permission']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="permission-name-style">
 				<xsl:apply-templates/>
@@ -4391,13 +4386,13 @@
 		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'requirement']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="requirement-style">			
-			<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
-			<xsl:apply-templates select="*[local-name()='label']" mode="presentation"/>
-			<xsl:apply-templates select="@obligation" mode="presentation"/>
-			<xsl:apply-templates select="*[local-name()='subject']" mode="presentation"/>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="*[local-name()='name']"/>
+			<xsl:apply-templates select="*[local-name()='label']"/>
+			<xsl:apply-templates select="@obligation"/>
+			<xsl:apply-templates select="*[local-name()='subject']"/>
+			<xsl:apply-templates select="node()[not(local-name() = 'name') and not(local-name() = 'label') and not(local-name() = 'subject')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="requirement-name-style">
 				
@@ -4405,20 +4400,24 @@
 				
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'label']"/><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'label']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'label']">
 		<fo:block xsl:use-attribute-sets="requirement-label-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/@obligation" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'requirement']/@obligation">
 			<fo:block>
 				<fo:inline padding-right="3mm">Obligation</fo:inline><xsl:value-of select="."/>
 			</fo:block>
+	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'subject']" priority="2">
+		<fo:block xsl:use-attribute-sets="subject-style">
+			<xsl:text>Target Type </xsl:text><xsl:apply-templates/>
+		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'recommendation']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="recommendation-style">			
-			<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="*[local-name()='name']"/>
+			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="recommendation-name-style">
 				<xsl:apply-templates/>
@@ -4428,10 +4427,6 @@
 	</xsl:template><xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'label']">
 		<fo:block xsl:use-attribute-sets="recommendation-label-style">
 			<xsl:apply-templates/>
-		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'subject']" priority="2"/><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'subject']" mode="presentation">
-		<fo:block xsl:use-attribute-sets="subject-style">
-			<xsl:text>Target Type </xsl:text><xsl:apply-templates/>
 		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'subject']">
 		<fo:block xsl:use-attribute-sets="subject-style">
@@ -4555,10 +4550,10 @@
 		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'termexample']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="termexample-style">			
-			<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="*[local-name()='name']"/>
+			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'name']" mode="presentation">
+	</xsl:template><xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:inline xsl:use-attribute-sets="termexample-name-style">
 				<xsl:apply-templates/>
