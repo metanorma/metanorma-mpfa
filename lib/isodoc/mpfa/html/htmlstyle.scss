@@ -21,7 +21,7 @@ body {
   }
 }
 
-#toc {
+#toc, #toc > ul > :is(.h1, .h2, .h3, .h4, .h5, .h6) {
   @include toc(#301907, #301907, #301907);
   @include sidebarToc();
 
@@ -47,6 +47,12 @@ body {
     }
   }
 }
+
+#toc > ul > :is(.h1, .h2, .h3, .h4, .h5, .h6) {
+   margin-top: 0;
+   margin-bottom: 0;
+ }
+
 
 nav {
   @include sidebarNav(#f7f7f7, 328px, 15px);
@@ -87,7 +93,7 @@ strong {
       margin-top: 1em;
   }
 
-  ul#toc-list {
+  ul#toc-list, ul#toc-list > :is(.h1, .h2, .h3, .h4, .h5, .h6) {
       padding:0;
       margin:0;
   }
