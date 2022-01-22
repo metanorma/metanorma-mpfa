@@ -21,7 +21,7 @@ body {
   }
 }
 
-#toc, #toc > ul > :is(.h1, .h2, .h3, .h4, .h5, .h6) {
+#toc, #toc > ul :is(.h1, .h2, .h3, .h4, .h5, .h6) {
   @include toc(#301907, #301907, #301907);
   @include sidebarToc();
 
@@ -48,9 +48,10 @@ body {
   }
 }
 
-#toc > ul > :is(.h1, .h2, .h3, .h4, .h5, .h6) {
+#toc > ul :is(.h1, .h2, .h3, .h4, .h5, .h6) {
    margin-top: 0;
    margin-bottom: 0;
+   font-size: 100%;
  }
 
 
