@@ -47,7 +47,7 @@ module IsoDoc
           i += 1
           curr = i
           name = num.nil? ? i.to_s : "#{num}.#{i}"
-          @anchors[clause["id"]] = { label: name, level: lvl + 1,
+          @anchors[clause["id"]] = { label: name, level: lvl + 1, elem: @labels["clause"],
                                      xref: l10n("#{@labels['clause']} #{name}") }
         end
         prev = lvl
@@ -74,10 +74,15 @@ module IsoDoc
         idx
       end
 
+      def annex_name_anchors(clause, num)
+        { label: annex_name_lbl(clause, num),
+          elem: @labels["annex"],
+          type: "clause", value: num.to_s, level: 1,
+          xref: l10n("#{@labels['annex']} #{num}") }
+      end
+
       def annex_names(clause, num)
-        @anchors[clause["id"]] =
-          { label: annex_name_lbl(clause, num), value: num,
-            xref: l10n("#{@labels['annex']} #{num}"), level: 1 }
+        @anchors[clause["id"]] = annex_name_anchors(clause, num)
         if a = single_annex_special_section(clause)
           annex_names1(a, num.to_s, 1)
         else
@@ -93,7 +98,7 @@ module IsoDoc
       def annex_names1(clause, num, level)
         unless clause["container"]
           @anchors[clause["id"]] =
-            { label: num,
+            { label: num, elem: @labels["annex"],
               xref: l10n("#{@labels['annex']} #{num}"), level: level }
         end
         i = 0
