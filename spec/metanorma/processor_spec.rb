@@ -49,7 +49,7 @@ RSpec.describe Metanorma::MPFA::Processor do
     INPUT
 
     processor.output(input, "test.xml", "test.xml", :xml)
-    expect(File.exists?("test.xml")).to be true
+    expect(File.exist?("test.xml")).to be true
   end
 
   it "generates HTML from IsoDoc XML" do
@@ -74,7 +74,7 @@ RSpec.describe Metanorma::MPFA::Processor do
     OUTPUT
 
     processor.output(input, "test.xml", "test.html", :html)
-    expect(File.exists?("test.html")).to be true
+    expect(File.exist?("test.html")).to be true
     expect(
       xmlpp(File.read("test.html", encoding: "utf-8")
         .gsub(%r{^.*<main}m, "<main")
@@ -104,7 +104,7 @@ RSpec.describe Metanorma::MPFA::Processor do
     OUTPUT
 
     processor.output(input, "test.xml", "test.doc", :doc)
-    expect(File.exists?("test.doc")).to be true
+    expect(File.exist?("test.doc")).to be true
 
     expect(
       xmlpp(File.read("test.doc", encoding: "utf-8")
