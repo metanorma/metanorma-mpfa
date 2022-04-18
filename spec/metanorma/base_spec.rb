@@ -421,7 +421,7 @@ RSpec.describe Metanorma::MPFA do
           <title>Glossary</title>
           <terms id="_" obligation="normative">
             <title>Subglossary</title>
-            <term id="term-term">
+            <term id="term-Term">
               <preferred><expression><name>Term</name></expression></preferred>
               <definition>
             <verbal-definition><p id="_">Definition</p></verbal-definition>
@@ -516,7 +516,7 @@ RSpec.describe Metanorma::MPFA do
         </introduction>
         <terms id="_" obligation="normative">
           <title>Glossary</title>
-          <term id="term-term">
+          <term id="term-Term">
                   <preferred>
           <expression>
             <name>Term</name>
