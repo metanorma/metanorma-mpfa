@@ -140,12 +140,19 @@
 					<fo:block margin-bottom="12pt"> </fo:block>
 					<fo:block-container text-align="center" border="0.5pt solid black" margin-bottom="12pt">
 						<fo:block font-size="16pt" margin-bottom="12pt" padding-top="1mm">
-							<xsl:value-of select="/mpfd:mpfd-standard/mpfd:bibdata/mpfd:edition"/>
-							<xsl:text> </xsl:text>
-							<xsl:call-template name="getTitle">
-								<xsl:with-param name="name" select="'title-edition'"/>
-							</xsl:call-template>
-							<xsl:value-of select="$linebreak"/>
+							<xsl:variable name="edition" select="normalize-space(/mpfd:mpfd-standard/mpfd:bibdata/mpfd:edition[normalize-space(@language) = ''])"/>
+							<xsl:if test="$edition != ''">
+								<xsl:value-of select="$edition"/>
+								<xsl:text> </xsl:text>
+								<xsl:call-template name="capitalize">
+									<xsl:with-param name="str">
+										<xsl:call-template name="getLocalizedString">
+											<xsl:with-param name="key">edition</xsl:with-param>
+										</xsl:call-template>
+									</xsl:with-param>
+								</xsl:call-template>
+								<xsl:value-of select="$linebreak"/>
+							</xsl:if>
 							<xsl:call-template name="convertDate">
 								<xsl:with-param name="date" select="/mpfd:mpfd-standard/mpfd:bibdata/mpfd:version/mpfd:revision-date"/>
 								<xsl:with-param name="format">ddMMyyyy</xsl:with-param>
@@ -591,20 +598,11 @@
 	</xsl:variable><xsl:variable name="marginTop" select="normalize-space($marginTop_)"/><xsl:variable name="marginBottom_">
 		10
 	</xsl:variable><xsl:variable name="marginBottom" select="normalize-space($marginBottom_)"/><xsl:variable name="titles_">
-				
-		<title-edition lang="en">
-			
-					<xsl:text>Edition </xsl:text>
-				
-		</title-edition>
 		
-		<title-edition lang="fr">
-			<xsl:text>Édition </xsl:text>
-		</title-edition>
+		<title-version lang="en">
+			<xsl:text>Version</xsl:text>
+		</title-version>
 		
-		<title-edition lang="ru">
-			<xsl:text>Издание </xsl:text>
-		</title-edition>
 		
 		<!-- These titles of Table of contents renders different than determined in localized-strings -->
 		<title-toc lang="en">
@@ -6980,6 +6978,31 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$text"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template><xsl:template name="printEdition">
+		<xsl:variable name="edition_i18n" select="normalize-space((//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']/*[local-name() = 'edition'][normalize-space(@language) != ''])"/>
+		<xsl:text> </xsl:text>
+		<xsl:choose>
+			<xsl:when test="$edition_i18n != ''">
+				<!-- Example: <edition language="fr">deuxième édition</edition> -->
+				<xsl:call-template name="capitalize">
+					<xsl:with-param name="str" select="$edition_i18n"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="edition" select="normalize-space((//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']/*[local-name() = 'edition'])"/>
+				<xsl:if test="$edition != ''"> <!-- Example: 1.3 -->
+					<xsl:call-template name="capitalize">
+						<xsl:with-param name="str">
+							<xsl:call-template name="getLocalizedString">
+								<xsl:with-param name="key">edition</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="$edition"/>
+				</xsl:if>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template name="convertDate">
 		<xsl:param name="date"/>
