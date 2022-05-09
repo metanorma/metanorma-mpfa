@@ -140,12 +140,19 @@
 					<fo:block margin-bottom="12pt"> </fo:block>
 					<fo:block-container text-align="center" border="0.5pt solid black" margin-bottom="12pt">
 						<fo:block font-size="16pt" margin-bottom="12pt" padding-top="1mm">
-							<xsl:value-of select="/mpfd:mpfd-standard/mpfd:bibdata/mpfd:edition"/>
-							<xsl:text> </xsl:text>
-							<xsl:call-template name="getTitle">
-								<xsl:with-param name="name" select="'title-edition'"/>
-							</xsl:call-template>
-							<xsl:value-of select="$linebreak"/>
+							<xsl:variable name="edition" select="normalize-space(/mpfd:mpfd-standard/mpfd:bibdata/mpfd:edition[normalize-space(@language) = ''])"/>
+							<xsl:if test="$edition != ''">
+								<xsl:value-of select="$edition"/>
+								<xsl:text> </xsl:text>
+								<xsl:call-template name="capitalize">
+									<xsl:with-param name="str">
+										<xsl:call-template name="getLocalizedString">
+											<xsl:with-param name="key">edition</xsl:with-param>
+										</xsl:call-template>
+									</xsl:with-param>
+								</xsl:call-template>
+								<xsl:value-of select="$linebreak"/>
+							</xsl:if>
 							<xsl:call-template name="convertDate">
 								<xsl:with-param name="date" select="/mpfd:mpfd-standard/mpfd:bibdata/mpfd:version/mpfd:revision-date"/>
 								<xsl:with-param name="format">ddMMyyyy</xsl:with-param>
@@ -591,20 +598,7 @@
 	</xsl:variable><xsl:variable name="marginTop" select="normalize-space($marginTop_)"/><xsl:variable name="marginBottom_">
 		10
 	</xsl:variable><xsl:variable name="marginBottom" select="normalize-space($marginBottom_)"/><xsl:variable name="titles_">
-				
-		<title-edition lang="en">
-			
-					<xsl:text>Edition </xsl:text>
-				
-		</title-edition>
 		
-		<title-edition lang="fr">
-			<xsl:text>Édition </xsl:text>
-		</title-edition>
-		
-		<title-edition lang="ru">
-			<xsl:text>Издание </xsl:text>
-		</title-edition>
 		
 		<!-- These titles of Table of contents renders different than determined in localized-strings -->
 		<title-toc lang="en">
@@ -685,7 +679,7 @@
 	</xsl:variable><xsl:variable name="bibdata">
 		<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'bibdata']"/>
 		<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'localized-strings']"/>
-	</xsl:variable><xsl:variable name="linebreak">&#8232;</xsl:variable><xsl:variable name="tab_zh">　</xsl:variable><xsl:variable name="non_breaking_hyphen">‑</xsl:variable><xsl:variable name="thin_space"> </xsl:variable><xsl:variable name="zero_width_space">​</xsl:variable><xsl:variable name="en_dash">–</xsl:variable><xsl:template name="getTitle">
+	</xsl:variable><xsl:variable name="linebreak">&#8232;</xsl:variable><xsl:variable name="tab_zh">　</xsl:variable><xsl:variable name="non_breaking_hyphen">‑</xsl:variable><xsl:variable name="thin_space"> </xsl:variable><xsl:variable name="zero_width_space">​</xsl:variable><xsl:variable name="hair_space"> </xsl:variable><xsl:variable name="en_dash">–</xsl:variable><xsl:template name="getTitle">
 		<xsl:param name="name"/>
 		<xsl:param name="lang"/>
 		<xsl:variable name="lang_">
@@ -808,7 +802,6 @@
 		
 		
 	</xsl:attribute-set><xsl:attribute-set name="sourcecode-container-style">
-		<xsl:attribute name="margin-left">0mm</xsl:attribute>
 		
 	</xsl:attribute-set><xsl:attribute-set name="sourcecode-style">
 		<xsl:attribute name="white-space">pre</xsl:attribute>
@@ -880,6 +873,7 @@
 		
 		
 	</xsl:attribute-set><xsl:attribute-set name="example-body-style">
+		
 		
 		
 		
@@ -3363,13 +3357,15 @@
 					<xsl:choose>
 						<xsl:when test="$font-size = 'inherit'"><xsl:value-of select="$font-size"/></xsl:when>
 						<xsl:when test="contains($font-size, '%')"><xsl:value-of select="$font-size"/></xsl:when>
-						<xsl:when test="ancestor::*[local-name()='note']"><xsl:value-of select="$font-size * 0.91"/>pt</xsl:when>
+						<xsl:when test="ancestor::*[local-name()='note'] or ancestor::*[local-name()='example']"><xsl:value-of select="$font-size * 0.91"/>pt</xsl:when>
 						<xsl:otherwise><xsl:value-of select="$font-size"/>pt</xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates/>
 		</fo:inline>
+	</xsl:template><xsl:template match="*[local-name()='tt']/text()" priority="2">
+		<xsl:call-template name="add_spaces_to_sourcecode"/>
 	</xsl:template><xsl:template match="*[local-name()='underline']">
 		<fo:inline text-decoration="underline">
 			<xsl:apply-templates/>
@@ -3517,6 +3513,8 @@
 		<fo:block break-after="page"/>
 		<fo:block> </fo:block>
 		<fo:block break-after="page"/>
+	</xsl:template><xsl:template match="*[local-name() = 'span']">
+		<xsl:apply-templates/>
 	</xsl:template><xsl:template name="tokenize">
 		<xsl:param name="text"/>
 		<xsl:param name="separator" select="' '"/>
@@ -4761,7 +4759,11 @@
 		<xsl:apply-templates mode="bookmarks"/>
 	</xsl:template><xsl:template match="*[local-name() = 'title' or local-name() = 'name']//*[local-name() = 'stem']" mode="contents">
 		<xsl:apply-templates select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/><xsl:template match="*[local-name() = 'references']/*[local-name() = 'bibitem']" mode="contents"/><xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
+	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/><xsl:template match="*[local-name() = 'references']/*[local-name() = 'bibitem']" mode="contents"/><xsl:template match="*[local-name() = 'span']" mode="contents">
+		<xsl:apply-templates mode="contents"/>
+	</xsl:template><xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
+		<xsl:apply-templates mode="bookmarks"/>
+	</xsl:template><xsl:template match="*[local-name() = 'span']" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
 	</xsl:template><xsl:template name="addBookmarks">
 		<xsl:param name="contents"/>
@@ -5078,9 +5080,20 @@
 		</xsl:choose>
 	</xsl:template><xsl:template match="text()" mode="contents_item">
 		<xsl:call-template name="keep_together_standard_number"/>
+	</xsl:template><xsl:template match="*[local-name() = 'span']" mode="contents_item">
+		<xsl:apply-templates mode="contents_item"/>
 	</xsl:template><xsl:template match="*[local-name()='sourcecode']" name="sourcecode">
 	
 		<fo:block-container xsl:use-attribute-sets="sourcecode-container-style">
+		
+			<xsl:if test="not(ancestor::*[local-name() = 'li']) or ancestor::*[local-name() = 'example']">
+				<xsl:attribute name="margin-left">0mm</xsl:attribute>
+			</xsl:if>
+			
+			<xsl:if test="ancestor::*[local-name() = 'example']">
+				<xsl:attribute name="margin-right">0mm</xsl:attribute>
+			</xsl:if>
+			
 			<xsl:copy-of select="@id"/>
 			
 			<xsl:if test="parent::*[local-name() = 'note']">
@@ -5558,39 +5571,67 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template match="*[local-name() = 'example']">
-		<fo:block id="{@id}" xsl:use-attribute-sets="example-style">
+		
+		<fo:block-container id="{@id}" xsl:use-attribute-sets="example-style">
+		
 			
-			
+		
 			<xsl:variable name="fo_element">
-				<xsl:if test=".//*[local-name() = 'table'] or .//*[local-name() = 'dl']">block</xsl:if> 
+				<xsl:if test=".//*[local-name() = 'table'] or .//*[local-name() = 'dl'] or *[not(local-name() = 'name')][1][local-name() = 'sourcecode']">block</xsl:if> 
 				block
 			</xsl:variable>
 			
-			<!-- display 'EXAMPLE' -->
-			<xsl:apply-templates select="*[local-name()='name']">
-				<xsl:with-param name="fo_element" select="$fo_element"/>
-			</xsl:apply-templates>
+			<fo:block-container margin-left="0mm">
 			
-			<xsl:choose>
-				<xsl:when test="contains(normalize-space($fo_element), 'block')">
-					<fo:block-container xsl:use-attribute-sets="example-body-style">
-						<fo:block-container margin-left="0mm" margin-right="0mm">
-							<xsl:apply-templates select="node()[not(local-name() = 'name')]">
+				<xsl:choose>
+					
+					<xsl:when test="contains(normalize-space($fo_element), 'block')">
+					
+						<!-- display name 'EXAMPLE' in a separate block  -->
+						<fo:block>
+							<xsl:apply-templates select="*[local-name()='name']">
 								<xsl:with-param name="fo_element" select="$fo_element"/>
 							</xsl:apply-templates>
+						</fo:block>
+						
+						<fo:block-container xsl:use-attribute-sets="example-body-style">
+							<fo:block-container margin-left="0mm" margin-right="0mm"> 
+								<xsl:apply-templates select="node()[not(local-name() = 'name')]">
+									<xsl:with-param name="fo_element" select="$fo_element"/>
+								</xsl:apply-templates>
+							</fo:block-container>
 						</fo:block-container>
-					</fo:block-container>
-				</xsl:when>
-				<xsl:otherwise>
-					<fo:inline>
-						<xsl:apply-templates select="node()[not(local-name() = 'name')]">
-							<xsl:with-param name="fo_element" select="$fo_element"/>
-						</xsl:apply-templates>
-					</fo:inline>
-				</xsl:otherwise>
-			</xsl:choose>
-			
-		</fo:block>
+					</xsl:when> <!-- end block -->
+					
+					<xsl:otherwise> <!-- inline -->
+					
+						<!-- display 'EXAMPLE' and first element in the same line -->
+						<fo:block>
+							<xsl:apply-templates select="*[local-name()='name']">
+								<xsl:with-param name="fo_element" select="$fo_element"/>
+							</xsl:apply-templates>
+							<fo:inline>
+								<xsl:apply-templates select="*[not(local-name() = 'name')][1]">
+									<xsl:with-param name="fo_element" select="$fo_element"/>
+								</xsl:apply-templates>
+							</fo:inline>
+						</fo:block> 
+						
+						<xsl:if test="*[not(local-name() = 'name')][position() &gt; 1]">
+							<!-- display further elements in blocks -->
+							<fo:block-container xsl:use-attribute-sets="example-body-style">
+								<fo:block-container margin-left="0mm" margin-right="0mm">
+									<xsl:apply-templates select="*[not(local-name() = 'name')][position() &gt; 1]">
+										<xsl:with-param name="fo_element" select="'block'"/>
+									</xsl:apply-templates>
+								</fo:block-container>
+							</fo:block-container>
+						</xsl:if>
+					</xsl:otherwise> <!-- end inline -->
+					
+				</xsl:choose>
+			</fo:block-container>
+		</fo:block-container>
 	</xsl:template><xsl:template match="*[local-name() = 'example']/*[local-name() = 'name']">
 		<xsl:param name="fo_element">block</xsl:param>
 	
@@ -5622,10 +5663,16 @@
 		</xsl:variable>		
 		<xsl:choose>			
 			<xsl:when test="starts-with(normalize-space($element), 'block')">
-				<fo:block xsl:use-attribute-sets="example-p-style">
-					
-					<xsl:apply-templates/>
-				</fo:block>
+				<fo:block-container>
+					<xsl:if test="ancestor::*[local-name() = 'li'] and contains(normalize-space($fo_element), 'block')">
+						<xsl:attribute name="margin-left">0mm</xsl:attribute>
+						<xsl:attribute name="margin-right">0mm</xsl:attribute>
+					</xsl:if>
+					<fo:block xsl:use-attribute-sets="example-p-style">
+						
+						<xsl:apply-templates/>
+					</fo:block>
+				</fo:block-container>
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:inline xsl:use-attribute-sets="example-p-style">
@@ -5807,7 +5854,16 @@
 				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise> <!-- if there is key('bibitems_hidden', $current_bibitemid) -->
-				<fo:inline><xsl:apply-templates/></fo:inline>
+			
+				<!-- if in bibitem[@hidden='true'] there is url[@type='src'], then create hyperlink  -->
+				<xsl:variable name="uri_src" select="normalize-space($bibitems_hidden/*[local-name() ='bibitem'][@id = $current_bibitemid]/*[local-name() = 'uri'][@type = 'src'])"/>
+				<xsl:choose>
+					<xsl:when test="$uri_src != ''">
+						<fo:basic-link external-destination="{$uri_src}" fox:alt-text="{$uri_src}"><xsl:apply-templates/></fo:basic-link>
+					</xsl:when>
+					<xsl:otherwise><fo:inline><xsl:apply-templates/></fo:inline></xsl:otherwise>
+				</xsl:choose>
+				
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template match="*[local-name() = 'tab']">
@@ -5973,10 +6029,24 @@
 			
 		</fo:block>
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'review']">
+	</xsl:template><xsl:template match="*[local-name() = 'review']"> <!-- 'review' will be processed in mn2pdf/review.xsl -->
 		<!-- comment 2019-11-29 -->
 		<!-- <fo:block font-weight="bold">Review:</fo:block>
 		<xsl:apply-templates /> -->
+		
+		<xsl:variable name="id_from" select="normalize-space(current()/@from)"/>
+
+		<xsl:choose>
+			<!-- if there isn't the attribute '@from', then -->
+			<xsl:when test="$id_from = ''">
+				<fo:block id="{@id}" font-size="1pt"><xsl:value-of select="$hair_space"/></fo:block>
+			</xsl:when>
+			<!-- if there isn't element with id 'from', then create 'bookmark' here -->
+			<xsl:when test="not(ancestor::*[contains(local-name(), '-standard')]//*[@id = $id_from])">
+				<fo:block id="{@from}" font-size="1pt"><xsl:value-of select="$hair_space"/></fo:block>
+			</xsl:when>
+		</xsl:choose>
+		
 	</xsl:template><xsl:template match="*[local-name() = 'name']/text()">
 		<!-- 0xA0 to space replacement -->
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new(.),' ',' ')"/>
@@ -6337,7 +6407,10 @@
 		<!-- to split by '_' and other chars -->
 		<xsl:call-template name="add-zero-spaces-java"/>
 	</xsl:template><xsl:template match="*[local-name() = 'bookmark']" name="bookmark">
-		<fo:inline id="{@id}" font-size="1pt"/>
+		<!-- <fo:inline id="{@id}" font-size="1pt"/> -->
+		<fo:inline id="{@id}" font-size="1pt"><xsl:value-of select="$hair_space"/></fo:inline>
+		<!-- we need to add zero-width space, otherwise this fo:inline is missing in IF xml -->
+		<xsl:if test="not(following-sibling::node()[normalize-space() != ''])"> </xsl:if>
 	</xsl:template><xsl:template match="*[local-name() = 'errata']">
 		<!-- <row>
 					<date>05-07-2013</date>
@@ -6877,6 +6950,8 @@
 				<xsl:apply-templates select="." mode="update_xml_step1"/>
 			</xsl:for-each>
 		</xsl:copy>
+	</xsl:template><xsl:template match="*[local-name() = 'span']" mode="update_xml_step1">
+		<xsl:apply-templates mode="update_xml_step1"/>
 	</xsl:template><xsl:template match="@*|node()" mode="update_xml_enclose_keep-together_within-line">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="update_xml_enclose_keep-together_within-line"/>
@@ -6963,6 +7038,31 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$text"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template><xsl:template name="printEdition">
+		<xsl:variable name="edition_i18n" select="normalize-space((//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']/*[local-name() = 'edition'][normalize-space(@language) != ''])"/>
+		<xsl:text> </xsl:text>
+		<xsl:choose>
+			<xsl:when test="$edition_i18n != ''">
+				<!-- Example: <edition language="fr">deuxième édition</edition> -->
+				<xsl:call-template name="capitalize">
+					<xsl:with-param name="str" select="$edition_i18n"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="edition" select="normalize-space((//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']/*[local-name() = 'edition'])"/>
+				<xsl:if test="$edition != ''"> <!-- Example: 1.3 -->
+					<xsl:call-template name="capitalize">
+						<xsl:with-param name="str">
+							<xsl:call-template name="getLocalizedString">
+								<xsl:with-param name="key">edition</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="$edition"/>
+				</xsl:if>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template name="convertDate">
 		<xsl:param name="date"/>
