@@ -89,11 +89,12 @@ module IsoDoc
 
       def annex_names(clause, num)
         @anchors[clause["id"]] = annex_name_anchors(clause, num)
-        if a = single_annex_special_section(clause)
-          annex_names1(a, num.to_s, 1)
+        if @klass.single_term_clause?(clause)
+          annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
+                       num.to_s, 1)
         else
           i = 0
-          clause.xpath(ns("./clause | ./references")).each do |c|
+          clause.xpath(ns("./clause | ./references | ./terms | ./definitions")).each do |c|
             container_names(c, 0)
             i = annex_naming(c, num, 1, i)
           end
