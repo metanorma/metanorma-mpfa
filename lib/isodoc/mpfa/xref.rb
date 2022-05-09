@@ -4,14 +4,20 @@ module IsoDoc
       FRONT_CLAUSE = "//*[parent::preface]".freeze
 
       def initial_anchor_names(doc)
-        doc.xpath(ns(self.class::FRONT_CLAUSE)).each do |c|
-          preface_names(c)
-          sequential_asset_names(c)
+        if @parse_settings.empty? || @parse_settings[:clauses]
+          doc.xpath(ns(self.class::FRONT_CLAUSE)).each do |c|
+            preface_names(c)
+          end
+          clause_names(doc, 0)
         end
-        middle_section_asset_names(doc)
-        clause_names(doc, 0)
-        termnote_anchor_names(doc)
-        termexample_anchor_names(doc)
+        if @parse_settings.empty?
+          doc.xpath(ns(self.class::FRONT_CLAUSE)).each do |c|
+            sequential_asset_names(c)
+          end
+          middle_section_asset_names(doc)
+          termnote_anchor_names(doc)
+          termexample_anchor_names(doc)
+        end
       end
 
       def annex_name_lbl(_clause, num)
