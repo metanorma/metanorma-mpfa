@@ -35,24 +35,36 @@ RSpec.configure do |config|
 end
 
 def metadata(hash)
-  Hash[hash.sort].delete_if { |_, v| v.nil? || v.respond_to?(:empty?) && v.empty? }
+  hash.sort.to_h.delete_if do |_, v|
+    v.nil? || (v.respond_to?(:empty?) && v.empty?)
+  end
 end
 
 def strip_guid(str)
-  str.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"}, ' target="_"')
+  str.gsub(%r{ id="_[^"]+"}, ' id="_"').gsub(%r{ target="_[^"]+"},
+                                             ' target="_"')
 end
 
 def htmlencode(html)
   HTMLEntities.new.encode(html, :hexadecimal).gsub(/&#x3e;/, ">").gsub(/&#xa;/, "\n")
     .gsub(/&#x22;/, '"').gsub(/&#x3c;/, "<").gsub(/&#x26;/, "&").gsub(/&#x27;/, "'")
-    .gsub(/\\u(....)/) { "&#x#{$1.downcase};" }
+    .gsub(/\\u(....)/) do
+    "&#x#{$1.downcase};"
+  end
 end
 
-def xmlpp(str)
+def xmlpp(xml)
+  c = HTMLEntities.new
+  xml &&= xml.split(/(&\S+?;)/).map do |n|
+    if /^&\S+?;$/.match?(n)
+      c.encode(c.decode(n), :hexadecimal)
+    else n
+    end
+  end.join
   s = ""
   f = REXML::Formatters::Pretty.new(2)
   f.compact = true
-  f.write(REXML::Document.new(str), s)
+  f.write(REXML::Document.new(xml), s)
   s
 end
 
