@@ -58,7 +58,7 @@ module IsoDoc
           foreword docxml, div2
           introduction docxml, div2
           terms_defs docxml, div2, 0
-          div2.p { |p| p << "&nbsp;" } # placeholder
+          div2.p { |p| p << "&#xa0;" } # placeholder
         end
         section_break(body)
       end
