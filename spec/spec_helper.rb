@@ -118,7 +118,7 @@ BLANK_HDR = <<~"HDR".freeze
         </owner>
       </copyright>
       <ext>
-        <doctype>article</doctype>
+        <doctype>standard</doctype>
       </ext>
     </bibdata>
 HDR

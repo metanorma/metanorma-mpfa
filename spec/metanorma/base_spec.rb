@@ -123,7 +123,9 @@ RSpec.describe Metanorma::MPFA do
       </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor
+      .convert(input, backend: :mpfa, header_footer: true)))
+      .to be_equivalent_to output
   end
 
   it "processes metadata, working draft" do
@@ -170,14 +172,16 @@ RSpec.describe Metanorma::MPFA do
             </owner>
           </copyright>
           <ext>
-          <doctype>article</doctype>
+          <doctype>standard</doctype>
           </ext>
         </bibdata>
         <sections/>
       </mpfd-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :mpfa, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(Asciidoctor
+      .convert(input, backend: :mpfa, header_footer: true)))
+      .to be_equivalent_to output
   end
 
   it "strips inline header" do
