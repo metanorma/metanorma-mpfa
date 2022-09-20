@@ -10,13 +10,13 @@ module IsoDoc
           end
           clause_names(doc, 0)
         end
-        if @parse_settings.empty?
-          doc.xpath(ns(self.class::FRONT_CLAUSE)).each do |c|
-            sequential_asset_names(c)
-          end
-          middle_section_asset_names(doc)
-          termnote_anchor_names(doc)
-          termexample_anchor_names(doc)
+      end
+
+      def asset_anchor_names(doc)
+        super
+        @parse_settings.empty? or return
+        doc.xpath(ns(self.class::FRONT_CLAUSE)).each do |c|
+          sequential_asset_names(c)
         end
       end
 
